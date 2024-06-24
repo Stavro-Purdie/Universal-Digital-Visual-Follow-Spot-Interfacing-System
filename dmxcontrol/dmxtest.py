@@ -1,3 +1,4 @@
+## Property of Stavro Purdie, 2024
 import platform
 import os
 import sys
@@ -15,6 +16,11 @@ else:
 opsys = platform.system()                                                                                         #Find out operating system
 
 if opsys == 'Windows':
+    import serial.tools.list_ports
+    ports = serial.tools.list_ports.comports()
+    print('COM Devices open in your PC are:')
+    for port, desc, hwid in sorted(ports):
+        print("{}: {} [{}]".format(port, desc, hwid))                                                              #List open COM ports on windows  
     comport = input("Enter COM port of adapter (eg 'COM4') >> ")
     dmx = Controller(comport, auto_submit=True, dmx_size=dmxchanmax)                                               #Set COM port for windows, with auto dmx submit and size todo add COM list
 
