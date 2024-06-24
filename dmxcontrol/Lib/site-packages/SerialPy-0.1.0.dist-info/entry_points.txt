@@ -1,0 +1,2 @@
+[console_scripts]
+serialpy = serialpy.__main__:main
