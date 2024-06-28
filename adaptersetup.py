@@ -4,8 +4,11 @@ import configparser
 import platform
 import os
 import sys
+import time
 
-print('DMX Subsystem Configuration Utility Starting....')
+print('Adapter Configuration Utility Starting....')
+time.sleep(3)
+
 confirm = input("WARNING! | This program resets your entire adapter config file. To continue, please type 'YES' otherwise press ENTER for exit >> ")
 if confirm == '':
     print('Configuration Utility Exiting, No settings have been changed')
@@ -68,8 +71,9 @@ def create_config():
 
     with open('adapterconfig.ini', 'w') as configfile:
         config.write(configfile)
-    
-    print('The config program has now finished. Please run the <INSERT PROGRAM NAME HERE> program')
+    time.sleep(3)
+    print('The adapter config program has now finished. Please run the <INSERT PROGRAM NAME HERE> program')
+    print('To configure your fixtures, run the fixturesetup.py program')
     print('If your settings change or there are any config related errors in <INSERT PROGRAM NAME HERE>, please re-run this program')
 
 if __name__ == "__main__":                                                                                    #This if statement only runs the program if it is manually ran.
