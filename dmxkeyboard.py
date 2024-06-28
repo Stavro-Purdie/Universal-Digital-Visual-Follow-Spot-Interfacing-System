@@ -1,7 +1,4 @@
 ## Property of Stavro Purdie, 2024
-import platform
-import os
-import sys
 import configparser
 from DMXEnttecPro import Controller
 
@@ -33,12 +30,14 @@ print(f'Adapter Data Rate: {adatspeed}')
 dmx = Controller(serialport, auto_submit=True, dmx_size=dmxchanmax)   #Now to run our setup code
 dmx.set_dmx_parameters(output_rate=adatspeed)
 
-flag = True
-while flag == True:
-    chanin = input('Input channel to change (ENTER to end) >> ')
-    if chanin == '':
-        print('Program Exiting... Goodbye')
-        quit()
-    dmxchan = int(chanin)
-    dmxval = int(input('Input DMX value >> '))
-    dmx.set_channel(dmxchan, dmxval)
+
+
+#flag = True
+#while flag == True:
+#    chanin = input('Input channel to change (ENTER to end) >> ')
+#    if chanin == '':
+#        print('Program Exiting... Goodbye')
+#        quit()
+#    dmxchan = int(chanin)
+#    dmxval = int(input('Input DMX value >> '))
+#    dmx.set_channel(dmxchan, dmxval)

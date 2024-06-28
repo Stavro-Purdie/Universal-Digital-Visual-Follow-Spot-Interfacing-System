@@ -5,6 +5,11 @@ import platform
 import os
 import sys
 
+print('DMX Subsystem Configuration Utility Starting....')
+confirm = input("WARNING! | This program resets your entire adapter config file. To continue, please type 'YES' otherwise press ENTER for exit >> ")
+if confirm == '':
+    print('Configuration Utility Exiting, No settings have been changed')
+    quit()
 
 def dmxchan():
     print('Heads Up!, This value affects how fast you can run your DMX adapter!')                                         
@@ -53,6 +58,7 @@ def dmxspeed(dmxchanmax):
         print(f'Speed manually set to {timingcontrol}Hz')
     return(timingcontrol)
 
+
 def create_config():
     dmxchanmax = dmxchan()
     config = configparser.ConfigParser()
@@ -60,11 +66,11 @@ def create_config():
                            'adapter_serial_port': serialport(), 
                             'adapter_speed': dmxspeed(dmxchanmax)}
 
-    with open('config.ini', 'w') as configfile:
+    with open('adapterconfig.ini', 'w') as configfile:
         config.write(configfile)
     
-    print('The config program has now finished. Please run the dmxtest.py program')
-    print('If your settings change or there are any config related errors in dmxtest.py, please re-run this program')
+    print('The config program has now finished. Please run the <INSERT PROGRAM NAME HERE> program')
+    print('If your settings change or there are any config related errors in <INSERT PROGRAM NAME HERE>, please re-run this program')
 
 if __name__ == "__main__":                                                                                    #This if statement only runs the program if it is manually ran.
     create_config()
