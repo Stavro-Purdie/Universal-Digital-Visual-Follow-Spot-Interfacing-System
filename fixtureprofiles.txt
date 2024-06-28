@@ -1,0 +1,32 @@
+{
+    "test": {
+        "movement": {
+            "pan": "2",
+            "pan_fine": "2",
+            "tilt": "2",
+            "tilt_fine": "2",
+            "pan_tilt_speed": "2"
+        },
+        "colour": {
+            "led": {
+                "cmy": {
+                    "cyan": "2",
+                    "magenta": "2",
+                    "yellow": "2"
+                }
+            },
+            "cto": "2"
+        },
+        "beam": {
+            "zoom": "2",
+            "focus": "2",
+            "frost": "2",
+            "static_gobo": "2",
+            "rotating_gobo": "2"
+        },
+        "dimmer": {
+            "dimmer": "2",
+            "dimmer_fine": "2"
+        }
+    }
+}
