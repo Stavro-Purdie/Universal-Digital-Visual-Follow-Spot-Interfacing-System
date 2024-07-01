@@ -3,17 +3,17 @@ import json
 
 confirm = input("WARNING! | This program resets your entire fixture config file. To continue, please type 'YES' otherwise press ENTER for exit >> ")
 if confirm == '':
-    print('Configuration Utility Exiting, No settings have been changed')
+    print('Fixture Profile First Time Configurator Exiting, No settings have been changed')
     quit()
 
 def fixturesetup():
     profiles = {}
-    print('FIXTURE PROFILE CONFIGURATION SETUP WIZARD')
-    print("Advice for the mislead. THIS PROGRAM IS ONLY FOR USE WITH MOVING SPOTS (not just any moving head or old bro's chinese PAR64)")
-    print('WARNING!')
-    fixturecount = input('Enter fixture count for DMX Universe 1 >> ')
+    print('FIXTURE PROFILE FIRST TIME CONFIGURATOR')
+    print("Advice for the misled. THIS PROGRAM IS ONLY FOR USE WITH MOVING SPOTS (not just any moving head or old bro's chinese PAR64)")
+
+    fixturecount = int(input('Enter how many fixture profiles you want to initially add to the system >> '))
     i = 1
-    for fixture in fixturecount:
+    for fixture in range(fixturecount):
         profilename = input(f"Enter name for fixture {i} of {fixturecount} with any whitespaces replaced with '-' >> ")
 
         print('Movement Parameter Config:\n')
@@ -64,15 +64,15 @@ def fixturesetup():
         print(f'Movment Parameters:\n Pan: {pan}\n Fine Pan: {panfine}\n Tilt: {tilt}\n Tilt Fine: {tiltfine}\n Movement Speed Adj: {ptspeed}')
         print(f'Colour Parameters:')
         if colsel == '1':
-            print(f'Colour Wheel: {colwhl}')
+            print(f' Colour Wheel: {colwhl}')
         if colsel == '2':
             print('LED Colour Channels:')
             if method == '1':
-                print(f'Red: {red}\n Green: {green}\n Blue{blue}')
+                print(f' Red: {red}\n Green: {green}\n Blue: {blue}')
             if method == '2':
-                print(f'Cyan: {cyan}\n Magenta: {magenta}\n Yellow: {yellow}')
+                print(f' Cyan: {cyan}\n Magenta: {magenta}\n Yellow: {yellow}')
         if ctosel == '2':
-            print(f'CTO: {cto}')
+            print(f' CTO: {cto}')
         print(f'Beam Parameters: \n Zoom: {zoom}\n Focus: {focus}\n Frost: {frost}\n Static Gobo: {staticgobo}\n Rotating Gobo (No rotate function): {rotgobo}\n')
         print(f'Dimmer Parameters: \n Dimmer: {dimmer} \n Fine Dimmer {dimmerfine}\n')
 
@@ -114,8 +114,10 @@ def fixturesetup():
         profiles[profilename]['dimmer']['dimmer'] = dimmer
         profiles[profilename]['dimmer']['dimmer_fine'] = dimmerfine
     
-    with open('fixtureprofiles.txt', 'w') as convert_file: 
+    with open('fixtureprofiles.json', 'w') as convert_file: 
         convert_file.write(json.dumps(profiles, indent=4))
 
 if __name__ == "__main__":
     fixturesetup()
+
+print('The Fixture Profile First Time Configurator has finished, to add more fixtures to the system in the future please run the addfixture.py program.')
