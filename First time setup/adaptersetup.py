@@ -65,16 +65,17 @@ def dmxspeed(dmxchanmax):
 def create_config():
     dmxchanmax = dmxchan()
     config = configparser.ConfigParser()
+    esthz = int(1000000 / (140 + (44 * dmxchanmax)))
     config['dmxconfig'] = {'dmx_channel_count': dmxchanmax, 
                            'adapter_serial_port': serialport(), 
-                            'adapter_speed': dmxspeed(dmxchanmax)}
-
+                            'user_adapter_speed': dmxspeed(dmxchanmax)}
+    config['data'] = {'max_dmx_adapter_speed:': esthz}
     with open('adapterconfig.ini', 'w') as configfile:
         config.write(configfile)
     time.sleep(3)
-    print('The adapter config program has now finished. Please run the <INSERT PROGRAM NAME HERE> program')
+    print('The adapter config program has now finished. Please run the dmxkeyboard.py program to run the program')
     print('To configure your fixtures, run the fixturesetup.py program')
-    print('If your settings change or there are any config related errors in <INSERT PROGRAM NAME HERE>, please re-run this program')
+    print('If your settings change or there are any config related errors in dmxkeyboard.py, please re-run this program')
 
 if __name__ == "__main__":                                                                                    #This if statement only runs the program if it is manually ran.
     create_config()
