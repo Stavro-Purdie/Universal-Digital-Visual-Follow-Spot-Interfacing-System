@@ -68,10 +68,12 @@ def create_config():
     esthz = int(1000000 / (140 + (44 * dmxchanmax)))
     config['dmxconfig'] = {'dmx_channel_count': dmxchanmax, 
                            'adapter_serial_port': serialport(), 
-                            'user_adapter_speed': dmxspeed(dmxchanmax)}
-    config['data'] = {'max_dmx_adapter_speed:': esthz}
+                            'user_adapter_speed': dmxspeed(dmxchanmax),
+                            'max_dmx_adapter_speed': esthz}
+    
     with open('adapterconfig.ini', 'w') as configfile:
         config.write(configfile)
+        
     time.sleep(3)
     print('The adapter config program has now finished. Please run the dmxkeyboard.py program to run the program')
     print('To configure your fixtures, run the fixturesetup.py program')
