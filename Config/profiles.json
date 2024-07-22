@@ -1,0 +1,27 @@
+{
+    "Roylite BSW350 17R": {
+        "movement": {
+            "pan": "1",
+            "pan_fine": "2",
+            "tilt": "3",
+            "tilt_fine": "4",
+            "pan_tilt_speed": "5"
+        },
+        "colour": {
+            "conventional": {
+                "colour_wheel": "16"
+            }
+        },
+        "beam": {
+            "zoom": "18",
+            "focus": "17",
+            "frost": "15",
+            "static_gobo": "12",
+            "rotating_gobo": "13"
+        },
+        "dimmer": {
+            "dimmer": "29",
+            "dimmer_fine": "30"
+        }
+    }
+}

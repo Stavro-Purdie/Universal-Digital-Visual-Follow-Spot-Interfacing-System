@@ -1,5 +1,6 @@
 ##Property of Stavro Purdie, 2024
 import json
+import os
 
 confirm = input("WARNING! | This program resets your entire fixture config file. To continue, please type 'YES' otherwise press ENTER for exit >> ")
 if confirm == '':
@@ -113,8 +114,10 @@ def fixturesetup():
         profiles[profilename]['dimmer'] = {}
         profiles[profilename]['dimmer']['dimmer'] = dimmer
         profiles[profilename]['dimmer']['dimmer_fine'] = dimmerfine
-    
-    with open('fixtureprofiles.json', 'w') as convert_file: 
+
+    path = 'Config'
+    os.chdir(path)
+    with open('profiles.json', 'w') as convert_file: 
         convert_file.write(json.dumps(profiles, indent=4))
 
 if __name__ == "__main__":

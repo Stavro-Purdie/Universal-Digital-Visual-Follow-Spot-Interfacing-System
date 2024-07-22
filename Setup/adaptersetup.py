@@ -6,6 +6,7 @@ import os
 import sys
 import time
 
+
 print('Adapter Configuration Utility Starting....')
 time.sleep(3)
 
@@ -41,7 +42,7 @@ def serialport():
 
     if opsys == 'Linux':
         import subprocess
-        command = "dmesg | grep tty"
+        command = "sudo dmesg | sudo grep tty"
         print('TTY Devices available are:')                                                                            #Find all Serial Devices by checking the kernal log
         output = subprocess.check_output(command, shell=True, text=True)                                               #This will output tty devices detected by kernel, in the order that they were detected and with a time stamp
         print(output)
@@ -63,6 +64,7 @@ def dmxspeed(dmxchanmax):
 
 
 def create_config():
+    opsys = platform.system()
     dmxchanmax = dmxchan()
     config = configparser.ConfigParser()
     esthz = int(1000000 / (140 + (44 * dmxchanmax)))
@@ -71,13 +73,24 @@ def create_config():
                             'user_adapter_speed': dmxspeed(dmxchanmax),
                             'max_dmx_adapter_speed': esthz}
     
-    with open('adapterconfig.ini', 'w') as configfile:
-        config.write(configfile)
+    if opsys == 'Windows':
+        os.chdir('..\\Config')
+        with open('adapterconfig.ini', 'w') as configfile:
+            config.write(configfile)
+
+    if opsys == 'Linux':
+        path = 'Config'
+        os.chdir(path)
+        with open('adapterconfig.ini', 'w') as configfile:
+            config.write(configfile)
+        
+    
+ 
         
     time.sleep(3)
     print('The adapter config program has now finished. Please run the dmxkeyboard.py program to run the program')
     print('To configure your fixtures, run the fixturesetup.py program')
     print('If your settings change or there are any config related errors in dmxkeyboard.py, please re-run this program')
 
-if __name__ == "__main__":                                                                                    #This if statement only runs the program if it is manually ran.
-    create_config()
+#if __name__ == "__main__":                                                                                    #This if statement only runs the program if it is manually ran.
+#    create_config()                            #COMMENTED OUT BECAUSE OF TESTING SCRIPT

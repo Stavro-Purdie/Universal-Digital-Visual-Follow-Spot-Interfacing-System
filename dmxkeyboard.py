@@ -5,9 +5,14 @@ import time
 import json
 from pynput.keyboard import Listener, Key
 from colorama import init, Fore, Style, Cursor, Back
+import os
+
 init(autoreset=True)
 
 def adapter_config():
+    path = 'Config'
+    os.chdir(path)
+
     config = configparser.ConfigParser()    #INIT section: create a configparser object & read file
     config.read('adapterconfig.ini') 
 
@@ -30,7 +35,6 @@ except:
     time.sleep(2)
     print(f'{Style.BRIGHT}To diagnose this issue please try these steps:')
     print(f'    [--] Make sure you have run the {Style.BRIGHT}adaptersetup.py{Style.RESET_ALL} program which sets this file up!')
-    print(f'    [--] Make sure you are running this program in the {Style.BRIGHT} SAME DIRECTORY as the config file (should be the main directory)')
     print(f'    [--] If the progrm is still not working, feel free to {Style.BRIGHT}create an issue in the github with a copy of the exception\n')
     time.sleep(5)
     print(f'{Fore.RED}The program will now exit as an unrecoverable exception has occured. {Style.BRIGHT}ALL DATA HAS BEEN SAVED')
@@ -50,7 +54,7 @@ else:
     print(f'{Style.BRIGHT + Fore.BLUE}    [??] User Defined Adapter Data Rate: {adatspeed}Hz (Not Recommended)\n')
 
 def load_profiles():
-    with open('fixtureprofiles.json', 'r') as profilesjson:         # Read JSON file
+    with open('profiles.json', 'r') as profilesjson:         # Read JSON file
         profiles = json.load(profilesjson)
     return(profiles)
 
@@ -59,7 +63,7 @@ time.sleep(5)
 try:
     profiles = load_profiles()
 except:
-    print(f"{Style.BRIGHT + Fore.RED}    [XX] File 'fixtureprofile.json' could not be opened!\n")
+    print(f"{Style.BRIGHT + Fore.RED}    [XX] File 'profiles.json' could not be opened!\n")
     time.sleep(2)
     print(f'{Style.BRIGHT}To diagnose this issue please try these steps:')
     print(f'    [--] Make sure you have run the {Style.BRIGHT}fixturelibrarysetup.py{Style.RESET_ALL} program which sets this file up!')
@@ -76,7 +80,7 @@ for profile, attribute in profiles.items():                         #Print Profi
     print(f'    [--] {profile}')
 print()
 
-procheck = input('Are these profiles listed correct? (Enter to proceed, CTRL-C to cancel) >> ')
+procheck = input('Are the profiles listed correct? (Enter to proceed, CTRL-C to cancel) >> ')
 if procheck == '':
     print(f'{Fore.BLUE + Style.BRIGHT}DMX Subsystem Starting...')
     time.sleep(3)
