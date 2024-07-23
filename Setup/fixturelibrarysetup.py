@@ -1,62 +1,74 @@
 ##Property of Stavro Purdie, 2024
 import json
 import os
+from colorama import init, Fore, Style, Cursor, Back
+import time
 
-confirm = input("WARNING! | This program resets your entire fixture config file. To continue, please type 'YES' otherwise press ENTER for exit >> ")
+init(autoreset=True)
+
+print(f'{Fore.BLUE + Style.BRIGHT}Adapter Configuration Utility Starting....\n \n')
+time.sleep(3)
+
+confirm = input(f"{Fore.RED + Style.BRIGHT}WARNING! | This program resets your entire fixture profile library. To continue, please type 'YES' otherwise press ENTER for exit >> \n \n")
 if confirm == '':
-    print('Fixture Profile First Time Configurator Exiting, No settings have been changed')
+    print(f'{Fore.GREEN}Fixture Profile First Time Configurator Exiting,{Style.BRIGHT} No settings have been changed')
     quit()
 
 def fixturesetup():
     profiles = {}
-    print('FIXTURE PROFILE FIRST TIME CONFIGURATOR')
-    print("Advice for the misled. THIS PROGRAM IS ONLY FOR USE WITH MOVING SPOTS (not just any moving head or old bro's chinese PAR64)")
+    print(f'{Style.BRIGHT}FIXTURE PROFILE FIRST TIME CONFIGURATOR')
+    print(f"{Fore.RED}Advice for the misled. THIS PROGRAM IS ONLY FOR USE WITH MOVING SPOTS (not just any moving head or old bro's chinese PAR64)\n")
+    time.sleep(2)
 
-    fixturecount = int(input('Enter how many fixture profiles you want to initially add to the system >> '))
+    fixturecount = int(input(f'{Fore.YELLOW}Enter how many fixture profiles you want to initially add to the system >> '))
+    print('')
     i = 1
     for fixture in range(fixturecount):
-        profilename = input(f"Enter name for fixture {i} of {fixturecount} with any whitespaces replaced with '-' >> ")
+        profilename = input(f"{Fore.YELLOW}Enter name for fixture {i} of {fixturecount} with any whitespaces replaced with '-' >> ")
+        print('')
 
-        print('Movement Parameter Config:\n')
+        print(f'{Fore.BLUE + Style.BRIGHT}Movement Parameter Config:')
         pan = input('Enter Pan Channel >> ')
         panfine = input('Enter Fine Pan Channel >> ')
         tilt = input('Enter Tilt Channel >> ')
         tiltfine = input('Enter Fine Tilt Channel >> ')
         ptspeed = input('Enter Pan Tilt Speed Channel >> ')
 
-        print('Colour Parameter Config:\n')
-        print(f"Does fixture {profilename} use a Color Wheel or have LED Colour Changing?")
+        print('')
+        print(f'{Fore.BLUE + Style.BRIGHT}Colour Parameter Config:')
+        print(f"{Style.BRIGHT}Does fixture {profilename} use a Color Wheel or have LED Colour Changing?")
         colsel = input("Enter '1' for Colour Wheel or '2' for LED Colour Changing >> ")
         if colsel == '1':
-            print('Colour Wheel Selected:')
+            print(f'{Fore.GREEN + Style.BRIGHT}Colour Wheel Selected:')
             colwhl = input('Enter Colour Wheel Channel >> ')
         if colsel == '2':
-            print('LED Colour Changing Selected:')
-            print(f'Does fixture {profilename} use RGB or CMY Colour Systems?')
+            print(f'{Fore.GREEN + Style.BRIGHT}LED Colour Changing Selected:')
+            print(f'{Style.BRIGHT}Does fixture {profilename} use RGB or CMY Colour Systems?')
             method = input("Enter '1' for RGB, '2' for CMY >> ")
             if method == '1':
-                print('RGB Selected')
+                print(f'{Fore.GREEN + Style.BRIGHT}RGB Selected')
                 red = input('Enter Red Channel >> ')
                 green = input('Enter Green Channel >> ')
                 blue = input('Enter Blue Channel >> ')
             if method == '2':
-                print('CMY Selected:')
+                print(f'{Fore.GREEN + Style.BRIGHT}CMY Selected:')
                 cyan = input('Enter Cyan Channel >> ')
                 magenta = input('Enter Magenta Channel >> ')
                 yellow = input('Enter Yellow Channel >>')
-        print('Does the fixture have CTO (Colour Temp) Control?')
+        print(f'{Style.BRIGHT}Does the fixture have CTO (Colour Temp) Control?')
         ctosel = input("Enter '1' for NO, '2' for YES >> ")
         if ctosel == '2':
+            print(f'{Fore.GREEN + Style.BRIGHT}CTO selected:')
             cto = input('Enter CTO Channel >> ')
         
-        print('Beam Parameter Config:\n')
+        print(f'{Fore.BLUE + Style.BRIGHT}Beam Parameter Config:\n')
         zoom = input('Enter Zoom Channel >> ')
         focus = input('Enter Focus Channel >> ')
         frost = input('Enter Frost Channel >> ')
         staticgobo = input('Enter Static Gobo Channel >> ')
         rotgobo = input('Enter Rotating Gobo Channel >> ')
 
-        print('Dimmer Parameter Config:\n')
+        print(f'{Fore.BLUE + Style.BRIGHT}Dimmer Parameter Config:\n')
         dimmer = input('Enter Dimmer Channel >> ')
         dimmerfine = input('Enter Fine Dimmer Channel >> ')
 
@@ -120,7 +132,6 @@ def fixturesetup():
     with open('profiles.json', 'w') as convert_file: 
         convert_file.write(json.dumps(profiles, indent=4))
 
-if __name__ == "__main__":
-    fixturesetup()
+fixturesetup()
 
-print('The Fixture Profile First Time Configurator has finished, to add more fixtures to the system in the future please run the addfixture.py program.')
+print(f'{Fore.GREEN, Style.BRIGHT}The Fixture Profile First Time Configurator has finished, to add more fixtures to the system in the future please run the addfixture.py program.')
