@@ -10,7 +10,8 @@ init(autoreset=True)
 print(f'{Fore.BLUE + Style.BRIGHT}Adapter Configuration Utility Starting....\n \n')
 time.sleep(3)
 
-confirm = input(f"{Fore.RED + Style.BRIGHT}WARNING! | This program resets your entire fixture profile library. To continue, please type 'YES' otherwise press ENTER for exit >> \n \n")
+confirm = input(f"{Fore.RED + Style.BRIGHT}WARNING! | This program resets your entire fixture profile library. To continue, please type 'YES' otherwise press ENTER for exit >> ")
+print('\n')
 if confirm == '':
     print(f'{Fore.GREEN}Fixture Profile First Time Configurator Exiting,{Style.BRIGHT} No settings have been changed')
     quit()

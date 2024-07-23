@@ -77,7 +77,7 @@ except:
     print(f'{Style.BRIGHT}To diagnose this issue please try these steps:')
     print(f'    [--] Make sure you have run the {Style.BRIGHT}fixturelibrarysetup.py{Style.RESET_ALL} program which sets this file up!')
     print(f'    [--] Make sure you are running this program in the {Style.BRIGHT} SAME DIRECTORY as the config file (should be the main directory)')
-    print(f'    [--] If the progrm is still not working, feel free to {Style.BRIGHT}create an issue in the github with a copy of the exception\n')
+    print(f'    [--] If the program is still not working, feel free to {Style.BRIGHT}create an issue in the github with a copy of the exception\n')
     time.sleep(5)
     print(f'{Fore.RED}The program will now exit as an unrecoverable exception has occured. {Style.BRIGHT}ALL DATA HAS BEEN SAVED')
     quit()
@@ -96,33 +96,60 @@ if procheck == '':
 
 print(f'{Fore.BLUE + Style.BRIGHT}Please select how many of each fixture you would like to initially start with:')
 
-patchdata = {}
-channels_used = []
+patchdata = {}                                                                                                          ## Init Patchdata Dict, This stores the patch info
+channels_used = []                                                                                                      ## Init list to store channel values for how many channels have been used
 
 for profile, attributes in profiles.items():
     profilechancount = int(profiles[profile]['channel_count'])
-    print(f'{Style.BRIGHT}    [--] {profile} | {Back.BLUE}Takes up {profilechancount} DMX Channels per fixture')
+    print(f'{Style.BRIGHT}    [--] {profile} | {Back.BLUE}<<< Takes up {profilechancount} DMX Channels per fixture >>>')       ## This loop prints to the user the fixtures in the library and how many channels they each take up
 print('')
 
 for profile, attributes in profiles.items():
     for profile, attributes in patchdata.items():
-        fixchanused = int(patchdata[profile][fixturename]['channels_used'])
+        fixchanused = int(patchdata[profile][fixturename]['channels_used'])                                             ## This loops through the profiles and patchdata info to append how many channels have been used to a list
         channels_used.append(fixchanused)
-    print(f'{Back.BLUE + Style.BRIGHT}<<< You currently have {dmxchanmax - sum(channels_used)} Channels Available >>>')
+    print(f'{Back.BLUE + Style.BRIGHT}<<< You currently have {dmxchanmax - sum(channels_used)} Channels Available >>>')  ## This is then presented to the user as how many channels are left over (max dmx chan (from adapter) - sum of list)
 
     profilechancount = int(profiles[profile]['channel_count'])
-    count = int(input(f'{Style.BRIGHT}How many of fixture {profile} would you like to add? >> '))
+    count = int(input(f'{Style.BRIGHT}How many of fixture {profile} would you like to add? >> '))                           ## Config questions like how many of var fixture to add
     print(f'{Fore.GREEN + Style.BRIGHT}Adding {count} fixtures of make {profile} to the system...')
+    print('')
     print(f'{Back.BLUE + Style.BRIGHT}<<< Adding {count} of Fixture {profile} will take up {profilechancount * count} DMX Channels >>>')
-    print(f'{Back.BLUE + Style.BRIGHT}<<< You will have {(dmxchanmax - sum(channels_used)) - (profilechancount * count)} DMX Channels left after this operation')
+    print(f'{Back.BLUE + Style.BRIGHT}<<< You will have {(dmxchanmax - sum(channels_used)) - (profilechancount * count)} DMX Channels left after this operation >>>')   ## Inform the user about how many DMX channels this will take up, aswell as how many would be left after the operation
     time.sleep(2)
 
     for i in range(count):
-        fixturename = input(f'{Style.BRIGHT}What should fixture {i+1} of {count} be named eg SPOT1 >> ')
+        print('')
+        fixturename = input(f'{Style.BRIGHT}What should fixture {i+1} of {count} be named eg SPOT1 >> ')                ## More config questions
         startingchan = input(f'{Style.BRIGHT}What channel should fixture {i+1} of {count} start on? >> ')
         patchdata[profile] = {}
-        patchdata[profile][fixturename] = {}
+        patchdata[profile][fixturename] = {}                                                                            ## Save to Dictionary
         patchdata[profile][fixturename]['starting_channel'] = startingchan
         patchdata[profile][fixturename]['channels_used'] = profilechancount
-        
-    
+
+print('')
+
+print(f'{Fore.BLUE + Style.BRIGHT}The DMX Virtual Patch Configuration Wizard has finished')
+print(f'{Back.GREEN + Style.BRIGHT}SAVING TO PATCHDATA.JSON... PLEASE WAIT')
+
+try:
+    path = '../Config'
+    os.chdir(path)
+    with open('patchdata.json', 'w') as convert_file: 
+        convert_file.write(json.dumps(patchdata, indent=4))
+except:
+    print(f"{Back.RED + Style.BRIGHT}   [XX] UNABLE TO SAVE CONFIG FILE")
+    time.sleep(4)
+    print(f"{Style.BRIGHT}To diagnose this issue please try these steps:")
+    print(f"    [--] Please ensure you are running this script through the {Style.BRIGHT}'setup.py' program in the home directory")
+    print(f"    [--] Check that the Config directory exists in the home directory of the program. If it doesen't, please reinstall the program.")
+    time.sleep(5)
+    print(f'{Fore.RED}The program will now exit as an unrecoverable exception has occured. {Style.BRIGHT}ALL DATA HAS BEEN SAVED')
+    quit()
+
+time.sleep(4)
+print(f'{Back.GREEN + Style.BRIGHT}<<< CONFIG HAS BEEN SAVED >>>\n')
+time.sleep(2)
+print(f"{Fore.BLUE + Style.BRIGHT}To change the patch data, please navigate to the home directory and run 'dmxpatchedit.py'\n")
+print(f'{Fore.CYAN}The Program will now exit....')
+quit()

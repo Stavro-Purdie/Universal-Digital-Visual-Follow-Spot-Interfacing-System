@@ -15,7 +15,6 @@ try:
     print(f'{Fore.GREEN + Style.BRIGHT}Adapter Configurator Started')
     subprocess.call('sudo python3 Setup/adaptersetup.py', shell=True)
 
-
 except:
     print(f'{Fore.RED + Style.BRIGHT}[XX] SCRIPT ERROR HAS OCCURRED\n')
     time.sleep(2)
