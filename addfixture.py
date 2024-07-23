@@ -19,7 +19,8 @@ def fixturesetup():
     i = 1
     for fixture in range(fixturecount):
         profilename = input(f"{Fore.YELLOW + Style.BRIGHT}Enter name for fixture {i} of {fixturecount} with any whitespaces replaced with '-' >> ")
-        
+        chancount = input(f'{Fore.YELLOW + Style.BRIGHT}Enter how many channels fixture {profilename} uses eg 30 >> ')
+
         print('')
         print(f'{Fore.BLUE + Style.BRIGHT}Movement Parameter Config:')
         pan = input('Enter Pan Channel >> ')
@@ -70,6 +71,7 @@ def fixturesetup():
 
 
         print(f'{Fore.BLUE + Style.BRIGHT}Settings Entered for fixture {profilename}:')
+        print(f'{Style.BRIGHT}Channel Count:{Style.RESET_ALL} {chancount} Channels')
         print(f'{Style.BRIGHT}Movment Parameters:{Style.RESET_ALL}\n Pan: {pan}\n Fine Pan: {panfine}\n Tilt: {tilt}\n Tilt Fine: {tiltfine}\n Movement Speed Adj: {ptspeed}')
         print(f'{Style.BRIGHT}Colour Parameters:')
         if colsel == '1':
@@ -86,6 +88,7 @@ def fixturesetup():
         print(f'{Style.BRIGHT}Dimmer Parameters:{Style.RESET_ALL} \n Dimmer: {dimmer} \n Fine Dimmer {dimmerfine}\n')
 
         profiles[profilename] = {}
+        profiles[profilename]['channel_count'] = chancount
         profiles[profilename]['movement'] = {}
         profiles[profilename]['movement']['pan'] = pan
         profiles[profilename]['movement']['pan_fine'] = panfine

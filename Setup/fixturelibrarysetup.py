@@ -76,6 +76,7 @@ def fixturesetup():
 
 
         print(f'{Fore.BLUE + Style.BRIGHT}Settings Entered for fixture {profilename}:')
+        print(f'{Style.BRIGHT}Channel Count:{Style.RESET_ALL} {chancount} Channels')
         print(f'{Style.BRIGHT}Movment Parameters:{Style.RESET_ALL}\n Pan: {pan}\n Fine Pan: {panfine}\n Tilt: {tilt}\n Tilt Fine: {tiltfine}\n Movement Speed Adj: {ptspeed}')
         print(f'{Style.BRIGHT}Colour Parameters:')
         if colsel == '1':

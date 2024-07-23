@@ -94,20 +94,35 @@ if procheck == '':
     print(f'{Fore.BLUE + Style.BRIGHT}DMX Virtual Patch Configuraton Wizard Starting....\n')
     time.sleep(3)
 
-print(f'{Back.BLUE + Style.BRIGHT}<<< You have {dmxchanmax} Channels available >>>')
 print(f'{Fore.BLUE + Style.BRIGHT}Please select how many of each fixture you would like to initially start with:')
-fixturecount = {}
-fixturename = ''
-count = 0
-for profile, attribute in profiles.items():
-    print(f'{Style.BRIGHT}    [--] {profile}')
+
+patchdata = {}
+channels_used = []
+
+for profile, attributes in profiles.items():
+    profilechancount = int(profiles[profile]['channel_count'])
+    print(f'{Style.BRIGHT}    [--] {profile} | {Back.BLUE}Takes up {profilechancount} DMX Channels per fixture')
+print('')
+
+for profile, attributes in profiles.items():
+    for profile, attributes in patchdata.items():
+        fixchanused = int(patchdata[profile][fixturename]['channels_used'])
+        channels_used.append(fixchanused)
+    print(f'{Back.BLUE + Style.BRIGHT}<<< You currently have {dmxchanmax - sum(channels_used)} Channels Available >>>')
+
+    profilechancount = int(profiles[profile]['channel_count'])
     count = int(input(f'{Style.BRIGHT}How many of fixture {profile} would you like to add? >> '))
     print(f'{Fore.GREEN + Style.BRIGHT}Adding {count} fixtures of make {profile} to the system...')
+    print(f'{Back.BLUE + Style.BRIGHT}<<< Adding {count} of Fixture {profile} will take up {profilechancount * count} DMX Channels >>>')
+    print(f'{Back.BLUE + Style.BRIGHT}<<< You will have {(dmxchanmax - sum(channels_used)) - (profilechancount * count)} DMX Channels left after this operation')
     time.sleep(2)
 
     for i in range(count):
-        fixturename = input(f'{Style.BRIGHT}What should fixture {i} of {count} be named eg SPOT1 >> ')
-        startingchan = input(f'{Style.BRIGHT}What channel should fixture {i} of {count} start on? >> ')
+        fixturename = input(f'{Style.BRIGHT}What should fixture {i+1} of {count} be named eg SPOT1 >> ')
+        startingchan = input(f'{Style.BRIGHT}What channel should fixture {i+1} of {count} start on? >> ')
+        patchdata[profile] = {}
+        patchdata[profile][fixturename] = {}
+        patchdata[profile][fixturename]['starting_channel'] = startingchan
+        patchdata[profile][fixturename]['channels_used'] = profilechancount
         
-
-
+    
