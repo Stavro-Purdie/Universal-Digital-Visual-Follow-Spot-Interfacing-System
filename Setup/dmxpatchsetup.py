@@ -129,8 +129,8 @@ for profile, attributes in profiles.items():
 
 print('')
 
-print(f'{Fore.BLUE + Style.BRIGHT}The DMX Virtual Patch Configuration Wizard has finished')
-print(f'{Back.GREEN + Style.BRIGHT}SAVING TO PATCHDATA.JSON... PLEASE WAIT')
+print(f'{Fore.BLUE + Style.BRIGHT}The DMX Virtual Patch Configuration Wizard has finished\n')
+print(f'{Back.BLUE + Style.BRIGHT}<<< SAVING TO PATCHDATA.JSON... PLEASE WAIT >>>')
 
 try:
     path = '../Config'
