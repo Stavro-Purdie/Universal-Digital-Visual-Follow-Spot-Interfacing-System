@@ -1,5 +1,6 @@
 {
     "Roylite BSW350 17R": {
+        "channel_count": "30",
         "movement": {
             "pan": "1",
             "pan_fine": "2",
@@ -9,15 +10,15 @@
         },
         "colour": {
             "conventional": {
-                "colour_wheel": "16"
+                "colour_wheel": "19"
             }
         },
         "beam": {
             "zoom": "18",
             "focus": "17",
-            "frost": "15",
-            "static_gobo": "12",
-            "rotating_gobo": "13"
+            "frost": "16",
+            "static_gobo": "15",
+            "rotating_gobo": "14"
         },
         "dimmer": {
             "dimmer": "29",

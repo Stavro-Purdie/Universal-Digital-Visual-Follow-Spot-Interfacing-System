@@ -11,7 +11,8 @@ init(autoreset=True)
 print(f'{Fore.BLUE + Style.BRIGHT}Adapter Configuration Utility Starting....\n \n')
 time.sleep(3)
 
-confirm = input(f"{Fore.RED + Style.BRIGHT}WARNING! | This program resets your entire adapter config file. To continue, please type 'YES' otherwise press ENTER for exit >> \n \n")
+confirm = input(f"{Fore.RED + Style.BRIGHT}WARNING! | This program resets your entire adapter config file. To continue, please type 'YES' otherwise press ENTER for exit >> ")
+print('\n')
 if confirm == '':
     print(f'{Fore.GREEN}Configuration Utility Exiting, {Style.BRIGHT}No settings have been changed')
     quit()
@@ -25,7 +26,7 @@ def dmxchan():
         print(f'{Fore.GREEN + Style.BRIGHT}Default channel count of 512 used\n')                                                                                      
     else:
         dmxchanmax = int(inchanmax)                                                                                   #Else input user value
-        print(f'{Fore.BLUE + Style.BRIGHT}Channel count manually set to {dmxchanmax}\n')                                                                                               
+        print(f'{Fore.GREEN + Style.BRIGHT}Channel count manually set to {dmxchanmax}\n')                                                                                               
     return(dmxchanmax)
 
 def serialport():
@@ -88,7 +89,7 @@ def create_config():
             config.write(configfile)
          
     time.sleep(3)
-    print(f'{Fore.GREEN + Style.BRIGHT}The adapter config program has now finished.')
+    print(f'{Fore.GREEN + Style.BRIGHT}The adapter config program has now finished.\n')
     print(f'{Fore.BLUE + Style.BRIGHT}If your settings change or there are any config related errors in dmxkeyboard.py, please re-run this program\n')
                           
 create_config()
