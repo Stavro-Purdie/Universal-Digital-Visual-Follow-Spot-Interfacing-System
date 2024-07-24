@@ -113,8 +113,22 @@ print(f'{Fore.GREEN + Style.BRIGHT}DMX Patch Values Loaded...')
 print(f'{Fore.BLUE + Style.BRIGHT}DMX Virtual Patch Configuration Wizard Starting....')
 
 channels_used = []
+for profilename, attribute1 in profiles.items():
+    for profile, attribute2 in patchdata.items():
+        for fixturename, attribute3 in patchdata[profilename].items():
+            channels_used.append(patchdata[profilename][fixturename]['channels_used'])
+print(f'{Back.BLUE + Style.BRIGHT}<<< You currently have {dmxchanmax - sum(channels_used)} Channels Available of {dmxchanmax} >>>')
+
+print(f'\n {Fore.BLUE + Style.BRIGHT}Fixture Profiles in Library:')
 for profile, attributes in profiles.items():
-    for profile, attributes in patchdata.items():
-        fixchanused = int(patchdata[profile][fixturename]['channels_used'])                                             ## This loops through the profiles and patchdata info to append how many channels have been used to a list
-        channels_used.append(fixchanused)
-    print(f'{Back.BLUE + Style.BRIGHT}<<< You currently have {dmxchanmax - sum(channels_used)} Channels Available >>>')
+    profilechancount = int(profiles[profile]['channel_count'])
+    print(f'{Style.BRIGHT}      [--] {profile} | {Back.BLUE}<<< Takes up {profilechancount} DMX Channels per fixture >>>')       ## This loop prints to the user the fixtures in the library and how many channels they each take up
+print('')
+
+print(f'\n {Fore.BLUE + Style.BRIGHT}Breakdown of Patched Fixtures:')
+for profilename, attribute1 in profiles.items():
+    print(f'      [--] {profilename} has {len(patchdata[profilename])} fixtures patched')
+    for profile, attribute2 in patchdata.items():
+        for fixturename, attribute3 in patchdata[profilename].items():
+            profilename = list(patchdata[profilename].keys())
+            print(f'        [->]', str(profilename).strip("['']"), 'Starts on channel {patchdata[profilename][fixturename]["starting_channel"]}')
