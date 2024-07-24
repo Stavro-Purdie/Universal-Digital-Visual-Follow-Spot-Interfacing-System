@@ -87,3 +87,34 @@ if procheck == '':
     print(f'{Fore.BLUE + Style.BRIGHT}DMX Virtual Patch Configuraton Wizard Starting....\n')
     time.sleep(3)
 
+def load_patch():
+    with open('patchdata.json', 'r') as patchdata:
+        patch = json.load(patchdata)
+    return(patch)
+
+
+print(f'{Fore.BLUE + Style.BRIGHT}Loading DMX Patch Values...')
+time.sleep(5)
+try:
+    patchdata = load_patch()
+except:
+    print(f"{Style.BRIGHT + Fore.RED}    [XX] File 'patchdata.json' could not be opened!\n")                                                                 ## If function fails, run this code....
+    time.sleep(2)
+    print(f'{Style.BRIGHT}To diagnose this issue please try these steps:')
+    print(f'    [--] Make sure you have run the {Style.BRIGHT}dmxpatchsetup.py{Style.RESET_ALL} program which sets this file up!')
+    print(f'    [--] Make sure you are running this program in the {Style.BRIGHT} HOME DIRECTORY)')
+    print(f'    [--] If the program is still not working, feel free to {Style.BRIGHT}create an issue in the github with a copy of the exception\n')
+    time.sleep(5)
+    print(f'{Fore.RED}The program will now exit as an unrecoverable exception has occured. {Style.BRIGHT}ALL DATA HAS BEEN SAVED')
+    quit()
+
+time.sleep(5)
+print(f'{Fore.GREEN + Style.BRIGHT}DMX Patch Values Loaded...')
+print(f'{Fore.BLUE + Style.BRIGHT}DMX Virtual Patch Configuration Wizard Starting....')
+
+channels_used = []
+for profile, attributes in profiles.items():
+    for profile, attributes in patchdata.items():
+        fixchanused = int(patchdata[profile][fixturename]['channels_used'])                                             ## This loops through the profiles and patchdata info to append how many channels have been used to a list
+        channels_used.append(fixchanused)
+    print(f'{Back.BLUE + Style.BRIGHT}<<< You currently have {dmxchanmax - sum(channels_used)} Channels Available >>>')
