@@ -102,12 +102,16 @@ channels_used = []                                                              
 for profile, attributes in profiles.items():
     profilechancount = int(profiles[profile]['channel_count'])
     print(f'{Style.BRIGHT}    [--] {profile} | {Back.BLUE}<<< Takes up {profilechancount} DMX Channels per fixture >>>')       ## This loop prints to the user the fixtures in the library and how many channels they each take up
+    patchdata[profile] = {}
 print('')
 
 for profile, attributes in profiles.items():
     for profile, attributes in patchdata.items():
-        fixchanused = int(patchdata[profile][fixturename]['channels_used'])                                             ## This loops through the profiles and patchdata info to append how many channels have been used to a list
-        channels_used.append(fixchanused)
+        try:
+            fixchanused = int(patchdata[profile][fixturename]['channels_used'])                                             ## This loops through the profiles and patchdata info to append how many channels have been used to a list
+            channels_used.append(fixchanused)
+        except:
+            print(f'{Fore.RED + Style.BRIGHT}No Lights Configured Yet....')
     print(f'{Back.BLUE + Style.BRIGHT}<<< You currently have {dmxchanmax - sum(channels_used)} Channels Available >>>')  ## This is then presented to the user as how many channels are left over (max dmx chan (from adapter) - sum of list)
 
     profilechancount = int(profiles[profile]['channel_count'])
@@ -122,8 +126,7 @@ for profile, attributes in profiles.items():
         print('')
         fixturename = input(f'{Style.BRIGHT}What should fixture {i+1} of {count} be named eg SPOT1 >> ')                ## More config questions
         startingchan = input(f'{Style.BRIGHT}What channel should fixture {i+1} of {count} start on? >> ')
-        patchdata[profile] = {}
-        patchdata[profile][fixturename] = {}                                                                            ## Save to Dictionary
+        patchdata[profile][fixturename] = {}                                                                           ## Save to Dictionary
         patchdata[profile][fixturename]['starting_channel'] = startingchan
         patchdata[profile][fixturename]['channels_used'] = profilechancount
 
@@ -148,7 +151,8 @@ except:
     quit()
 
 time.sleep(4)
-print(f'{Back.GREEN + Style.BRIGHT}<<< CONFIG HAS BEEN SAVED >>>\n')
+print(f'{Back.GREEN + Style.BRIGHT}<<< CONFIG HAS BEEN SAVED >>>')
+print('')
 time.sleep(2)
 print(f"{Fore.BLUE + Style.BRIGHT}To change the patch data, please navigate to the home directory and run 'dmxpatchedit.py'\n")
 print(f'{Fore.CYAN}The Program will now exit....')

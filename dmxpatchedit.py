@@ -87,7 +87,7 @@ if procheck == '':
     print(f'{Fore.BLUE + Style.BRIGHT}DMX Virtual Patch Configuraton Wizard Starting....\n')
     time.sleep(3)
 
-def load_patch():
+def load_patch():                                                                                   ## Load Patch Data
     with open('patchdata.json', 'r') as patchdata:
         patch = json.load(patchdata)
     return(patch)
@@ -112,7 +112,7 @@ time.sleep(5)
 print(f'{Fore.GREEN + Style.BRIGHT}DMX Patch Values Loaded...')
 print(f'{Fore.BLUE + Style.BRIGHT}DMX Virtual Patch Configuration Wizard Starting....')
 
-channels_used = []
+channels_used = []          ## Init channels_used list
 for profilename, attribute1 in profiles.items():
     for profile, attribute2 in patchdata.items():
         for fixturename, attribute3 in patchdata[profilename].items():
@@ -127,8 +127,55 @@ print('')
 
 print(f'\n {Fore.BLUE + Style.BRIGHT}Breakdown of Patched Fixtures:')
 for profilename, attribute1 in profiles.items():
-    print(f'      [--] {profilename} has {len(patchdata[profilename])} fixtures patched')
+    print(f'{Style.BRIGHT}      [--] {profilename} has {len(patchdata[profilename])} fixtures patched')
     for profile, attribute2 in patchdata.items():
         for fixturename, attribute3 in patchdata[profilename].items():
-            profilename = list(patchdata[profilename].keys())
-            print(f'        [->]', str(profilename).strip("['']"), 'Starts on channel {patchdata[profilename][fixturename]["starting_channel"]}')
+            startingchannel = patchdata[profilename][fixturename]['starting_channel']
+        fixturename = list(patchdata[profilename].keys())
+        for fixname in fixturename:
+            print(f'{Style.BRIGHT}        [->]', str(fixname).strip("['']"), f'Starts on channel {startingchannel}')
+
+for profile, attributes in profiles.items():
+    profilechancount = int(profiles[profile]['channel_count'])
+    count = int(input(f'{Style.BRIGHT}How many of fixture {profile} would you like to add? >> '))                           ## Config questions like how many of var fixture to add
+    print(f'{Fore.GREEN + Style.BRIGHT}Adding {count} fixtures of make {profile} to the system...')
+    print('')
+    print(f'{Back.BLUE + Style.BRIGHT}<<< Adding {count} of Fixture {profile} will take up {profilechancount * count} DMX Channels >>>')
+    print(f'{Back.BLUE + Style.BRIGHT}<<< You will have {(dmxchanmax - sum(channels_used)) - (profilechancount * count)} DMX Channels left after this operation >>>')   ## Inform the user about how many DMX channels this will take up, aswell as how many would be left after the operation
+    time.sleep(2)
+
+    for i in range(count):
+        print('')
+        fixturename = input(f'{Style.BRIGHT}What should fixture {i+1} of {count} be named eg SPOT1 >> ')                ## More config questions
+        startingchan = input(f'{Style.BRIGHT}What channel should fixture {i+1} of {count} start on? >> ')
+        patchdata[profile][fixturename] = {}                                                                            ## Save to Dictionary
+        patchdata[profile][fixturename]['starting_channel'] = startingchan
+        patchdata[profile][fixturename]['channels_used'] = profilechancount
+        
+print('')
+
+print(f'{Fore.BLUE + Style.BRIGHT}The DMX Virtual Patch Configuration Wizard has finished\n')
+print(f'{Back.BLUE + Style.BRIGHT}<<< SAVING TO PATCHDATA.JSON... PLEASE WAIT >>>')
+
+try:
+    path = '../Config'
+    os.chdir(path)
+    with open('patchdata.json', 'w') as convert_file: 
+        convert_file.write(json.dumps(patchdata, indent=4))
+except:
+    print(f"{Back.RED + Style.BRIGHT}   [XX] UNABLE TO SAVE CONFIG FILE")
+    time.sleep(4)
+    print(f"{Style.BRIGHT}To diagnose this issue please try these steps:")
+    print(f"    [--] Please ensure you are running this script through the {Style.BRIGHT}'setup.py' program in the home directory")
+    print(f"    [--] Check that the Config directory exists in the home directory of the program. If it doesen't, please reinstall the program.")
+    time.sleep(5)
+    print(f'{Fore.RED}The program will now exit as an unrecoverable exception has occured. {Style.BRIGHT}ALL DATA HAS BEEN SAVED')
+    quit()
+
+time.sleep(4)
+print(f'{Back.GREEN + Style.BRIGHT}<<< CONFIG HAS BEEN SAVED >>>')
+print('')
+time.sleep(2)
+print(f"{Fore.BLUE + Style.BRIGHT}To change the patch data, please navigate to the home directory and run 'dmxpatchedit.py'\n")
+print(f'{Fore.CYAN}The Program will now exit....')
+quit()
