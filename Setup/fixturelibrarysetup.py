@@ -7,7 +7,7 @@ import time
 
 init(autoreset=True)
 
-print(f'{Fore.BLUE + Style.BRIGHT}Adapter Configuration Utility Starting....\n \n')
+print(f'{Fore.BLUE + Style.BRIGHT}Fixture Configuration Utility Starting....\n \n')
 time.sleep(3)
 
 confirm = input(f"{Fore.RED + Style.BRIGHT}WARNING! | This program resets your entire fixture profile library. To continue, please type 'YES' otherwise press ENTER for exit >> ")
@@ -27,7 +27,7 @@ def fixturesetup():
     i = 1
     for fixture in range(fixturecount):
         profilename = input(f"{Fore.YELLOW + Style.BRIGHT}Enter name for fixture {i} of {fixturecount} with any whitespaces replaced with '-' >> ")
-        chancount = input(f'{Fore.YELLOW + Style.BRIGHT}Enter how many channels fixture {profilename} uses eg 30 >> ')
+        chancount = input(f'{Fore.YELLOW + Style.BRIGHT}How many channels does fixture {profilename} use eg 30 >> ')
         print('')
 
         print(f'{Fore.BLUE + Style.BRIGHT}Movement Parameter Config:')

@@ -125,15 +125,16 @@ for profile, attributes in profiles.items():
     print(f'{Style.BRIGHT}      [--] {profile} | {Back.BLUE}<<< Takes up {profilechancount} DMX Channels per fixture >>>')       ## This loop prints to the user the fixtures in the library and how many channels they each take up
 print('')
 
+
 print(f'\n {Fore.BLUE + Style.BRIGHT}Breakdown of Patched Fixtures:')
 for profilename, attribute1 in profiles.items():
     print(f'{Style.BRIGHT}      [--] {profilename} has {len(patchdata[profilename])} fixtures patched')
     for profile, attribute2 in patchdata.items():
-        for fixturename, attribute3 in patchdata[profilename].items():
-            startingchannel = patchdata[profilename][fixturename]['starting_channel']
         fixturename = list(patchdata[profilename].keys())
-        for fixname in fixturename:
-            print(f'{Style.BRIGHT}        [->]', str(fixname).strip("['']"), f'Starts on channel {startingchannel}')
+    startingchannel = {}
+    for fixname in fixturename:
+        startingchannel[fixname] = patchdata[profilename][fixname]['starting_channel']
+        print(f'{Style.BRIGHT}        [->]', str(fixname).strip("['']"), f'Starts on channel {startingchannel[fixname]}')
 
 for profile, attributes in profiles.items():
     profilechancount = int(profiles[profile]['channel_count'])

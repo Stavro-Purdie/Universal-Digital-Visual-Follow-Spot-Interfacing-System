@@ -1,5 +1,5 @@
 {
-    "Roylite BSW350 17R": {
+    "Roylite 17R BSW350": {
         "channel_count": "30",
         "movement": {
             "pan": "1",
@@ -10,19 +10,40 @@
         },
         "colour": {
             "conventional": {
-                "colour_wheel": "19"
+                "colour_wheel": "12"
             }
         },
         "beam": {
-            "zoom": "18",
-            "focus": "17",
-            "frost": "16",
-            "static_gobo": "15",
-            "rotating_gobo": "14"
+            "zoom": "17",
+            "focus": "16",
+            "frost": "15",
+            "static_gobo": "14",
+            "rotating_gobo": "13"
         },
         "dimmer": {
             "dimmer": "29",
             "dimmer_fine": "30"
+        }
+    },
+    "TEST": {
+        "channel_count": "5",
+        "movement": {
+            "pan": "1",
+            "pan_fine": "2",
+            "tilt": "3",
+            "tilt_fine": "4",
+            "pan_tilt_speed": "5"
+        },
+        "beam": {
+            "zoom": "1",
+            "focus": "2",
+            "frost": "3",
+            "static_gobo": "4",
+            "rotating_gobo": "5"
+        },
+        "dimmer": {
+            "dimmer": "1",
+            "dimmer_fine": "2"
         }
     }
 }

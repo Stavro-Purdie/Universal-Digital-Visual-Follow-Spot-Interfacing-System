@@ -96,22 +96,15 @@ if procheck == '':
 
 print(f'{Fore.BLUE + Style.BRIGHT}Please select how many of each fixture you would like to initially start with:')
 
-patchdata = {}                                                                                                          ## Init Patchdata Dict, This stores the patch info
-channels_used = []                                                                                                      ## Init list to store channel values for how many channels have been used
-
+patchdata = {}                                                                                                          ## Init Patchdata Dict, This stores the patch info                                                                                                      ## Init list to store channel values for how many channels have been used
 for profile, attributes in profiles.items():
     profilechancount = int(profiles[profile]['channel_count'])
     print(f'{Style.BRIGHT}    [--] {profile} | {Back.BLUE}<<< Takes up {profilechancount} DMX Channels per fixture >>>')       ## This loop prints to the user the fixtures in the library and how many channels they each take up
     patchdata[profile] = {}
 print('')
 
-for profile, attributes in profiles.items():
-    for profile, attributes in patchdata.items():
-        try:
-            fixchanused = int(patchdata[profile][fixturename]['channels_used'])                                             ## This loops through the profiles and patchdata info to append how many channels have been used to a list
-            channels_used.append(fixchanused)
-        except:
-            print(f'{Fore.RED + Style.BRIGHT}No Lights Configured Yet....')
+channels_used = []
+for profile in profiles:
     print(f'{Back.BLUE + Style.BRIGHT}<<< You currently have {dmxchanmax - sum(channels_used)} Channels Available >>>')  ## This is then presented to the user as how many channels are left over (max dmx chan (from adapter) - sum of list)
 
     profilechancount = int(profiles[profile]['channel_count'])
@@ -119,7 +112,8 @@ for profile, attributes in profiles.items():
     print(f'{Fore.GREEN + Style.BRIGHT}Adding {count} fixtures of make {profile} to the system...')
     print('')
     print(f'{Back.BLUE + Style.BRIGHT}<<< Adding {count} of Fixture {profile} will take up {profilechancount * count} DMX Channels >>>')
-    print(f'{Back.BLUE + Style.BRIGHT}<<< You will have {(dmxchanmax - sum(channels_used)) - (profilechancount * count)} DMX Channels left after this operation >>>')   ## Inform the user about how many DMX channels this will take up, aswell as how many would be left after the operation
+    channels_used.append(profilechancount * count)
+    print(f'{Back.BLUE + Style.BRIGHT}<<< You will have {(dmxchanmax - sum(channels_used))} DMX Channels left after this operation >>>')   ## Inform the user about how many DMX channels this will take up, aswell as how many would be left after the operation
     time.sleep(2)
 
     for i in range(count):
@@ -154,6 +148,7 @@ time.sleep(4)
 print(f'{Back.GREEN + Style.BRIGHT}<<< CONFIG HAS BEEN SAVED >>>')
 print('')
 time.sleep(2)
+print(f"{Fore.BLUE + Style.BRIGHT}If another fixture profile is added and you need to delete patch data, please rerun this program")
 print(f"{Fore.BLUE + Style.BRIGHT}To change the patch data, please navigate to the home directory and run 'dmxpatchedit.py'\n")
 print(f'{Fore.CYAN}The Program will now exit....')
 quit()
