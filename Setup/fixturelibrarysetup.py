@@ -7,6 +7,7 @@ import time
 
 init(autoreset=True)
 
+## Ask the user stuff
 print(f'{Fore.BLUE + Style.BRIGHT}Fixture Configuration Utility Starting....\n \n')
 time.sleep(3)
 
@@ -16,20 +17,25 @@ if confirm == '':
     print(f'{Fore.GREEN}Fixture Profile First Time Configurator Exiting,{Style.BRIGHT} No settings have been changed')
     quit()
 
+
+## Fixture Setup Function (Pretty much the whole program)
 def fixturesetup():
     profiles = {}
+    ## Misc Messages
     print(f'{Style.BRIGHT}FIXTURE PROFILE FIRST TIME CONFIGURATOR')
     print(f"{Fore.RED}Advice for the misled. THIS PROGRAM IS ONLY FOR USE WITH MOVING SPOTS (not just any moving head or old bro's chinese PAR64)\n")
     time.sleep(2)
-
+    ## Ask the user some basic parameters
     fixturecount = int(input(f'{Fore.YELLOW + Style.BRIGHT}Enter how many fixture profiles you want to initially add to the system >> '))
     print('')
     i = 1
     for fixture in range(fixturecount):
+        ## Ask the user for basic fixture parameters
         profilename = input(f"{Fore.YELLOW + Style.BRIGHT}Enter name for fixture {i} of {fixturecount} with any whitespaces replaced with '-' >> ")
         chancount = input(f'{Fore.YELLOW + Style.BRIGHT}How many channels does fixture {profilename} use eg 30 >> ')
         print('')
-
+        
+        ## The business side of the program, ask the user for the profile values
         print(f'{Fore.BLUE + Style.BRIGHT}Movement Parameter Config:')
         pan = input('Enter Pan Channel >> ')
         panfine = input('Enter Fine Pan Channel >> ')
@@ -75,7 +81,7 @@ def fixturesetup():
         dimmer = input('Enter Dimmer Channel >> ')
         dimmerfine = input('Enter Fine Dimmer Channel >> ')
 
-
+        ## Present the user with a nice looking sum of all the fixture profiles entered
         print(f'{Fore.BLUE + Style.BRIGHT}Settings Entered for fixture {profilename}:')
         print(f'{Style.BRIGHT}Channel Count:{Style.RESET_ALL} {chancount} Channels')
         print(f'{Style.BRIGHT}Movment Parameters:{Style.RESET_ALL}\n Pan: {pan}\n Fine Pan: {panfine}\n Tilt: {tilt}\n Tilt Fine: {tiltfine}\n Movement Speed Adj: {ptspeed}')
@@ -93,6 +99,7 @@ def fixturesetup():
         print(f'{Style.BRIGHT}Beam Parameters:{Style.RESET_ALL} \n Zoom: {zoom}\n Focus: {focus}\n Frost: {frost}\n Static Gobo: {staticgobo}\n Rotating Gobo (No rotate function): {rotgobo}\n')
         print(f'{Style.BRIGHT}Dimmer Parameters:{Style.RESET_ALL} \n Dimmer: {dimmer} \n Fine Dimmer {dimmerfine}\n')
 
+        ## Place all of these new values into a nested dictionary
         profiles[profilename] = {}
         profiles[profilename]['channel_count'] = chancount
         profiles[profilename]['movement'] = {}
@@ -132,7 +139,8 @@ def fixturesetup():
         profiles[profilename]['dimmer']['dimmer'] = dimmer
         profiles[profilename]['dimmer']['dimmer_fine'] = dimmerfine
 
-
+    ## This saves the nested dictionary to profiles.json for easy manual editing
+    print(f"{Fore.BLUE + Style.BRIGHT}Saving profiles to 'profiles.json'....")
     path = 'Config'
     os.chdir(path)
     with open('profiles.json', 'w') as convert_file: 

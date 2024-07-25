@@ -7,28 +7,45 @@ import time
 import configparser
 init(autoreset=True)
 
-print(f'{Fore.BLUE + Style.BRIGHT}DMX Virtual Patch Panel Configuration Utility Starting....\n\n')
-time.sleep(3)
 
-def adapter_config():                                           ## Retreve Adapter Settings
+## FUNCTIONS BELOW
+def adapter_config():                                           ## The main aim of this function is to get the adapter settings from the config
     path = 'Config'
     os.chdir(path)
 
-    config = configparser.ConfigParser()    #INIT section: create a configparser object & read file
+    config = configparser.ConfigParser()                        ## INIT section: create a configparser object & read file
     config.read('adapterconfig.ini') 
 
-    dmxchanmax = config.get('dmxconfig', 'dmx_channel_count') #READ section: access all of the config settings
+    dmxchanmax = config.get('dmxconfig', 'dmx_channel_count')   ## READ section: access all of the config settings
     serialport = config.get('dmxconfig', 'adapter_serial_port')
     adatspeed = config.get('dmxconfig', 'user_adapter_speed')
     autoadatspeed = config.get('dmxconfig', 'max_dmx_adapter_speed')
 
-    config_values = {                                                   #Export our config values in a nice dictionary for easy upgradibility
+    config_values = {                                           ## Export our config values in a nice dictionary for easy upgradibility
         'dmxchanmax': dmxchanmax,   
         'serialport': serialport,
         'adatspeed': adatspeed,
         'autoadatspeed': autoadatspeed,
     }
     return(config_values)
+
+def load_profiles():                                             ## The main aim of this function is to get the profiles from the profiles file
+    with open('profiles.json', 'r') as profilesjson:             ## Read fixture library JSON file
+        profiles = json.load(profilesjson)
+    return(profiles)
+
+def load_patch():                                                ## The main aim of this function is to get the patching data from the patchdata file
+    with open('patchdata.json', 'r') as patchdata:
+        patch = json.load(patchdata)
+    return(patch)
+
+## MAIN PROGRAM
+## PSA
+print(f'{Fore.BLUE + Style.BRIGHT}DMX Virtual Patch Panel Configuration Utility Starting....\n\n')
+time.sleep(3)
+
+## This section deals with the adapter config function to retrieve the adapterconfig.ini file and extract the adapter values
+
 try:
     config_data = adapter_config()                                      #Read our data
 except:
@@ -46,7 +63,8 @@ serialport = config_data['serialport']
 adatspeed = int(config_data['adatspeed'])
 autoadatspeed = int(config_data['autoadatspeed'])
 
-print(Fore.GREEN + Style.BRIGHT + 'Loaded Adapter Settings:')                                       ## Print out our adapter settings for the user
+## Print the values we just extracted
+print(Fore.GREEN + Style.BRIGHT + 'Loaded Adapter Settings:')                                       
 print(f'{Style.BRIGHT}    [--] DMX Channels in use: {dmxchanmax}')
 print(f'{Style.BRIGHT}    [--] Serial Port selected: {serialport}')
 if adatspeed == 0:
@@ -54,16 +72,12 @@ if adatspeed == 0:
 else:
     print(f'{Style.BRIGHT + Fore.BLUE}    [??] User Defined Adapter Data Rate: {adatspeed}Hz {Fore.RED}(Not Recommended)\n')
 
-
-def load_profiles():
-    with open('profiles.json', 'r') as profilesjson:         # Read fixture library JSON file
-        profiles = json.load(profilesjson)
-    return(profiles)
+## This section deals with the load_profiles function to retreve the profiles.json file and extract the fixture values
 
 print(f'{Fore.BLUE + Style.BRIGHT}Loading Fixture Profiles...')
 time.sleep(5)
 try:
-    profiles = load_profiles()
+    profiles = load_profiles()                              ## Run the load_profiles() function and return the values to the profiles variable
 except:
     print(f"{Style.BRIGHT + Fore.RED}    [XX] File 'profiles.json' could not be opened!\n")                                                                 ## If function fails, run this code....
     time.sleep(2)
@@ -77,6 +91,8 @@ except:
 
 time.sleep(5)
 
+## Print the fixture profiles, Confirm if they are right. Proceed with program
+
 print(f'{Fore.GREEN + Style.BRIGHT}Fixture Profiles Loaded:')
 for profile, attribute in profiles.items():                         #Print Profile Names in the JSON File
     print(f'{Style.BRIGHT}    [--] {profile}')
@@ -87,11 +103,7 @@ if procheck == '':
     print(f'{Fore.BLUE + Style.BRIGHT}DMX Virtual Patch Configuraton Wizard Starting....\n')
     time.sleep(3)
 
-def load_patch():                                                                                   ## Load Patch Data
-    with open('patchdata.json', 'r') as patchdata:
-        patch = json.load(patchdata)
-    return(patch)
-
+## This section deals with the load_patch function to retreve the patchdata.json file and extract the patch values
 
 print(f'{Fore.BLUE + Style.BRIGHT}Loading DMX Patch Values...')
 time.sleep(5)
@@ -110,22 +122,27 @@ except:
 
 time.sleep(5)
 print(f'{Fore.GREEN + Style.BRIGHT}DMX Patch Values Loaded...')
+
+## Fixture Patch Config Code Below
+
 print(f'{Fore.BLUE + Style.BRIGHT}DMX Virtual Patch Configuration Wizard Starting....')
 
 channels_used = []          ## Init channels_used list
+## This initially shows how many channels are in use
 for profilename, attribute1 in profiles.items():
     for profile, attribute2 in patchdata.items():
         for fixturename, attribute3 in patchdata[profilename].items():
             channels_used.append(patchdata[profilename][fixturename]['channels_used'])
 print(f'{Back.BLUE + Style.BRIGHT}<<< You currently have {dmxchanmax - sum(channels_used)} Channels Available of {dmxchanmax} >>>')
 
+## This prints out the fixture profiles and how many channels they each take up
 print(f'\n {Fore.BLUE + Style.BRIGHT}Fixture Profiles in Library:')
 for profile, attributes in profiles.items():
     profilechancount = int(profiles[profile]['channel_count'])
     print(f'{Style.BRIGHT}      [--] {profile} | {Back.BLUE}<<< Takes up {profilechancount} DMX Channels per fixture >>>')       ## This loop prints to the user the fixtures in the library and how many channels they each take up
 print('')
 
-
+## This prints out what fixture is patched where aswell as what fixture is what
 print(f'\n {Fore.BLUE + Style.BRIGHT}Breakdown of Patched Fixtures:')
 for profilename, attribute1 in profiles.items():
     print(f'{Style.BRIGHT}      [--] {profilename} has {len(patchdata[profilename])} fixtures patched')
@@ -136,6 +153,7 @@ for profilename, attribute1 in profiles.items():
         startingchannel[fixname] = patchdata[profilename][fixname]['starting_channel']
         print(f'{Style.BRIGHT}        [->]', str(fixname).strip("['']"), f'Starts on channel {startingchannel[fixname]}')
 
+## This asks the user some basic questions and presents them with how many DMX channels would be left/taken up after the operation
 for profile, attributes in profiles.items():
     profilechancount = int(profiles[profile]['channel_count'])
     count = int(input(f'{Style.BRIGHT}How many of fixture {profile} would you like to add? >> '))                           ## Config questions like how many of var fixture to add
@@ -145,6 +163,7 @@ for profile, attributes in profiles.items():
     print(f'{Back.BLUE + Style.BRIGHT}<<< You will have {(dmxchanmax - sum(channels_used)) - (profilechancount * count)} DMX Channels left after this operation >>>')   ## Inform the user about how many DMX channels this will take up, aswell as how many would be left after the operation
     time.sleep(2)
 
+    ## This asks the user some basic fixture questions
     for i in range(count):
         print('')
         fixturename = input(f'{Style.BRIGHT}What should fixture {i+1} of {count} be named eg SPOT1 >> ')                ## More config questions
@@ -155,9 +174,11 @@ for profile, attributes in profiles.items():
         
 print('')
 
+## Finish!
 print(f'{Fore.BLUE + Style.BRIGHT}The DMX Virtual Patch Configuration Wizard has finished\n')
 print(f'{Back.BLUE + Style.BRIGHT}<<< SAVING TO PATCHDATA.JSON... PLEASE WAIT >>>')
 
+## This section deals with the overwriting of the config file
 try:
     path = '../Config'
     os.chdir(path)
@@ -173,6 +194,7 @@ except:
     print(f'{Fore.RED}The program will now exit as an unrecoverable exception has occured. {Style.BRIGHT}ALL DATA HAS BEEN SAVED')
     quit()
 
+## Literally the end of the program
 time.sleep(4)
 print(f'{Back.GREEN + Style.BRIGHT}<<< CONFIG HAS BEEN SAVED >>>')
 print('')

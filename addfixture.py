@@ -6,22 +6,39 @@ import time
 from colorama import init, Fore, Style, Cursor, Back
 init(autoreset=True)
 
+## Main function (pretty much the whole program)
 def fixturesetup():
-    os.chdir('Config')
-    with open('profiles.json', 'r') as file:         # Read JSON file
-        profiles = json.load(file)
+    ## Load existing profiles.json file, however if this fails, leave a couple tips.
+    try:
+        os.chdir('Config')
+        with open('profiles.json', 'r') as file:         
+            profiles = json.load(file)
+    except:
+        print(f"{Style.BRIGHT + Fore.RED}    [XX] File 'profiles.json' could not be opened!\n")                                                                 
+        time.sleep(2)
+        print(f'{Style.BRIGHT}To diagnose this issue please try these steps:')
+        print(f'    [--] Make sure you have run the {Style.BRIGHT}fixturelibrarysetup.py{Style.RESET_ALL} program which sets this file up!')
+        print(f'    [--] Make sure you are running this program in the {Style.BRIGHT} SAME DIRECTORY as the config file (should be the main directory)')
+        print(f'    [--] If the program is still not working, feel free to {Style.BRIGHT}create an issue in the github with a copy of the exception\n')
+        time.sleep(5)
+        print(f'{Fore.RED}The program will now exit as an unrecoverable exception has occured. {Style.BRIGHT}ALL DATA HAS BEEN SAVED')
+        quit()
 
+    ## Just a litte PSA
     print(f'{Style.BRIGHT}FIXTURE PROFILE CONFIGURATION WIZARD')
     print(f"{Fore.RED}Advice for the misled. THIS PROGRAM IS ONLY FOR USE WITH MOVING SPOTS (not just any moving head or old bro's chinese PAR64)\n") 
     time.sleep(2)
 
+    ## A Basic question
     fixturecount = int(input(f'{Fore.YELLOW + Style.BRIGHT}Enter how many fixture profiles you want to add to the system >> '))
     i = 1
     for fixture in range(fixturecount):
+        ## Some basic fixture parameters
         profilename = input(f"{Fore.YELLOW + Style.BRIGHT}Enter name for fixture {i} of {fixturecount} with any whitespaces replaced with '-' >> ")
         chancount = input(f'{Fore.YELLOW + Style.BRIGHT}Enter how many channels fixture {profilename} uses eg 30 >> ')
-
         print('')
+
+        ## The business side of the program, ask the user for the profile values
         print(f'{Fore.BLUE + Style.BRIGHT}Movement Parameter Config:')
         pan = input('Enter Pan Channel >> ')
         panfine = input('Enter Fine Pan Channel >> ')
@@ -69,7 +86,7 @@ def fixturesetup():
         dimmer = input('Enter Dimmer Channel >> ')
         dimmerfine = input('Enter Fine Dimmer Channel >> ')
 
-
+        ## Present the user with a nice looking sum of all the fixture profiles entered
         print(f'{Fore.BLUE + Style.BRIGHT}Settings Entered for fixture {profilename}:')
         print(f'{Style.BRIGHT}Channel Count:{Style.RESET_ALL} {chancount} Channels')
         print(f'{Style.BRIGHT}Movment Parameters:{Style.RESET_ALL}\n Pan: {pan}\n Fine Pan: {panfine}\n Tilt: {tilt}\n Tilt Fine: {tiltfine}\n Movement Speed Adj: {ptspeed}')
@@ -87,6 +104,7 @@ def fixturesetup():
         print(f'{Style.BRIGHT}Beam Parameters:{Style.RESET_ALL} \n Zoom: {zoom}\n Focus: {focus}\n Frost: {frost}\n Static Gobo: {staticgobo}\n Rotating Gobo (No rotate function): {rotgobo}\n')
         print(f'{Style.BRIGHT}Dimmer Parameters:{Style.RESET_ALL} \n Dimmer: {dimmer} \n Fine Dimmer {dimmerfine}\n')
 
+        ## Place all of these new values into a nested dictionary
         profiles[profilename] = {}
         profiles[profilename]['channel_count'] = chancount
         profiles[profilename]['movement'] = {}
@@ -126,9 +144,13 @@ def fixturesetup():
         profiles[profilename]['dimmer']['dimmer'] = dimmer
         profiles[profilename]['dimmer']['dimmer_fine'] = dimmerfine
 
-        with open('profiles.json', 'w') as convert_file: 
-            convert_file.write(json.dumps(profiles, indent=4))
+    ## This overwrites the nested dictionary to profiles.json for easy manual editing
+    print(f"{Fore.BLUE + Style.BRIGHT}Saving profiles to 'profiles.json'....")
+    path = 'Config'
+    os.chdir(path)
+    with open('profiles.json', 'w') as convert_file: 
+        convert_file.write(json.dumps(profiles, indent=4))
         
-        print(f'{Fore.GREEN, Style.BRIGHT}The Fixture Profile Configuration Wizard has finished, to add more fixtures to the system in the future, rerun this program.')
+    print(f'{Fore.GREEN, Style.BRIGHT}The Fixture Profile Configuration Wizard has finished, to add more fixtures to the system in the future, rerun this program.')
 
 fixturesetup()

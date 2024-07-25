@@ -7,7 +7,7 @@ import time
 import configparser
 init(autoreset=True)
 
-##DEFINITIONS BELOW
+##FUNCTIONS BELOW
 def adapter_config():                                           ## Retreve Adapter Settings
     path = 'Config'
     os.chdir(path)
