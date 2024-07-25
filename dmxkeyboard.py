@@ -84,8 +84,47 @@ print()
 
 procheck = input('Are the profiles listed correct? (Enter to proceed, CTRL-C to cancel) >> ')
 if procheck == '':
-    print(f'{Fore.BLUE + Style.BRIGHT}DMX Subsystem Starting...')
+    print(f'{Fore.BLUE + Style.BRIGHT}Loading DMX Patch Information....')
     time.sleep(3)
+
+def load_patch():                                                                                   ## Load Patch Data
+    with open('patchdata.json', 'r') as patchdata:
+        patch = json.load(patchdata)
+    return(patch)
+
+try:
+    patchdata = load_patch()
+except:
+    print(f"{Style.BRIGHT + Fore.RED}    [XX] File 'patchdata.json' could not be opened!\n")                                                                 ## If function fails, run this code....
+    time.sleep(2)
+    print(f'{Style.BRIGHT}To diagnose this issue please try these steps:')
+    print(f'    [--] Make sure you have run the {Style.BRIGHT}dmxpatchsetup.py{Style.RESET_ALL} program which sets this file up!')
+    print(f'    [--] Make sure you are running this program in the {Style.BRIGHT} HOME DIRECTORY)')
+    print(f'    [--] If the program is still not working, feel free to {Style.BRIGHT}create an issue in the github with a copy of the exception\n')
+    time.sleep(5)
+    print(f'{Fore.RED}The program will now exit as an unrecoverable exception has occured. {Style.BRIGHT}ALL DATA HAS BEEN SAVED')
+    quit()
+
+print(f'{Fore.GREEN + Style.BRIGHT}DMX Patching Information Loaded....')
+
+channels_used = []          ## Init channels_used list
+for profilename, attribute1 in profiles.items():
+    for profile, attribute2 in patchdata.items():
+        for fixturename, attribute3 in patchdata[profilename].items():
+            channels_used.append(patchdata[profilename][fixturename]['channels_used'])
+print(f'{Back.BLUE + Style.BRIGHT}<<< You currently have {dmxchanmax - sum(channels_used)} Channels Left of {dmxchanmax} >>>')
+
+print(f'\n {Fore.BLUE + Style.BRIGHT}Breakdown of Patched Fixtures:')
+for profilename, attribute1 in profiles.items():
+    print(f'{Style.BRIGHT}      [--] {profilename} has {len(patchdata[profilename])} fixtures patched')
+    for profile, attribute2 in patchdata.items():
+        fixturename = list(patchdata[profilename].keys())
+    startingchannel = {}
+    for fixname in fixturename:
+        startingchannel[fixname] = patchdata[profilename][fixname]['starting_channel']
+        print(f'{Style.BRIGHT}        [->]', str(fixname).strip("['']"), f'Starts on channel {startingchannel[fixname]}')
+
+print(f'{Fore.BLUE + Style.BRIGHT}DMX Subsystem starting....')
 
 try:
     dmx = Controller(serialport, auto_submit=True, dmx_size=dmxchanmax)   #Now to run our setup code
