@@ -202,6 +202,7 @@ def dmxcontrol():
     global fixtureprofilename
     global profiles
     global savedfixturechan
+    global numpad
 
 ## This below bit sets up all the channels from the fixture profile
 ## First we import movement stuff
@@ -301,6 +302,35 @@ def dmxcontrol():
     print(f'\n{Fore.BLUE + Style.BRIGHT}Dimmer Channels:')
     print('     [17->] Dimmer')
 
+## Print Keybinds based off keyboard used
+    print(f'\n{Fore.BLUE + Style.BRIGHT}Helpful Keybinds:')
+    print(f'{Fore.BLUE}Movement:')
+    if numpad == 'Yes' or 'Y':
+        print(f'     [--] {Style.BRIGHT}Tilt: {Style.RESET_ALL}Numpad Up/Down [NUM8/NUM2]')
+        print(f'     [--] {Style.BRIGHT}Pan: {Style.RESET_ALL}Numpad Left/Right [NUM4/NUM6]')
+        print(f'     [--] {Style.BRIGHT}PT Speed: {Style.RESET_ALL}Numpad +/-')
+    else:
+        print(f'     [--] {Style.BRIGHT}Tilt: {Style.RESET_ALL}Arrow Up/Down')
+        print(f'     [--] {Style.BRIGHT}Pan: {Style.RESET_ALL}Arrow Left/Right')
+    print(f'{Fore.BLUE}Colour:')
+    if isconventional == True:
+        print(f'     [--] {Style.BRIGHT}Colour Wheel: {Style.RESET_ALL} [C]olour, [W]heel, Arrow Up/Down')
+    if isrgb == True:
+        print(f'     [--] {Style.BRIGHT}Red: {Style.RESET_ALL} [C]olour, [R]ed, Arrow Up/Down')
+        print(f'     [--] {Style.BRIGHT}Green: {Style.RESET_ALL} [C]olour, [G]reen, Arrow Up/Down')
+        print(f'     [--] {Style.BRIGHT}Blue: {Style.RESET_ALL} [C]olour, [B]lue, Arrow Up/Down')
+    if iscmy == True:
+        print(f'     [--] {Style.BRIGHT}Cyan: {Style.RESET_ALL} [C]olour, [C]yan, Arrow Up/Down')
+        print(f'     [--] {Style.BRIGHT}Magenta: {Style.RESET_ALL} [C]olour, [M]Magenta, Arrow Up/Down')
+        print(f'     [--] {Style.BRIGHT}Yellow: {Style.RESET_ALL} [C]olour, [Y]Yellow, Arrow Up/Down')
+    if iscto == True:
+        print(f'     [--] {Style.BRIGHT}Colour Temp: {Style.RESET_ALL} [C]olour, [T]emp, Arrow Up/Down')
+    print(f'{Fore.BLUE}Beam:')
+    print(f'     [--] {Style.BRIGHT}Zoom: {Style.RESET_ALL} [Z]oom, Arrow Up/Down')
+    print(f'     [--] {Style.BRIGHT}Focus: {Style.RESET_ALL} [F]ocus, Arrow Up/Down')
+
+
+
     dmxval = 0
     with Listener(on_press=on_press) as listener:
         listener.join()
@@ -310,6 +340,7 @@ channel_values = {}
 fixtureindex = {}
 savedfixturechan = {}
 flag = True
+numpad = input('Do You have a NUMPAD? [Y]es or [N]o >> ')
 while flag == True:
     ## This prints out what fixture is patched where aswell as what fixture is what
     i = 0
