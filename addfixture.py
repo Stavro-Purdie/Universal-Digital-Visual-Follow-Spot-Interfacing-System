@@ -146,11 +146,9 @@ def fixturesetup():
 
     ## This overwrites the nested dictionary to profiles.json for easy manual editing
     print(f"{Fore.BLUE + Style.BRIGHT}Saving profiles to 'profiles.json'....")
-    path = 'Config'
-    os.chdir(path)
     with open('profiles.json', 'w') as convert_file: 
         convert_file.write(json.dumps(profiles, indent=4))
         
-    print(f'{Fore.GREEN, Style.BRIGHT}The Fixture Profile Configuration Wizard has finished, to add more fixtures to the system in the future, rerun this program.')
+    print(f'{Fore.GREEN + Style.BRIGHT}The Fixture Profile Configuration Wizard has finished, to add more fixtures to the system in the future, rerun this program.')
 
 fixturesetup()

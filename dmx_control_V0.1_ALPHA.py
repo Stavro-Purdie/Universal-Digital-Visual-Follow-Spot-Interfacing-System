@@ -179,14 +179,51 @@ time.sleep(5)
 ## The business end of the program, This is the bit that controls the lights
 
 def on_press(key):
-    global dmxval                                                    #Make vars global so that we can easily obtain access
+## Make needed variables global because ceebs passing them through normally
+    global dmxval                                                   
     global fixturename
     global fixturestartchan
     global fixtureprofilename
     global profiles
     global savedfixturechan
 
-    loaded_controlvars = 
+## This below bit sets up all the channels from the fixture profile
+## First we import movement stuff
+    movementchannels = {
+        'pan':       profiles[fixtureprofilename]['movement']['pan'],
+        'pan_fine':  profiles[fixtureprofilename]['movement']['pan_fine'],
+        'tilt':      profiles[fixtureprofilename]['movement']['tilt'],
+        'tilt_fine': profiles[fixtureprofilename]['movement']['tilt_fine'],
+        'pt_speed':  profiles[fixtureprofilename]['movement']['pan_tilt_speed'],
+        }
+
+## Then we import the colour data (this is fixture dependent hence the if statements)
+    if 'conventional' in profiles[fixtureprofilename]['colour']:
+        colourchannels = {
+            'colour_wheel': profiles[fixtureprofilename]['colour']['conventional']['colour_wheel']
+        }
+    if 'rgb' in profiles[fixtureprofilename]['colour']['led']:
+        colourchannels = {
+            'red':   profiles[fixtureprofilename]['colour']['led']['rgb']['red'],
+            'green': profiles[fixtureprofilename]['colour']['led']['rgb']['green'],
+            'blue':  profiles[fixtureprofilename]['colour']['led']['rgb']['blue'],
+        }
+    if 'cmy' in profiles[fixtureprofilename]['colour']['led']:
+        colourchannels = {
+            'cyan':    profiles[fixtureprofilename]['colour']['led']['cmy']['cyan'],
+            'magenta': profiles[fixtureprofilename]['colour']['led']['cmy']['magenta'],
+            'yellow':  profiles[fixtureprofilename]['colour']['led']['cmy']['yellow'],
+        }
+    if 'cto' in profiles[fixtureprofilename]['colour']:
+        colourchannels['cto'] = profiles[fixtureprofilename]['colour']['cto']
+
+## Then we import the beam data
+    beamchannels = {
+        'zoom': profiles[fixtureprofilename]['beam']['zoom'],
+        'focus': profiles[fixtureprofilename]['beam']['focus'],
+    
+    }
+
     if channel_values[dmxchan] > 0:                                     #Check if there are any saved values
         dmxval = channel_values[dmxchan]                                #Apply Saved Channel Values
     if key == Key.up:                                                   #If Up Arrow Key Pressed...
