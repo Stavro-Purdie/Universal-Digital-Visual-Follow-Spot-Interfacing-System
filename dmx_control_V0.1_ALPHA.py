@@ -177,9 +177,25 @@ print(f'{Fore.GREEN + Style.BRIGHT}DMX Subsystem Started Successfully')
 time.sleep(5)
 
 ## The business end of the program, This is the bit that controls the lights
-
 def on_press(key):
-## Make needed variables global because ceebs passing them through normally
+    if channel_values[dmxchan] > 0:                                     #Check if there are any saved values
+        dmxval = channel_values[dmxchan]                                #Apply Saved Channel Values
+    if key == Key.up:                                                   #If Up Arrow Key Pressed...
+        dmxval += 1                                                     #Add 1 to the channel val
+        dmx.set_channel(dmxchan, dmxval)                                #Run DMX Frame Through DMX Subsystem
+    if key == Key.down:
+        dmxval -= 1
+        dmx.set_channel(dmxchan, dmxval)
+    if key == Key.esc:
+        print(f'{Fore.GREEN}Saving Channel Values...')
+        channel_values[dmxchan] = dmxval
+        print(f'{Fore.BLUE}Returning you to the Channel Selector...')
+        print()
+        Listener.stop()
+        return
+
+def dmxcontrol():
+    ## Make needed variables global because ceebs passing them through normally
     global dmxval                                                   
     global fixturename
     global fixturestartchan
@@ -198,38 +214,50 @@ def on_press(key):
         }
 
 ## Then we import the colour data (this is fixture dependent hence the if statements)
-    if 'conventional' in profiles[fixtureprofilename]['colour']:
-        isconventional = True
-        colourchannels = {
-            'colour_wheel': int(profiles[fixtureprofilename]['colour']['conventional']['colour_wheel'])
-        }
-    else:
+    try:
+        if 'conventional' in profiles[fixtureprofilename]['colour']:
+            isconventional = True
+            colourchannels = {
+                'colour_wheel': int(profiles[fixtureprofilename]['colour']['conventional']['colour_wheel'])
+            }
+        else:
+            isconventional = False
+    except:
         isconventional = False
 
-    if 'rgb' in profiles[fixtureprofilename]['colour']['led']:
-        isrgb = True
-        colourchannels = {
-            'red':   int(profiles[fixtureprofilename]['colour']['led']['rgb']['red']),
-            'green': int(profiles[fixtureprofilename]['colour']['led']['rgb']['green']),
-            'blue':  int(profiles[fixtureprofilename]['colour']['led']['rgb']['blue']),
-        }
-    else:
+    try:
+        if 'rgb' in profiles[fixtureprofilename]['colour']['led']:
+            isrgb = True
+            colourchannels = {
+                'red':   int(profiles[fixtureprofilename]['colour']['led']['rgb']['red']),
+                'green': int(profiles[fixtureprofilename]['colour']['led']['rgb']['green']),
+                'blue':  int(profiles[fixtureprofilename]['colour']['led']['rgb']['blue']),
+            }
+        else:
+            isrgb = False
+    except:
         isrgb = False
 
-    if 'cmy' in profiles[fixtureprofilename]['colour']['led']:
-        iscmy = True
-        colourchannels = {
-            'cyan':    int(profiles[fixtureprofilename]['colour']['led']['cmy']['cyan']),
-            'magenta': int(profiles[fixtureprofilename]['colour']['led']['cmy']['magenta']),
-            'yellow':  int(profiles[fixtureprofilename]['colour']['led']['cmy']['yellow']),
-        }
-    else:
+    try:
+        if 'cmy' in profiles[fixtureprofilename]['colour']['led']:
+            iscmy = True
+            colourchannels = {
+                'cyan':    int(profiles[fixtureprofilename]['colour']['led']['cmy']['cyan']),
+                'magenta': int(profiles[fixtureprofilename]['colour']['led']['cmy']['magenta']),
+                'yellow':  int(profiles[fixtureprofilename]['colour']['led']['cmy']['yellow']),
+            }
+        else:
+            iscmy = False
+    except:
         iscmy = False
 
-    if 'cto' in profiles[fixtureprofilename]['colour']:
-        iscto = True
-        colourchannels['cto'] = int(profiles[fixtureprofilename]['colour']['cto'])
-    else:
+    try:
+        if 'cto' in profiles[fixtureprofilename]['colour']:
+            iscto = True
+            colourchannels['cto'] = int(profiles[fixtureprofilename]['colour']['cto'])
+        else:
+            iscto = False
+    except:
         iscto = False
 
 ## Then we import the beam data
@@ -249,8 +277,8 @@ def on_press(key):
 
 ## List controllable channels
     print(f'{Back.WHITE + Style.BRIGHT}Index of Controllable Channels:')
-    print(f'{Fore.Blue + Style.BRIGHT}Movement Channels:')
-    print('     [1->] Pan\n     [2->] Tilt\n    [3->] Movement Speed\n')
+    print(f'{Fore.BLUE + Style.BRIGHT}Movement Channels:')
+    print('     [1->] Pan\n     [2->] Tilt\n     [3->] Movement Speed\n')
     print(f'{Fore.BLUE + Style.BRIGHT}Colour Channels:')
     if isconventional == True:
         print('     [4->] Colour Wheel')
@@ -261,22 +289,22 @@ def on_press(key):
     else:
         print(f'     [5->]{Fore.RED} Red{Fore.RESET}\n     [6->]{Fore.RED} Green{Fore.RESET}\n     [7->]{Fore.RED} Blue')
     if iscmy == True:
-        print(f'')
-    if channel_values[dmxchan] > 0:                                     #Check if there are any saved values
-        dmxval = channel_values[dmxchan]                                #Apply Saved Channel Values
-    if key == Key.up:                                                   #If Up Arrow Key Pressed...
-        dmxval += 1                                                     #Add 1 to the channel val
-        dmx.set_channel(dmxchan, dmxval)                                #Run DMX Frame Through DMX Subsystem
-    if key == Key.down:
-        dmxval -= 1
-        dmx.set_channel(dmxchan, dmxval)
-    if key == Key.esc:
-        print(f'{Fore.GREEN}Saving Channel Values...')
-        channel_values[dmxchan] = dmxval
-        print(f'{Fore.BLUE}Returning you to the Channel Selector...')
-        print()
-        Listener.stop()
-        return
+        print('     [8->] Cyan\n     [9->] Magenta\n     [10->] Yellow')
+    else:
+        print(f'     [8->] {Fore.RED}Cyan{Fore.RESET}\n     [9->] {Fore.RED}Magenta{Fore.RESET}\n     [10->] {Fore.RED}Yellow')
+    if iscto == True:
+        print('     [11->] CTO')
+    else:
+        print(f'     [11->] {Fore.RED}CTO')
+    print(f'\n{Fore.BLUE + Style.BRIGHT}Beam Channels:')
+    print('     [12->] Zoom\n     [13->] Focus\n     [14->] Frost\n     [15->] Static Gobo\n     [16->] Rotating Gobo\n')
+    print(f'\n{Fore.BLUE + Style.BRIGHT}Dimmer Channels:')
+    print('     [17->] Dimmer')
+
+    dmxval = 0
+    with Listener(on_press=on_press) as listener:
+        listener.join()
+
 
 channel_values = {}
 fixtureindex = {}
@@ -313,6 +341,4 @@ while flag == True:
     print(f'\n {Fore.BLUE + Style.BRIGHT}You Have Selected {fixturename}')
 
     
-    dmxval = 0
-    with Listener(on_press=on_press) as listener:
-        listener.join()
+    dmxcontrol()
