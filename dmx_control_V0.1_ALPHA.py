@@ -190,40 +190,78 @@ def on_press(key):
 ## This below bit sets up all the channels from the fixture profile
 ## First we import movement stuff
     movementchannels = {
-        'pan':       profiles[fixtureprofilename]['movement']['pan'],
-        'pan_fine':  profiles[fixtureprofilename]['movement']['pan_fine'],
-        'tilt':      profiles[fixtureprofilename]['movement']['tilt'],
-        'tilt_fine': profiles[fixtureprofilename]['movement']['tilt_fine'],
-        'pt_speed':  profiles[fixtureprofilename]['movement']['pan_tilt_speed'],
+        'pan':       int(profiles[fixtureprofilename]['movement']['pan']),
+        'pan_fine':  int(profiles[fixtureprofilename]['movement']['pan_fine']),
+        'tilt':      int(profiles[fixtureprofilename]['movement']['tilt']),
+        'tilt_fine': int(profiles[fixtureprofilename]['movement']['tilt_fine']),
+        'pt_speed':  int(profiles[fixtureprofilename]['movement']['pan_tilt_speed']),
         }
 
 ## Then we import the colour data (this is fixture dependent hence the if statements)
     if 'conventional' in profiles[fixtureprofilename]['colour']:
+        isconventional = True
         colourchannels = {
-            'colour_wheel': profiles[fixtureprofilename]['colour']['conventional']['colour_wheel']
+            'colour_wheel': int(profiles[fixtureprofilename]['colour']['conventional']['colour_wheel'])
         }
+    else:
+        isconventional = False
+
     if 'rgb' in profiles[fixtureprofilename]['colour']['led']:
+        isrgb = True
         colourchannels = {
-            'red':   profiles[fixtureprofilename]['colour']['led']['rgb']['red'],
-            'green': profiles[fixtureprofilename]['colour']['led']['rgb']['green'],
-            'blue':  profiles[fixtureprofilename]['colour']['led']['rgb']['blue'],
+            'red':   int(profiles[fixtureprofilename]['colour']['led']['rgb']['red']),
+            'green': int(profiles[fixtureprofilename]['colour']['led']['rgb']['green']),
+            'blue':  int(profiles[fixtureprofilename]['colour']['led']['rgb']['blue']),
         }
+    else:
+        isrgb = False
+
     if 'cmy' in profiles[fixtureprofilename]['colour']['led']:
+        iscmy = True
         colourchannels = {
-            'cyan':    profiles[fixtureprofilename]['colour']['led']['cmy']['cyan'],
-            'magenta': profiles[fixtureprofilename]['colour']['led']['cmy']['magenta'],
-            'yellow':  profiles[fixtureprofilename]['colour']['led']['cmy']['yellow'],
+            'cyan':    int(profiles[fixtureprofilename]['colour']['led']['cmy']['cyan']),
+            'magenta': int(profiles[fixtureprofilename]['colour']['led']['cmy']['magenta']),
+            'yellow':  int(profiles[fixtureprofilename]['colour']['led']['cmy']['yellow']),
         }
+    else:
+        iscmy = False
+
     if 'cto' in profiles[fixtureprofilename]['colour']:
-        colourchannels['cto'] = profiles[fixtureprofilename]['colour']['cto']
+        iscto = True
+        colourchannels['cto'] = int(profiles[fixtureprofilename]['colour']['cto'])
+    else:
+        iscto = False
 
 ## Then we import the beam data
     beamchannels = {
-        'zoom': profiles[fixtureprofilename]['beam']['zoom'],
-        'focus': profiles[fixtureprofilename]['beam']['focus'],
-    
+        'zoom': int(profiles[fixtureprofilename]['beam']['zoom']),
+        'focus': int(profiles[fixtureprofilename]['beam']['focus']),
+        'frost': int(profiles[fixtureprofilename]['beam']['frost']),
+        'static_gobo': int(profiles[fixtureprofilename]['beam']['static_gobo']),
+        'rotating_gobo': int(profiles[fixtureprofilename]['beam']['rotating_gobo']),
     }
 
+## Lastly we import dimmer data
+    dimmerchannels = {
+        'dimmer': int(profiles[fixtureprofilename]['dimmer']['dimmer']),
+        'dimmer_fine': int(profiles[fixtureprofilename]['dimmer']['dimmer_fine']),
+    }
+
+## List controllable channels
+    print(f'{Back.WHITE + Style.BRIGHT}Index of Controllable Channels:')
+    print(f'{Fore.Blue + Style.BRIGHT}Movement Channels:')
+    print('     [1->] Pan\n     [2->] Tilt\n    [3->] Movement Speed\n')
+    print(f'{Fore.BLUE + Style.BRIGHT}Colour Channels:')
+    if isconventional == True:
+        print('     [4->] Colour Wheel')
+    else:
+        print(f'    [4->]{Fore.RED} Colour Wheel')
+    if isrgb == True:
+        print('     [5->] Red\n     [6->] Green\n     [7->] Blue')
+    else:
+        print(f'     [5->]{Fore.RED} Red{Fore.RESET}\n     [6->]{Fore.RED} Green{Fore.RESET}\n     [7->]{Fore.RED} Blue')
+    if iscmy == True:
+        print(f'')
     if channel_values[dmxchan] > 0:                                     #Check if there are any saved values
         dmxval = channel_values[dmxchan]                                #Apply Saved Channel Values
     if key == Key.up:                                                   #If Up Arrow Key Pressed...
