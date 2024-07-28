@@ -179,8 +179,14 @@ time.sleep(5)
 ## The business end of the program, This is the bit that controls the lights
 
 def on_press(key):
-    global dmxval                                                    #Make both vars global so that we can easily obtain access to such vars
-    global dmxchan
+    global dmxval                                                    #Make vars global so that we can easily obtain access
+    global fixturename
+    global fixturestartchan
+    global fixtureprofilename
+    global profiles
+    global savedfixturechan
+
+    loaded_controlvars = 
     if channel_values[dmxchan] > 0:                                     #Check if there are any saved values
         dmxval = channel_values[dmxchan]                                #Apply Saved Channel Values
     if key == Key.up:                                                   #If Up Arrow Key Pressed...
@@ -198,6 +204,8 @@ def on_press(key):
         return
 
 channel_values = {}
+fixtureindex = {}
+savedfixturechan = {}
 flag = True
 while flag == True:
     ## This prints out what fixture is patched where aswell as what fixture is what
@@ -212,12 +220,23 @@ while flag == True:
             i = int(i + 1)
             startingchannel[fixname] = patchdata[profilename][fixname]['starting_channel']
             print(f'{Style.BRIGHT}        [{i}->]', str(fixname).strip("['']"), f'Starts on channel {startingchannel[fixname]}')
+            fixtureindex[i] = {}
+            fixtureindex[i]['fixturename'] = {}
+            fixtureindex[i]['fixturename'] = str(fixname)
+            fixtureindex[i]['startingchannel'] = {}
+            fixtureindex[i]['startingchannel'] = startingchannel[fixname]
+            fixtureindex[i]['profilename'] = profilename
 
-    fixturenum = input('Enter fixture number to change (ENTER to end) >> ')
+    fixturenum = int(input('Enter fixture number to change (ENTER to end) >> '))
     if fixturenum == '':
         print(f'{Fore.GREEN + Style.BRIGHT} Program Quitting....')
         quit()
     
+    fixturename = fixtureindex[fixturenum]['fixturename']
+    fixturestartchan = fixtureindex[fixturenum]['startingchannel']
+    fixtureprofilename = fixtureindex[fixturenum]['profilename']
+    print(f'\n {Fore.BLUE + Style.BRIGHT}You Have Selected {fixturename}')
+
     
     dmxval = 0
     with Listener(on_press=on_press) as listener:
