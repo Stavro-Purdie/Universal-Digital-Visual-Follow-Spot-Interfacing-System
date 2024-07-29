@@ -179,8 +179,8 @@ time.sleep(5)
 ## The business end of the program, This is the bit that controls the lights
 def on_press(key):
     if str(key) == "'8'":                                                   #If Up Arrow Key Pressed...
-        dmxval += 1                                                     #Add 1 to the channel val
-        dmx.set_channel(movementchannels['pan'], dmxval)                                #Run DMX Frame Through DMX Subsystem
+        pan += 1                                                     #Add 1 to the channel val
+        dmx.set_channel(movementchannels['pan'], pan)                                #Run DMX Frame Through DMX Subsystem
     if key == Key.down:
         dmxval -= 1
         dmx.set_channel(dmxchan, dmxval)
@@ -193,8 +193,7 @@ def on_press(key):
         return
 
 def dmxcontrol():
-    ## Make needed variables global because ceebs passing them through normally
-    global dmxval                                                   
+    ## Make needed variables global because ceebs passing them through normally                                                  
     global fixturename
     global fixturestartchan
     global fixtureprofilename
@@ -205,6 +204,27 @@ def dmxcontrol():
     global colourchannels
     global beamchannels
     global dimmerchannels
+    ## Saved channel values
+    global pan
+    global panfine
+    global tilt
+    global tiltfine
+    global ptspeed
+    global conventional
+    global red
+    global green
+    global blue
+    global cyan
+    global magenta
+    global yellow
+    global cto
+    global zoom
+    global focus
+    global frost
+    global static_gobo
+    global rotating_gobo
+    global dimmer
+    global dimmer_fine
         
 
 ## This below bit sets up all the channels from the fixture profile
@@ -377,6 +397,27 @@ while flag == True:
     fixturestartchan = int(fixtureindex[fixturenum]['startingchannel'])
     fixtureprofilename = fixtureindex[fixturenum]['profilename']
     print(f'\n {Fore.BLUE + Style.BRIGHT}You Have Selected {fixturename}')
+
+    pan = 0
+    panfine = 0
+    tilt = 0
+    tiltfine = 0
+    ptspeed = 0
+    conventional = 0
+    red = 0
+    green = 0
+    blue = 0
+    cyan = 0
+    magenta = 0
+    yellow = 0
+    cto = 0
+    zoom = 0
+    focus = 0
+    frost = 0
+    static_gobo = 0
+    rotating_gobo = 0
+    dimmer = 0
+    dimmer_fine = 0
 
     
     dmxcontrol()
