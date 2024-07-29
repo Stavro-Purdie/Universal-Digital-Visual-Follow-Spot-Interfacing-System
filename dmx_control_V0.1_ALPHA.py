@@ -178,9 +178,51 @@ time.sleep(5)
 
 ## The business end of the program, This is the bit that controls the lights
 def on_press(key):
-    if str(key) == "'8'":                                                   #If Up Arrow Key Pressed...
-        pan += 1                                                     #Add 1 to the channel val
-        dmx.set_channel(movementchannels['pan'], pan)                                #Run DMX Frame Through DMX Subsystem
+    if numpad == 'Yes' or 'Y':
+        if str(key) == "'8'":                                                   #If Up Arrow Key Pressed...
+            tilt += 1                                                     #Add 1 to the channel val
+            dmx.set_channel(movementchannels['tilt'], tilt)                                #Run DMX Frame Through DMX Subsystem
+        if str(key) == "'2'":
+            tilt -= 1
+            dmx.set_channel(movementchannels['tilt'], tilt)
+        if str(key) == "'6'":
+            pan += 1
+            dmx.set_channel(movementchannels['pan'], pan)
+        if str(key) == "'4'":
+            pan -= 1
+            dmx.set_channel(movementchannels['pan'], pan)
+    else:
+        if key == Key.up:
+            tilt += 1
+            dmx.set_channel(movementchannels['tilt'], tilt)
+        if key == Key.down:
+            tilt -= 1
+            dmx.set_channel(movementchannels['tilt'], tilt)
+        if key == Key.right:
+            pan += 1
+            dmx.set_channel(movementchannels['pan'], pan)
+        if key == Key.left:
+            pan -= 1
+            dmx.set_channel(movementchannels['pan'], pan)
+
+    if isconventional == True:
+        if str(key) == "'c'" or "'C'":
+            print(f'{Style.BRIGHT}Colour Selected:')
+            if str(key) == "'w'" or "'W'":
+                print(f'{Back.BLUE, Style.BRIGHT}<<< Colour Wheel Selected [Arrow Up/Down] >>>')
+                if key == Key.up:
+                    conventional += 1
+                    dmx.set_channel(colourchannels['colour_wheel'], conventional)
+                if key == Key.down:
+                    conventional -= 1
+                    dmx.set_channel(colourchannels['colour_wheel'], conventional)
+
+    if isrgb == True:
+        if str(key) == "'c'" or "'C'":
+            print(f'{Style.BRIGHT}Colour Selected:')
+            if str(key) == "'r'" or "'R'":
+
+
     if key == Key.down:
         dmxval -= 1
         dmx.set_channel(dmxchan, dmxval)
@@ -204,6 +246,13 @@ def dmxcontrol():
     global colourchannels
     global beamchannels
     global dimmerchannels
+
+    ## Bools
+    global isconventional
+    global isrgb
+    global iscmy
+    global iscto
+
     ## Saved channel values
     global pan
     global panfine
@@ -234,7 +283,7 @@ def dmxcontrol():
         'pan_fine':  int(profiles[fixtureprofilename]['movement']['pan_fine']) + fixturestartchan,
         'tilt':      int(profiles[fixtureprofilename]['movement']['tilt']) + fixturestartchan,
         'tilt_fine': int(profiles[fixtureprofilename]['movement']['tilt_fine']) + fixturestartchan,
-        'pt_speed':  int(profiles[fixtureprofilename]['movement']['pan_tilt_speed']) + fixturestartchan,
+#        'pt_speed':  int(profiles[fixtureprofilename]['movement']['pan_tilt_speed']) + fixturestartchan,
         }
 
 ## Then we import the colour data (this is fixture dependent hence the if statements)
@@ -358,7 +407,6 @@ def dmxcontrol():
     print(f'     [--] {Style.BRIGHT}Dimmer: {Style.RESET_ALL}[+/-] (On Keyboard by Backspace)')
 
 
-    dmxval = 0
     with Listener(on_press=on_press) as listener:
         listener.join()
 
