@@ -1,9 +1,9 @@
 from pynput import keyboard
     
 def on_press(key):
-        if key == keyboard.Key.up:
+        if str(key) == "'f'":
             print('PRESSED')
-        if key == keyboard.Key.esc:
+        if str(key) == 'g':
             listener.stop()
     
     
