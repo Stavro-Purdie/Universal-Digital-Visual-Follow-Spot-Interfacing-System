@@ -208,8 +208,12 @@ def on_press(key):
     if isconventional == True:
         if str(key) == "'c'" or "'C'":
             print(f'{Style.BRIGHT}Colour Selected:')
+            if key == Key.enter:
+                print(f'{Fore.BLUE}RETURNING TO THE MAIN CONTROL SURFACE...')
             if str(key) == "'w'" or "'W'":
                 print(f'{Back.BLUE, Style.BRIGHT}<<< Colour Wheel Selected [Arrow Up/Down] >>>')
+                if key == Key.enter:
+                    print(f'{Fore.BLUE}RETURNING TO THE MAIN CONTROL SURFACE...')
                 if key == Key.up:
                     conventional += 1
                     dmx.set_channel(colourchannels['colour_wheel'], conventional)
@@ -220,8 +224,12 @@ def on_press(key):
     if isrgb == True:
         if str(key) == "'c'" or "'C'":
             print(f'{Style.BRIGHT}Colour Selected:')
+            if key == Key.enter:
+                print(f'{Fore.BLUE}RETURNING TO THE MAIN CONTROL SURFACE...')
             if str(key) == "'r'" or "'R'":
                 print(f'{Back.BLUE, Style.BRIGHT}<<< Red Selected [Arrow Up/Down] >>>')
+                if key == Key.enter:
+                    print(f'{Fore.BLUE}RETURNING TO THE MAIN CONTROL SURFACE...')
                 if key == Key.up:
                     red += 1
                     dmx.set_channel(colourchannels['red'], red)
@@ -230,6 +238,8 @@ def on_press(key):
                     dmx.set_channel(colourchannels['red'], red)
             if str(key) == "'g'" or "'G'":
                 print(f'{Back.BLUE, Style.BRIGHT}<<< Green Selected [Arrow Up/Down] >>>')
+                if key == Key.enter:
+                    print(f'{Fore.BLUE}RETURNING TO THE MAIN CONTROL SURFACE...')
                 if key == Key.up:
                     green += 1
                     dmx.set_channel(colourchannels['green'], green)
@@ -238,6 +248,8 @@ def on_press(key):
                     dmx.set_channel(colourchannels['green'], green)
             if str(key) == "'b'" or "'B'":
                 print(f'{Back.BLUE, Style.BRIGHT}<<< Blue Selected [Arrow Up/Down] >>>')
+                if key == Key.enter:
+                    print(f'{Fore.BLUE}RETURNING TO THE MAIN CONTROL SURFACE...')
                 if key == Key.up:
                     blue += 1
                     dmx.set_channel(colourchannels['blue'], blue)
@@ -248,8 +260,12 @@ def on_press(key):
     if iscmy == True:
         if str(key) == "'c'" or "'C'":
             print(f'{Style.BRIGHT}Colour Selected:')
+            if key == Key.enter:
+                print(f'{Fore.BLUE}RETURNING TO THE MAIN CONTROL SURFACE...')
             if str(key) == "'c'" or "'C'":
                 print(f'{Back.BLUE, Style.BRIGHT}<<< Cyan Selected [Arrow Up/Down] >>>')
+                if key == Key.enter:
+                    print(f'{Fore.BLUE}RETURNING TO THE MAIN CONTROL SURFACE...')
                 if key == Key.up:
                     cyan += 1
                     dmx.set_channel(colourchannels['cyan'], cyan)
@@ -258,6 +274,8 @@ def on_press(key):
                     dmx.set_channel(colourchannels['cyan'], cyan)
             if str(key) == "'m'" or "'M'":
                 print(f'{Back.BLUE, Style.BRIGHT}<<< Magenta Selected [Arrow Up/Down] >>>')
+                if key == Key.enter:
+                    print(f'{Fore.BLUE}RETURNING TO THE MAIN CONTROL SURFACE...')
                 if key == Key.up:
                     magenta += 1
                     dmx.set_channel(colourchannels['magenta'], magenta)
@@ -266,6 +284,8 @@ def on_press(key):
                     dmx.set_channel(colourchannels['magenta'], magenta)
             if str(key) == "'y'" or "'Y'":
                 print(f'{Back.BLUE, Style.BRIGHT}<<< Yellow Selected [Arrow Up/Down] >>>')
+                if key == Key.enter:
+                    print(f'{Fore.BLUE}RETURNING TO THE MAIN CONTROL SURFACE...')
                 if key == Key.up:
                     yellow += 1
                     dmx.set_channel(colourchannels['yellow'], yellow)
@@ -276,8 +296,12 @@ def on_press(key):
     if iscto == True:
         if str(key) == "'c'" or "'C'":
             print(f'{Style.BRIGHT}Colour Selected:')
+            if key == Key.enter:
+                print(f'{Fore.BLUE}RETURNING TO THE MAIN CONTROL SURFACE...')
             if str(key) == "'t'" or "'T'":
                 print(f'{Back.BLUE, Style.BRIGHT}<<< Colour Temperature Selected [Arrow Up/Down] >>>')
+                if key == Key.enter:
+                    print(f'{Fore.BLUE}RETURNING TO THE MAIN CONTROL SURFACE...')
                 if key == Key.up:
                     cto += 1
                     dmx.set_channel(colourchannels['cto'], cto)
@@ -287,6 +311,8 @@ def on_press(key):
     
     if str(key) == "'z'" or "'Z'":
         print(f'{Back.BLUE, Style.BRIGHT}<<< Zoom Selected [Arrow Up/Down] >>>')
+        if key == Key.enter:
+            print(f'{Fore.BLUE}RETURNING TO THE MAIN CONTROL SURFACE...')
         if key == Key.up:
             zoom += 1
             dmx.set_channel(beamchannels['zoom'], zoom)
@@ -296,6 +322,8 @@ def on_press(key):
     
     if str(key) == "'f'" or "'F'":
         print(f'{Back.BLUE, Style.BRIGHT}<<< Focus Selected [Arrow Up/Down] >>>')
+        if key == Key.enter:
+            print(f'{Fore.BLUE}RETURNING TO THE MAIN CONTROL SURFACE...')
         if key == Key.up:
             focus += 1
             dmx.set_channel(beamchannels['focus'], focus)
@@ -305,8 +333,12 @@ def on_press(key):
     
     if str(key) == "'b'" or "'B'":
         print(f'{Style.BRIGHT}Beam Selected')
+        if key == Key.enter:
+            print(f'{Fore.BLUE}RETURNING TO THE MAIN CONTROL SURFACE...')
         if str(key) == "'f'" or "'F'":
             print(f'{Back.BLUE, Style.BRIGHT}<<< Frost Selected [Arrow Up/Down] >>>')
+            if key == Key.enter:
+                print(f'{Fore.BLUE}RETURNING TO THE MAIN CONTROL SURFACE...')
             if key == Key.up:
                 frost += 1
                 dmx.set_channel(beamchannels['frost'], frost)
@@ -315,17 +347,34 @@ def on_press(key):
                 dmx.set_channel(beamchannels['frost'], frost)
         if str(key) == "'s'" or "'S'":
             print(f'{Back.BLUE, Style.BRIGHT}<<< Static Gobo Selected [Arrow Up/Down] >>>')
+            if key == Key.enter:
+                print(f'{Fore.BLUE}RETURNING TO THE MAIN CONTROL SURFACE...')
             if key == Key.up:
-                
- 
+                static_gobo += 1
+                dmx.set_channel(beamchannels['static_gobo'], static_gobo)
+            if str(key) == Key.down:
+                static_gobo -= 1
+                dmx.set_channel(beamchannels['static_gobo'], static_gobo)
+        if str(key) == "'r'" or "'R'":
+            print(f'{Back.BLUE, Style.BRIGHT}<<< Rotating Gobo Selected [Arrow Up/Down] >>>')
+            if key == Key.enter:
+                print(f'{Fore.BLUE}RETURNING TO THE MAIN CONTROL SURFACE...')
+            if str(key) == Key.up:
+                rotating_gobo += 1
+                dmx.set_channel(beamchannels['rotating_gobo'], rotating_gobo)
+            if str(key) == Key.down:
+                rotating_gobo -= 1
+                dmx.set_channel(beamchannels['rotating_gobo'], rotating_gobo)
 
-
-    if key == Key.down:
-        dmxval -= 1
-        dmx.set_channel(dmxchan, dmxval)
+    if str(key) == "'='" or "'+'":
+        dimmer += 1
+        dmx.set_channel(dimmerchannels['dimmer'], dimmer)
+    if str(key) == "'-'" or "'_'":
+        dimmer -= 1
+        dmx.set_channel(dimmerchannels['dimmer'], dimmer)
+    
     if key == Key.esc:
         print(f'{Fore.GREEN}Saving Channel Values...')
-        channel_values[dmxchan] = dmxval
         print(f'{Fore.BLUE}Returning you to the Channel Selector...')
         print()
         Listener.stop()
