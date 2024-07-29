@@ -178,11 +178,9 @@ time.sleep(5)
 
 ## The business end of the program, This is the bit that controls the lights
 def on_press(key):
-    if channel_values[dmxchan] > 0:                                     #Check if there are any saved values
-        dmxval = channel_values[dmxchan]                                #Apply Saved Channel Values
-    if key == Key.up:                                                   #If Up Arrow Key Pressed...
+    if str(key) == "'8'":                                                   #If Up Arrow Key Pressed...
         dmxval += 1                                                     #Add 1 to the channel val
-        dmx.set_channel(dmxchan, dmxval)                                #Run DMX Frame Through DMX Subsystem
+        dmx.set_channel(movementchannels['pan'], dmxval)                                #Run DMX Frame Through DMX Subsystem
     if key == Key.down:
         dmxval -= 1
         dmx.set_channel(dmxchan, dmxval)
@@ -203,15 +201,20 @@ def dmxcontrol():
     global profiles
     global savedfixturechan
     global numpad
+    global movementchannels
+    global colourchannels
+    global beamchannels
+    global dimmerchannels
+        
 
 ## This below bit sets up all the channels from the fixture profile
 ## First we import movement stuff
     movementchannels = {
-        'pan':       int(profiles[fixtureprofilename]['movement']['pan']),
-        'pan_fine':  int(profiles[fixtureprofilename]['movement']['pan_fine']),
-        'tilt':      int(profiles[fixtureprofilename]['movement']['tilt']),
-        'tilt_fine': int(profiles[fixtureprofilename]['movement']['tilt_fine']),
-        'pt_speed':  int(profiles[fixtureprofilename]['movement']['pan_tilt_speed']),
+        'pan':       int(profiles[fixtureprofilename]['movement']['pan']) + fixturestartchan,
+        'pan_fine':  int(profiles[fixtureprofilename]['movement']['pan_fine']) + fixturestartchan,
+        'tilt':      int(profiles[fixtureprofilename]['movement']['tilt']) + fixturestartchan,
+        'tilt_fine': int(profiles[fixtureprofilename]['movement']['tilt_fine']) + fixturestartchan,
+        'pt_speed':  int(profiles[fixtureprofilename]['movement']['pan_tilt_speed']) + fixturestartchan,
         }
 
 ## Then we import the colour data (this is fixture dependent hence the if statements)
@@ -219,7 +222,7 @@ def dmxcontrol():
         if 'conventional' in profiles[fixtureprofilename]['colour']:
             isconventional = True
             colourchannels = {
-                'colour_wheel': int(profiles[fixtureprofilename]['colour']['conventional']['colour_wheel'])
+                'colour_wheel': int(profiles[fixtureprofilename]['colour']['conventional']['colour_wheel']) + fixturestartchan
             }
         else:
             isconventional = False
@@ -230,9 +233,9 @@ def dmxcontrol():
         if 'rgb' in profiles[fixtureprofilename]['colour']['led']:
             isrgb = True
             colourchannels = {
-                'red':   int(profiles[fixtureprofilename]['colour']['led']['rgb']['red']),
-                'green': int(profiles[fixtureprofilename]['colour']['led']['rgb']['green']),
-                'blue':  int(profiles[fixtureprofilename]['colour']['led']['rgb']['blue']),
+                'red':   int(profiles[fixtureprofilename]['colour']['led']['rgb']['red']) + fixturestartchan,
+                'green': int(profiles[fixtureprofilename]['colour']['led']['rgb']['green']) + fixturestartchan,
+                'blue':  int(profiles[fixtureprofilename]['colour']['led']['rgb']['blue']) + fixturestartchan,
             }
         else:
             isrgb = False
@@ -243,9 +246,9 @@ def dmxcontrol():
         if 'cmy' in profiles[fixtureprofilename]['colour']['led']:
             iscmy = True
             colourchannels = {
-                'cyan':    int(profiles[fixtureprofilename]['colour']['led']['cmy']['cyan']),
-                'magenta': int(profiles[fixtureprofilename]['colour']['led']['cmy']['magenta']),
-                'yellow':  int(profiles[fixtureprofilename]['colour']['led']['cmy']['yellow']),
+                'cyan':    int(profiles[fixtureprofilename]['colour']['led']['cmy']['cyan']) + fixturestartchan,
+                'magenta': int(profiles[fixtureprofilename]['colour']['led']['cmy']['magenta']) + fixturestartchan,
+                'yellow':  int(profiles[fixtureprofilename]['colour']['led']['cmy']['yellow']) + fixturestartchan,
             }
         else:
             iscmy = False
@@ -255,7 +258,7 @@ def dmxcontrol():
     try:
         if 'cto' in profiles[fixtureprofilename]['colour']:
             iscto = True
-            colourchannels['cto'] = int(profiles[fixtureprofilename]['colour']['cto'])
+            colourchannels['cto'] = int(profiles[fixtureprofilename]['colour']['cto']) + fixturestartchan,
         else:
             iscto = False
     except:
@@ -263,17 +266,17 @@ def dmxcontrol():
 
 ## Then we import the beam data
     beamchannels = {
-        'zoom': int(profiles[fixtureprofilename]['beam']['zoom']),
-        'focus': int(profiles[fixtureprofilename]['beam']['focus']),
-        'frost': int(profiles[fixtureprofilename]['beam']['frost']),
-        'static_gobo': int(profiles[fixtureprofilename]['beam']['static_gobo']),
-        'rotating_gobo': int(profiles[fixtureprofilename]['beam']['rotating_gobo']),
+        'zoom': int(profiles[fixtureprofilename]['beam']['zoom']) + fixturestartchan,
+        'focus': int(profiles[fixtureprofilename]['beam']['focus']) + fixturestartchan,
+        'frost': int(profiles[fixtureprofilename]['beam']['frost']) + fixturestartchan,
+        'static_gobo': int(profiles[fixtureprofilename]['beam']['static_gobo']) + fixturestartchan,
+        'rotating_gobo': int(profiles[fixtureprofilename]['beam']['rotating_gobo']) + fixturestartchan,
     }
 
 ## Lastly we import dimmer data
     dimmerchannels = {
-        'dimmer': int(profiles[fixtureprofilename]['dimmer']['dimmer']),
-        'dimmer_fine': int(profiles[fixtureprofilename]['dimmer']['dimmer_fine']),
+        'dimmer': int(profiles[fixtureprofilename]['dimmer']['dimmer']) + fixturestartchan,
+        'dimmer_fine': int(profiles[fixtureprofilename]['dimmer']['dimmer_fine']) + fixturestartchan,
     }
 
 ## List controllable channels
@@ -314,21 +317,25 @@ def dmxcontrol():
         print(f'     [--] {Style.BRIGHT}Pan: {Style.RESET_ALL}Arrow Left/Right')
     print(f'{Fore.BLUE}Colour:')
     if isconventional == True:
-        print(f'     [--] {Style.BRIGHT}Colour Wheel: {Style.RESET_ALL} [C]olour, [W]heel, Arrow Up/Down')
+        print(f'     [--] {Style.BRIGHT}Colour Wheel: {Style.RESET_ALL}[C]olour, [W]heel, Arrow Up/Down')
     if isrgb == True:
-        print(f'     [--] {Style.BRIGHT}Red: {Style.RESET_ALL} [C]olour, [R]ed, Arrow Up/Down')
-        print(f'     [--] {Style.BRIGHT}Green: {Style.RESET_ALL} [C]olour, [G]reen, Arrow Up/Down')
-        print(f'     [--] {Style.BRIGHT}Blue: {Style.RESET_ALL} [C]olour, [B]lue, Arrow Up/Down')
+        print(f'     [--] {Style.BRIGHT}Red: {Style.RESET_ALL}[C]olour, [R]ed, Arrow Up/Down')
+        print(f'     [--] {Style.BRIGHT}Green: {Style.RESET_ALL}[C]olour, [G]reen, Arrow Up/Down')
+        print(f'     [--] {Style.BRIGHT}Blue: {Style.RESET_ALL}[C]olour, [B]lue, Arrow Up/Down')
     if iscmy == True:
-        print(f'     [--] {Style.BRIGHT}Cyan: {Style.RESET_ALL} [C]olour, [C]yan, Arrow Up/Down')
-        print(f'     [--] {Style.BRIGHT}Magenta: {Style.RESET_ALL} [C]olour, [M]Magenta, Arrow Up/Down')
-        print(f'     [--] {Style.BRIGHT}Yellow: {Style.RESET_ALL} [C]olour, [Y]Yellow, Arrow Up/Down')
+        print(f'     [--] {Style.BRIGHT}Cyan: {Style.RESET_ALL}[C]olour, [C]yan, Arrow Up/Down')
+        print(f'     [--] {Style.BRIGHT}Magenta: {Style.RESET_ALL}[C]olour, [M]Magenta, Arrow Up/Down')
+        print(f'     [--] {Style.BRIGHT}Yellow: {Style.RESET_ALL}[C]olour, [Y]Yellow, Arrow Up/Down')
     if iscto == True:
-        print(f'     [--] {Style.BRIGHT}Colour Temp: {Style.RESET_ALL} [C]olour, [T]emp, Arrow Up/Down')
+        print(f'     [--] {Style.BRIGHT}Colour Temp: {Style.RESET_ALL}[C]olour, [T]emp, Arrow Up/Down')
     print(f'{Fore.BLUE}Beam:')
-    print(f'     [--] {Style.BRIGHT}Zoom: {Style.RESET_ALL} [Z]oom, Arrow Up/Down')
-    print(f'     [--] {Style.BRIGHT}Focus: {Style.RESET_ALL} [F]ocus, Arrow Up/Down')
-
+    print(f'     [--] {Style.BRIGHT}Zoom: {Style.RESET_ALL}[Z]oom, Arrow Up/Down')
+    print(f'     [--] {Style.BRIGHT}Focus: {Style.RESET_ALL}[F]ocus, Arrow Up/Down')
+    print(f'     [--] {Style.BRIGHT}Frost: {Style.RESET_ALL}[B]eam, [F]rost, Arrow Up/Down')
+    print(f'     [--] {Style.BRIGHT}Static Gobo: {Style.RESET_ALL}[B]eam, [S]tatic Gobo, Arrow Up/Down')
+    print(f'     [--] {Style.BRIGHT}Rotating Gobo: {Style.RESET_ALL}[B]eam, [R]otating Gobo, Arrow Up/Down')
+    print(f'{Fore.BLUE}Dimmer:')
+    print(f'     [--] {Style.BRIGHT}Dimmer: {Style.RESET_ALL}[+/-] (On Keyboard by Backspace)')
 
 
     dmxval = 0
@@ -367,7 +374,7 @@ while flag == True:
         quit()
     
     fixturename = fixtureindex[fixturenum]['fixturename']
-    fixturestartchan = fixtureindex[fixturenum]['startingchannel']
+    fixturestartchan = int(fixtureindex[fixturenum]['startingchannel'])
     fixtureprofilename = fixtureindex[fixturenum]['profilename']
     print(f'\n {Fore.BLUE + Style.BRIGHT}You Have Selected {fixturename}')
 
