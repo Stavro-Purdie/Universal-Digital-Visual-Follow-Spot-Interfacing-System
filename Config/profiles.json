@@ -1,49 +1,33 @@
 {
-    "Roylite 17R BSW350": {
-        "channel_count": "30",
+    "Roylite Spin Eye 715": {
+        "channel_count": "27",
         "movement": {
             "pan": "1",
             "pan_fine": "2",
             "tilt": "3",
             "tilt_fine": "4",
-            "pan_tilt_speed": "5"
+            "pan_tilt_speed": "0"
         },
         "colour": {
-            "conventional": {
-                "colour_wheel": "12"
-            }
+            "led": {
+                "rgb": {
+                    "red": "7",
+                    "green": "8",
+                    "blue": "9"
+                }
+            },
+            "cto": "11"
         },
         "beam": {
-            "zoom": "17",
-            "focus": "16",
-            "frost": "15",
-            "static_gobo": "14",
-            "rotating_gobo": "13"
+            "zoom": "14",
+            "focus": "0",
+            "frost": "0",
+            "static_gobo": "0",
+            "rotating_gobo": "0"
         },
         "dimmer": {
-            "dimmer": "29",
-            "dimmer_fine": "30"
-        }
-    },
-    "TEST": {
-        "channel_count": "5",
-        "movement": {
-            "pan": "1",
-            "pan_fine": "2",
-            "tilt": "3",
-            "tilt_fine": "4",
-            "pan_tilt_speed": "5"
-        },
-        "beam": {
-            "zoom": "1",
-            "focus": "2",
-            "frost": "3",
-            "static_gobo": "4",
-            "rotating_gobo": "5"
-        },
-        "dimmer": {
-            "dimmer": "1",
-            "dimmer_fine": "2"
+            "dimmer": "5",
+            "dimmer_fine": "0"
         }
     }
 }
