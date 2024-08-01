@@ -10,6 +10,7 @@ import os
 
 init(autoreset=True)
 
+
 ## FUNCTIONS BELOW
 def adapter_config():                                           ## The main aim of this function is to get the adapter settings from the config
     path = 'Config'
@@ -44,7 +45,8 @@ def load_patch():                                                ## The main aim
 ## MAIN PROGRAM
 ## PSA
 print(f'{Fore.BLUE + Style.BRIGHT}DMX Control V0.1 Alpha Starting....')
-print(f'{Back.RED + Style.BRIGHT}<<< THIS PROGRAM IS IN ALPHA, PLEASE REPORT BUGS TO GITHUB >>>\n\n')
+print(f'{Back.RED + Style.BRIGHT}<<< THIS PROGRAM IS IN ALPHA, PLEASE REPORT BUGS TO GITHUB >>>')
+print('\n')
 time.sleep(3)
 
 ## This section deals with the adapter config function to retrieve the adapterconfig.ini file and extract the adapter values
@@ -159,25 +161,46 @@ print(f'{Fore.BLUE + Style.BRIGHT}Starting the DMX Subsystem')
 time.sleep(3)
 
 ## This section of the program initialized the adapter using the adapterconfig.ini file
-#try:
-#    dmx = Controller(serialport, auto_submit=True, dmx_size=dmxchanmax) 
-#    dmx.set_dmx_parameters(output_rate=adatspeed)
-#except:
-#    print(f'{Fore.RED + Style.BRIGHT}    [XX] Serial Port {serialport} is unreachable. The DMX Subsystem is unable to start.\n')
-#    time.sleep(2)
-#    print(f'{Style.BRIGHT}To diagnose this issue please try these steps:')
-#    print(f'    [--] Make sure the DMX adapter is {Style.BRIGHT}plugged in and recieving power')
-#    print(f'    [--] Run the {Style.BRIGHT}adaptersetup.py{Style.RESET_ALL} program and ensure the correct {Style.BRIGHT}COM/TTY port{Style.RESET_ALL} is selected aswell as the corect {Style.BRIGHT}sample rate')
-#    print(f'    [--] Ensure the adapter is based on the {Style.BRIGHT}RS485 protocol{Style.RESET_ALL} OR is based around an {Style.BRIGHT}ENTTEC/DMXKing Adapter')
-#    print(f'    [--] If the progrm is still not working, feel free to {Style.BRIGHT}create an issue in the github with a copy of the exception\n')
-#    time.sleep(5)
-#    print(f'{Fore.RED}The program will now exit as an unrecoverable exception has occured. {Style.BRIGHT}ALL DATA HAS BEEN SAVED')
-#    quit()
+try:
+    dmx = Controller(serialport, auto_submit=True, dmx_size=dmxchanmax) 
+    dmx.set_dmx_parameters(output_rate=adatspeed)
+except:
+    print(f'{Fore.RED + Style.BRIGHT}    [XX] Serial Port {serialport} is unreachable. The DMX Subsystem is unable to start.\n')
+    time.sleep(2)
+    print(f'{Style.BRIGHT}To diagnose this issue please try these steps:')
+    print(f'    [--] Make sure the DMX adapter is {Style.BRIGHT}plugged in and recieving power')
+    print(f'    [--] Run the {Style.BRIGHT}adaptersetup.py{Style.RESET_ALL} program and ensure the correct {Style.BRIGHT}COM/TTY port{Style.RESET_ALL} is selected aswell as the corect {Style.BRIGHT}sample rate')
+    print(f'    [--] Ensure the adapter is based on the {Style.BRIGHT}RS485 protocol{Style.RESET_ALL} OR is based around an {Style.BRIGHT}ENTTEC/DMXKing Adapter')
+    print(f'    [--] If the progrm is still not working, feel free to {Style.BRIGHT}create an issue in the github with a copy of the exception\n')
+    time.sleep(5)
+    print(f'{Fore.RED}The program will now exit as an unrecoverable exception has occured. {Style.BRIGHT}ALL DATA HAS BEEN SAVED')
+    quit()
 print(f'{Fore.GREEN + Style.BRIGHT}DMX Subsystem Started Successfully')
 time.sleep(5)
 
 ## The business end of the program, This is the bit that controls the lights
 def on_press(key):
+    global pan
+    global panfine
+    global tilt
+    global tiltfine
+    global ptspeed
+    global conventional
+    global red
+    global green
+    global blue
+    global cyan
+    global magenta
+    global yellow
+    global cto
+    global zoom
+    global focus
+    global frost
+    global static_gobo
+    global rotating_gobo
+    global dimmer
+    global dimmer_fine
+
     if numpad == 'Yes' or 'Y':
         if str(keyboard.Key) == "'8'":                                                   #If Up Arrow Key Pressed...
             tilt += 1                                                     #Add 1 to the channel val
@@ -401,26 +424,7 @@ def dmxcontrol():
     global iscto
 
     ## Saved channel values
-    global pan
-    global panfine
-    global tilt
-    global tiltfine
-    global ptspeed
-    global conventional
-    global red
-    global green
-    global blue
-    global cyan
-    global magenta
-    global yellow
-    global cto
-    global zoom
-    global focus
-    global frost
-    global static_gobo
-    global rotating_gobo
-    global dimmer
-    global dimmer_fine
+
         
 
 ## This below bit sets up all the channels from the fixture profile
