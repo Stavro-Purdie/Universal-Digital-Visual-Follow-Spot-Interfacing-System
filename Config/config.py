@@ -12,10 +12,11 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_Wizard(object):
     def setupUi(self, Wizard):
         Wizard.setObjectName("Wizard")
-        Wizard.resize(475, 352)
+        Wizard.resize(500, 379)
         Wizard.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))
         icon = QtGui.QIcon.fromTheme("security-high")
         Wizard.setWindowIcon(icon)
+        Wizard.setToolTip("")
         Wizard.setWizardStyle(QtWidgets.QWizard.WizardStyle.ClassicStyle)
         Wizard.setOptions(QtWidgets.QWizard.WizardOption.HaveHelpButton|QtWidgets.QWizard.WizardOption.NoBackButtonOnLastPage|QtWidgets.QWizard.WizardOption.NoBackButtonOnStartPage|QtWidgets.QWizard.WizardOption.NoCancelButtonOnLastPage)
         Wizard.setTitleFormat(QtCore.Qt.TextFormat.AutoText)
@@ -65,7 +66,7 @@ class Ui_Wizard(object):
         self.label_10.setGeometry(QtCore.QRect(0, 30, 378, 16))
         self.label_10.setObjectName("label_10")
         self.label_14 = QtWidgets.QLabel(parent=self.wizardPage)
-        self.label_14.setGeometry(QtCore.QRect(0, 250, 371, 51))
+        self.label_14.setGeometry(QtCore.QRect(0, 240, 371, 31))
         self.label_14.setObjectName("label_14")
         self.layoutWidget = QtWidgets.QWidget(parent=self.wizardPage)
         self.layoutWidget.setGeometry(QtCore.QRect(0, 50, 262, 54))
@@ -86,7 +87,7 @@ class Ui_Wizard(object):
         self.Recadatspeed.setObjectName("Recadatspeed")
         self.gridLayout.addWidget(self.Recadatspeed, 1, 1, 1, 1)
         self.layoutWidget1 = QtWidgets.QWidget(parent=self.wizardPage)
-        self.layoutWidget1.setGeometry(QtCore.QRect(0, 120, 338, 51))
+        self.layoutWidget1.setGeometry(QtCore.QRect(0, 120, 331, 51))
         self.layoutWidget1.setObjectName("layoutWidget1")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.layoutWidget1)
         self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -107,6 +108,9 @@ class Ui_Wizard(object):
         self.manadatspeed.setChecked(False)
         self.manadatspeed.setObjectName("manadatspeed")
         self.gridLayout_2.addWidget(self.manadatspeed, 0, 0, 1, 2)
+        self.label_39 = QtWidgets.QLabel(parent=self.wizardPage)
+        self.label_39.setGeometry(QtCore.QRect(0, 270, 251, 21))
+        self.label_39.setObjectName("label_39")
         Wizard.addPage(self.wizardPage)
         self.wizardPage_2 = QtWidgets.QWizardPage()
         self.wizardPage_2.setObjectName("wizardPage_2")
@@ -165,8 +169,11 @@ class Ui_Wizard(object):
         self.label_23.setGeometry(QtCore.QRect(0, 110, 378, 81))
         self.label_23.setObjectName("label_23")
         self.label_24 = QtWidgets.QLabel(parent=self.wizardPage_3)
-        self.label_24.setGeometry(QtCore.QRect(0, 240, 371, 51))
+        self.label_24.setGeometry(QtCore.QRect(0, 230, 371, 51))
         self.label_24.setObjectName("label_24")
+        self.label_40 = QtWidgets.QLabel(parent=self.wizardPage_3)
+        self.label_40.setGeometry(QtCore.QRect(0, 270, 251, 21))
+        self.label_40.setObjectName("label_40")
         Wizard.addPage(self.wizardPage_3)
         self.wizardPage_4 = QtWidgets.QWizardPage()
         self.wizardPage_4.setObjectName("wizardPage_4")
@@ -190,11 +197,14 @@ class Ui_Wizard(object):
         self.Addfixturebutton.setFlat(False)
         self.Addfixturebutton.setObjectName("Addfixturebutton")
         self.label_28 = QtWidgets.QLabel(parent=self.wizardPage_4)
-        self.label_28.setGeometry(QtCore.QRect(0, 250, 311, 41))
+        self.label_28.setGeometry(QtCore.QRect(0, 250, 311, 31))
         self.label_28.setObjectName("label_28")
         self.label_34 = QtWidgets.QLabel(parent=self.wizardPage_4)
         self.label_34.setGeometry(QtCore.QRect(260, 90, 191, 41))
         self.label_34.setObjectName("label_34")
+        self.label_42 = QtWidgets.QLabel(parent=self.wizardPage_4)
+        self.label_42.setGeometry(QtCore.QRect(0, 280, 251, 21))
+        self.label_42.setObjectName("label_42")
         Wizard.addPage(self.wizardPage_4)
         self.wizardPage_5 = QtWidgets.QWizardPage()
         self.wizardPage_5.setObjectName("wizardPage_5")
@@ -213,7 +223,28 @@ class Ui_Wizard(object):
         self.label_33 = QtWidgets.QLabel(parent=self.wizardPage_5)
         self.label_33.setGeometry(QtCore.QRect(0, 240, 371, 51))
         self.label_33.setObjectName("label_33")
+        self.pushButton = QtWidgets.QPushButton(parent=self.wizardPage_5)
+        self.pushButton.setGeometry(QtCore.QRect(0, 140, 101, 22))
+        self.pushButton.setAutoDefault(True)
+        self.pushButton.setDefault(True)
+        self.pushButton.setFlat(False)
+        self.pushButton.setObjectName("pushButton")
         Wizard.addPage(self.wizardPage_5)
+        self.wizardPage_6 = QtWidgets.QWizardPage()
+        self.wizardPage_6.setObjectName("wizardPage_6")
+        self.label_35 = QtWidgets.QLabel(parent=self.wizardPage_6)
+        self.label_35.setGeometry(QtCore.QRect(0, 60, 471, 111))
+        self.label_35.setObjectName("label_35")
+        self.label_36 = QtWidgets.QLabel(parent=self.wizardPage_6)
+        self.label_36.setGeometry(QtCore.QRect(0, 20, 461, 31))
+        self.label_36.setObjectName("label_36")
+        self.label_37 = QtWidgets.QLabel(parent=self.wizardPage_6)
+        self.label_37.setGeometry(QtCore.QRect(0, 250, 451, 51))
+        self.label_37.setObjectName("label_37")
+        self.label_38 = QtWidgets.QLabel(parent=self.wizardPage_6)
+        self.label_38.setGeometry(QtCore.QRect(0, 0, 391, 16))
+        self.label_38.setObjectName("label_38")
+        Wizard.addPage(self.wizardPage_6)
         self.label_11.setBuddy(self.ChannelReq)
         self.label_13.setBuddy(self.speedenter)
 
@@ -225,13 +256,10 @@ class Ui_Wizard(object):
     def retranslateUi(self, Wizard):
         _translate = QtCore.QCoreApplication.translate
         Wizard.setWindowTitle(_translate("Wizard", "DMX Subsystem Configuration Tool"))
-        Wizard.setToolTip(_translate("Wizard", "<html><head/><body><p>boobs</p></body></html>"))
         self.label.setText(_translate("Wizard", "<html><head/><body><p><span style=\" font-weight:700; text-decoration: underline;\">Welcome to the UDVFSIS Configurator</span></p></body></html>"))
         self.label_2.setText(_translate("Wizard", "<html><head/><body><p><span style=\" font-weight:700;\">This program will Initialize and create configs for the DMX <br>Subsystem:</span></p><p><br/></p><p><br/></p></body></html>"))
         self.label_3.setText(_translate("Wizard", "<html><head/><body><p>Please ensure you have: <br>1. The DMX adapter plugged in. <br> 2. Be prepared to enter info such as fixture profiles and patching<br>information.</p></body></html>"))
-        self.label_4.setText(_translate("Wizard", "Press <NEXT> to continue with the configuration\n"
-"Press <HELP> for assistance\n"
-"Press <CANCEL> to exit the configurator"))
+        self.label_4.setText(_translate("Wizard", "<html><head/><body><p>Press &lt;NEXT&gt; to continue with the configuration<br/>Press &lt;HELP&gt; for assistance<br/>Press &lt;CANCEL&gt; to quit the configurator</p></body></html>"))
         self.wizardPage2.setWhatsThis(_translate("Wizard", "<html><head/><body><p>Adapter Config Starting Prompt.</p></body></html>"))
         self.label_5.setText(_translate("Wizard", "Press <NEXT> to continue with the configuration\n"
 "Press <CANCEL> to exit the configurator"))
@@ -247,6 +275,7 @@ class Ui_Wizard(object):
         self.label_12.setText(_translate("Wizard", "Reccommended Adapter Speed"))
         self.label_13.setText(_translate("Wizard", "Adapter Speed"))
         self.manadatspeed.setText(_translate("Wizard", "Enter Manual Adapter Speed (NOT RECCOMENDED)"))
+        self.label_39.setText(_translate("Wizard", "Press <HELP> For more information"))
         self.label_15.setText(_translate("Wizard", "The Adapter Configuration has now finished, Your settings \n"
 "are below:"))
         self.label_19.setText(_translate("Wizard", "Press <NEXT> to continue with the configuration\n"
@@ -266,6 +295,7 @@ class Ui_Wizard(object):
 "Bulb info"))
         self.label_24.setText(_translate("Wizard", "Press <NEXT> to continue with the configuration\n"
 "Press <CANCEL> to exit the configurator"))
+        self.label_40.setText(_translate("Wizard", "Press <HELP> For more information"))
         self.label_25.setText(_translate("Wizard", "<html><head/><body><p><span style=\" font-size:16pt; font-weight:700;\">FIXTURE PROFILE SETUP</span></p><p><br/></p><p><br/></p></body></html>"))
         self.label_27.setText(_translate("Wizard", "Fixtures added to the system:"))
         self.Addfixturebutton.setText(_translate("Wizard", "Add Fixture"))
@@ -273,6 +303,7 @@ class Ui_Wizard(object):
 "Press <CANCEL> to exit the configurator"))
         self.label_34.setText(_translate("Wizard", "Click on each fixture to see\n"
 "their properties"))
+        self.label_42.setText(_translate("Wizard", "Press <HELP> For more information"))
         self.label_29.setText(_translate("Wizard", "<html><head/><body><p><span style=\" font-size:16pt; font-weight:700;\">FIXTURE PATCH</span></p><p><br/></p><p><br/></p></body></html>"))
         self.label_30.setText(_translate("Wizard", "<html><head/><body><p><span style=\" font-size:11pt; font-weight:700;\">You will need:</span></p></body></html>"))
         self.label_31.setText(_translate("Wizard", "A clear understanding of how many fixtures you would like to patch"))
@@ -280,7 +311,23 @@ class Ui_Wizard(object):
 "profiles we created in the last section"))
         self.label_33.setText(_translate("Wizard", "Press <NEXT> to continue with the configuration\n"
 "Press <CANCEL> to exit the configurator\n"
-"Press <HELP> for help"))
+"Press <HELP> for assistance"))
+        self.pushButton.setText(_translate("Wizard", "Patch Fixtures"))
+        self.label_35.setText(_translate("Wizard", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"hr { height: 1px; border-width: 0; }\n"
+"li.unchecked::marker { content: \"\\2610\"; }\n"
+"li.checked::marker { content: \"\\2612\"; }\n"
+"</style></head><body style=\" font-family:\'Sans Serif\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">These settings will be stored in 3 config files under Config/ in the main <br />directory of this program.</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:700;\">Adapter Settings</span>: Config/adapterconfig.ini</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:700;\">Fixture Profiles: </span>Config/profiles.json</p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:700;\">Patch Settings: </span>Config/patchdata.json</p>\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
+        self.label_36.setText(_translate("Wizard", "<html><head/><body><p><span style=\" font-weight:700;\">This program will save all the configurations on exit </span></p><p><br/></p><p><br/></p></body></html>"))
+        self.label_37.setText(_translate("Wizard", "<html><head/><body><p>Press &lt;FINISH&gt; to write the configuration and quit<br/>Press &lt;CANCEL&gt; to abort the configuration and quit without writing data</p></body></html>"))
+        self.label_38.setText(_translate("Wizard", "<html><head/><body><p><span style=\" font-weight:700; text-decoration: underline;\">The UDVFSIS Configurator has Finished</span></p></body></html>"))
 
 
 if __name__ == "__main__":

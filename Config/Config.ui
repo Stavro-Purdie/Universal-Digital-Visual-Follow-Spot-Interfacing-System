@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>475</width>
-    <height>352</height>
+    <width>500</width>
+    <height>379</height>
    </rect>
   </property>
   <property name="cursor">
@@ -21,7 +21,7 @@
     <normaloff>../../../../../../.designer/backup</normaloff>../../../../../../.designer/backup</iconset>
   </property>
   <property name="toolTip">
-   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;boobs&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   <string/>
   </property>
   <property name="wizardStyle">
    <enum>QWizard::ClassicStyle</enum>
@@ -88,9 +88,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Press &lt;NEXT&gt; to continue with the configuration
-Press &lt;HELP&gt; for assistance
-Press &lt;CANCEL&gt; to exit the configurator</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Press &amp;lt;NEXT&amp;gt; to continue with the configuration&lt;br/&gt;Press &amp;lt;HELP&amp;gt; for assistance&lt;br/&gt;Press &amp;lt;CANCEL&amp;gt; to quit the configurator&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
   </widget>
@@ -200,9 +198,9 @@ of serial devices.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>250</y>
+      <y>240</y>
       <width>371</width>
-      <height>51</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -250,7 +248,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <rect>
       <x>0</x>
       <y>120</y>
-      <width>338</width>
+      <width>331</width>
       <height>51</height>
      </rect>
     </property>
@@ -298,6 +296,19 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QLabel" name="label_39">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>270</y>
+      <width>251</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Press &lt;HELP&gt; For more information</string>
+    </property>
    </widget>
   </widget>
   <widget class="QWizardPage" name="wizardPage_2">
@@ -465,7 +476,7 @@ Bulb info</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>240</y>
+      <y>230</y>
       <width>371</width>
       <height>51</height>
      </rect>
@@ -473,6 +484,19 @@ Bulb info</string>
     <property name="text">
      <string>Press &lt;NEXT&gt; to continue with the configuration
 Press &lt;CANCEL&gt; to exit the configurator</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_40">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>270</y>
+      <width>251</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Press &lt;HELP&gt; For more information</string>
     </property>
    </widget>
   </widget>
@@ -554,7 +578,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       <x>0</x>
       <y>250</y>
       <width>311</width>
-      <height>41</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -574,6 +598,19 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="text">
      <string>Click on each fixture to see
 their properties</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_42">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>280</y>
+      <width>251</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Press &lt;HELP&gt; For more information</string>
     </property>
    </widget>
   </widget>
@@ -643,7 +680,94 @@ profiles we created in the last section</string>
     <property name="text">
      <string>Press &lt;NEXT&gt; to continue with the configuration
 Press &lt;CANCEL&gt; to exit the configurator
-Press &lt;HELP&gt; for help</string>
+Press &lt;HELP&gt; for assistance</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>140</y>
+      <width>101</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Patch Fixtures</string>
+    </property>
+    <property name="autoDefault">
+     <bool>true</bool>
+    </property>
+    <property name="default">
+     <bool>true</bool>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QWizardPage" name="wizardPage_6">
+   <widget class="QLabel" name="label_35">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>60</y>
+      <width>471</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+hr { height: 1px; border-width: 0; }
+li.unchecked::marker { content: &quot;\2610&quot;; }
+li.checked::marker { content: &quot;\2612&quot;; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;These settings will be stored in 3 config files under Config/ in the main &lt;br /&gt;directory of this program.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Adapter Settings&lt;/span&gt;: Config/adapterconfig.ini&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Fixture Profiles: &lt;/span&gt;Config/profiles.json&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Patch Settings: &lt;/span&gt;Config/patchdata.json&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_36">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>20</y>
+      <width>461</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;This program will save all the configurations on exit &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_37">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>250</y>
+      <width>451</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Press &amp;lt;FINISH&amp;gt; to write the configuration and quit&lt;br/&gt;Press &amp;lt;CANCEL&amp;gt; to abort the configuration and quit without writing data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_38">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>391</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700; text-decoration: underline;&quot;&gt;The UDVFSIS Configurator has Finished&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
   </widget>
@@ -683,4 +807,21 @@ Press &lt;HELP&gt; for help</string>
    </hints>
   </connection>
  </connections>
+ <designerdata>
+  <property name="gridDeltaX">
+   <number>10</number>
+  </property>
+  <property name="gridDeltaY">
+   <number>10</number>
+  </property>
+  <property name="gridSnapX">
+   <bool>true</bool>
+  </property>
+  <property name="gridSnapY">
+   <bool>true</bool>
+  </property>
+  <property name="gridVisible">
+   <bool>true</bool>
+  </property>
+ </designerdata>
 </ui>
