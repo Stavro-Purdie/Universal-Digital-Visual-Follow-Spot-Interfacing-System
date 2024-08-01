@@ -87,7 +87,7 @@ class Ui_Wizard(object):
         self.Recadatspeed.setObjectName("Recadatspeed")
         self.gridLayout.addWidget(self.Recadatspeed, 1, 1, 1, 1)
         self.layoutWidget1 = QtWidgets.QWidget(parent=self.wizardPage)
-        self.layoutWidget1.setGeometry(QtCore.QRect(0, 120, 331, 51))
+        self.layoutWidget1.setGeometry(QtCore.QRect(0, 120, 338, 51))
         self.layoutWidget1.setObjectName("layoutWidget1")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.layoutWidget1)
         self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -191,7 +191,7 @@ class Ui_Wizard(object):
         self.label_27.setGeometry(QtCore.QRect(260, 30, 191, 31))
         self.label_27.setObjectName("label_27")
         self.Addfixturebutton = QtWidgets.QPushButton(parent=self.wizardPage_4)
-        self.Addfixturebutton.setGeometry(QtCore.QRect(0, 220, 81, 22))
+        self.Addfixturebutton.setGeometry(QtCore.QRect(0, 220, 121, 22))
         self.Addfixturebutton.setCheckable(False)
         self.Addfixturebutton.setDefault(True)
         self.Addfixturebutton.setFlat(False)
@@ -298,7 +298,7 @@ class Ui_Wizard(object):
         self.label_40.setText(_translate("Wizard", "Press <HELP> For more information"))
         self.label_25.setText(_translate("Wizard", "<html><head/><body><p><span style=\" font-size:16pt; font-weight:700;\">FIXTURE PROFILE SETUP</span></p><p><br/></p><p><br/></p></body></html>"))
         self.label_27.setText(_translate("Wizard", "Fixtures added to the system:"))
-        self.Addfixturebutton.setText(_translate("Wizard", "Add Fixture"))
+        self.Addfixturebutton.setText(_translate("Wizard", "Add Fixture Profile"))
         self.label_28.setText(_translate("Wizard", "Press <NEXT> to continue to the next section\n"
 "Press <CANCEL> to exit the configurator"))
         self.label_34.setText(_translate("Wizard", "Click on each fixture to see\n"
