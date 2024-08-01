@@ -248,7 +248,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <rect>
       <x>0</x>
       <y>120</y>
-      <width>331</width>
+      <width>338</width>
       <height>51</height>
      </rect>
     </property>
@@ -555,12 +555,12 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <rect>
       <x>0</x>
       <y>220</y>
-      <width>81</width>
+      <width>121</width>
       <height>22</height>
      </rect>
     </property>
     <property name="text">
-     <string>Add Fixture</string>
+     <string>Add Fixture Profile</string>
     </property>
     <property name="checkable">
      <bool>false</bool>
