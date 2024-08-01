@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>466</width>
-    <height>311</height>
+    <width>475</width>
+    <height>352</height>
    </rect>
   </property>
   <property name="cursor">
@@ -57,12 +57,12 @@
      <rect>
       <x>0</x>
       <y>20</y>
-      <width>381</width>
+      <width>461</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;This program will Initialize and create configs for the &lt;br&gt; DMX Subsystem:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;This program will Initialize and create configs for the DMX &lt;br&gt;Subsystem:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_3">
@@ -70,19 +70,19 @@
      <rect>
       <x>0</x>
       <y>60</y>
-      <width>411</width>
+      <width>471</width>
       <height>61</height>
      </rect>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please ensure you have: &lt;br&gt;1. The DMX adapter plugged in. &lt;br&gt; 2. Be prepared to enter info such as fixture profiles and &lt;br&gt;   patching information.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please ensure you have: &lt;br&gt;1. The DMX adapter plugged in. &lt;br&gt; 2. Be prepared to enter info such as fixture profiles and patching&lt;br&gt;information.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>170</y>
+      <y>240</y>
       <width>371</width>
       <height>51</height>
      </rect>
@@ -102,7 +102,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>190</y>
+      <y>240</y>
       <width>371</width>
       <height>51</height>
      </rect>
@@ -128,10 +128,10 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
    <widget class="QTreeView" name="AdapterSelect">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>40</y>
+      <x>0</x>
+      <y>50</y>
       <width>191</width>
-      <height>151</height>
+      <height>181</height>
      </rect>
     </property>
     <property name="sortingEnabled">
@@ -144,28 +144,28 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
    <widget class="QLabel" name="label_7">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>50</y>
-      <width>151</width>
+      <x>200</x>
+      <y>40</y>
+      <width>251</width>
       <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please select your &lt;br&gt;adapter from this list &lt;br&gt;of serial devices.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please select your adapter from this list&lt;br&gt;
+of serial devices.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_8">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>110</y>
-      <width>151</width>
-      <height>61</height>
+      <x>200</x>
+      <y>80</y>
+      <width>251</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>Press &lt;HELP&gt; For more 
-information</string>
+     <string>Press &lt;HELP&gt; For more information</string>
     </property>
    </widget>
   </widget>
@@ -200,7 +200,7 @@ information</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>180</y>
+      <y>250</y>
       <width>371</width>
       <height>51</height>
      </rect>
@@ -293,7 +293,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
         <bool>true</bool>
        </property>
        <property name="checked">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -319,7 +319,7 @@ are below:</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>190</y>
+      <y>240</y>
       <width>371</width>
       <height>51</height>
      </rect>
@@ -333,7 +333,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>40</y>
+      <y>50</y>
       <width>250</width>
       <height>80</height>
      </rect>
@@ -434,7 +434,7 @@ fixture profiles</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>70</y>
+      <y>90</y>
       <width>378</width>
       <height>16</height>
      </rect>
@@ -447,7 +447,7 @@ fixture profiles</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>90</y>
+      <y>110</y>
       <width>378</width>
       <height>81</height>
      </rect>
@@ -465,7 +465,7 @@ Bulb info</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>190</y>
+      <y>240</y>
       <width>371</width>
       <height>51</height>
      </rect>
@@ -518,20 +518,19 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <rect>
       <x>260</x>
       <y>30</y>
-      <width>111</width>
+      <width>191</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>Fixtures added to
-the system</string>
+     <string>Fixtures added to the system:</string>
     </property>
    </widget>
    <widget class="QPushButton" name="Addfixturebutton">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>200</y>
+      <x>0</x>
+      <y>220</y>
       <width>81</width>
       <height>22</height>
      </rect>
@@ -552,19 +551,29 @@ the system</string>
    <widget class="QLabel" name="label_28">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>90</y>
-      <width>131</width>
-      <height>81</height>
+      <x>0</x>
+      <y>250</y>
+      <width>311</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>Press &lt;NEXT&gt; to
-continue to the next
-section
-
-Press &lt;CANCEL&gt; to
-exit the configurator</string>
+     <string>Press &lt;NEXT&gt; to continue to the next section
+Press &lt;CANCEL&gt; to exit the configurator</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_34">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>90</y>
+      <width>191</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Click on each fixture to see
+their properties</string>
     </property>
    </widget>
   </widget>
@@ -600,14 +609,12 @@ exit the configurator</string>
      <rect>
       <x>0</x>
       <y>90</y>
-      <width>378</width>
+      <width>411</width>
       <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>A clear understanding of how many fixtures you would like to
-patch
-</string>
+     <string>A clear understanding of how many fixtures you would like to patch</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_32">
@@ -615,20 +622,20 @@ patch
      <rect>
       <x>0</x>
       <y>30</y>
-      <width>378</width>
+      <width>461</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>This section of the configurator deals with the patching of 
-the fixture profiles we created in the last section</string>
+     <string>This section of the configurator deals with the patching of the fixture 
+profiles we created in the last section</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_33">
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>190</y>
+      <y>240</y>
       <width>371</width>
       <height>51</height>
      </rect>
