@@ -2,7 +2,7 @@ from pynput import keyboard
     
 def on_press(key):
         if str(key) == "'f'":
-            print('PRESSED')
+            print(str(key))
         if str(key) == 'g':
             listener.stop()
     
