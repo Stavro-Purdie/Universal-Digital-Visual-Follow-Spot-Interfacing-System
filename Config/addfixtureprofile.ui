@@ -348,7 +348,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
 supports</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox">
+   <widget class="QCheckBox" name="isled">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -361,7 +361,7 @@ supports</string>
      <string>LED Colour Change</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox_4">
+   <widget class="QCheckBox" name="hascto">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -374,7 +374,7 @@ supports</string>
      <string>CTO</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="checkBox_5">
+   <widget class="QCheckBox" name="hascolourwheel">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -425,7 +425,7 @@ supports</string>
       <x>260</x>
       <y>60</y>
       <width>108</width>
-      <height>81</height>
+      <height>83</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_5">
@@ -437,14 +437,14 @@ supports</string>
       </widget>
      </item>
      <item row="0" column="1" colspan="2">
-      <widget class="QSpinBox" name="spinBox_10">
+      <widget class="QSpinBox" name="cyanchan">
        <property name="enabled">
         <bool>false</bool>
        </property>
       </widget>
      </item>
      <item row="2" column="1" colspan="2">
-      <widget class="QSpinBox" name="spinBox_11">
+      <widget class="QSpinBox" name="yellowchan">
        <property name="enabled">
         <bool>false</bool>
        </property>
@@ -458,7 +458,7 @@ supports</string>
       </widget>
      </item>
      <item row="1" column="1" colspan="2">
-      <widget class="QSpinBox" name="spinBox_12">
+      <widget class="QSpinBox" name="magentachan">
        <property name="enabled">
         <bool>false</bool>
        </property>
@@ -473,7 +473,7 @@ supports</string>
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -491,14 +491,14 @@ supports</string>
       </widget>
      </item>
      <item row="0" column="1" colspan="2">
-      <widget class="QSpinBox" name="spinBox_7">
+      <widget class="QSpinBox" name="redchan">
        <property name="enabled">
         <bool>false</bool>
        </property>
       </widget>
      </item>
      <item row="2" column="1" colspan="2">
-      <widget class="QSpinBox" name="spinBox_9">
+      <widget class="QSpinBox" name="bluechan">
        <property name="enabled">
         <bool>false</bool>
        </property>
@@ -512,7 +512,7 @@ supports</string>
       </widget>
      </item>
      <item row="1" column="1" colspan="2">
-      <widget class="QSpinBox" name="spinBox_8">
+      <widget class="QSpinBox" name="greenchan">
        <property name="enabled">
         <bool>false</bool>
        </property>
@@ -527,7 +527,7 @@ supports</string>
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -545,7 +545,7 @@ supports</string>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QSpinBox" name="spinBox_13">
+      <widget class="QSpinBox" name="colourwheelchan">
        <property name="enabled">
         <bool>false</bool>
        </property>
@@ -559,7 +559,7 @@ supports</string>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QSpinBox" name="spinBox_14">
+      <widget class="QSpinBox" name="ctochan">
        <property name="enabled">
         <bool>false</bool>
        </property>
@@ -568,7 +568,99 @@ supports</string>
     </layout>
    </widget>
   </widget>
-  <widget class="QWizardPage" name="wizardPage_3"/>
+  <widget class="QWizardPage" name="wizardPage_3">
+   <widget class="QLabel" name="label_33">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>378</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:700;&quot;&gt;ADD FIXTURE PROFILE&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_23">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>30</y>
+      <width>371</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>This section deals with beam parameters</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_38">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>190</y>
+      <width>81</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Static Gobo:</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>60</y>
+      <width>145</width>
+      <height>132</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout_7">
+     <item row="0" column="0" rowspan="2">
+      <widget class="QLabel" name="label_34">
+       <property name="text">
+        <string>Zoom:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0" colspan="3">
+      <widget class="QLabel" name="label_36">
+       <property name="text">
+        <string>Focus Fine:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="3">
+      <widget class="QSpinBox" name="spinBox_10"/>
+     </item>
+     <item row="4" column="0" colspan="2">
+      <widget class="QLabel" name="label_35">
+       <property name="text">
+        <string>Focus:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0" colspan="3">
+      <widget class="QLabel" name="label_39">
+       <property name="text">
+        <string>Zoom Fine:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="3">
+      <widget class="QSpinBox" name="spinBox_8"/>
+     </item>
+     <item row="0" column="3" rowspan="2">
+      <widget class="QSpinBox" name="spinBox_7"/>
+     </item>
+     <item row="4" column="3">
+      <widget class="QSpinBox" name="spinBox_9"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
  </widget>
  <resources/>
  <connections>
@@ -589,7 +681,7 @@ supports</string>
    </hints>
   </connection>
   <connection>
-   <sender>checkBox</sender>
+   <sender>isled</sender>
    <signal>toggled(bool)</signal>
    <receiver>radioButton</receiver>
    <slot>setEnabled(bool)</slot>
@@ -605,7 +697,7 @@ supports</string>
    </hints>
   </connection>
   <connection>
-   <sender>checkBox</sender>
+   <sender>isled</sender>
    <signal>toggled(bool)</signal>
    <receiver>radioButton_2</receiver>
    <slot>setEnabled(bool)</slot>
@@ -655,7 +747,7 @@ supports</string>
   <connection>
    <sender>radioButton</sender>
    <signal>toggled(bool)</signal>
-   <receiver>spinBox_7</receiver>
+   <receiver>redchan</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -671,7 +763,7 @@ supports</string>
   <connection>
    <sender>radioButton</sender>
    <signal>toggled(bool)</signal>
-   <receiver>spinBox_8</receiver>
+   <receiver>greenchan</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -687,7 +779,7 @@ supports</string>
   <connection>
    <sender>radioButton</sender>
    <signal>toggled(bool)</signal>
-   <receiver>spinBox_9</receiver>
+   <receiver>bluechan</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -703,7 +795,7 @@ supports</string>
   <connection>
    <sender>radioButton_2</sender>
    <signal>toggled(bool)</signal>
-   <receiver>spinBox_10</receiver>
+   <receiver>cyanchan</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -719,7 +811,7 @@ supports</string>
   <connection>
    <sender>radioButton_2</sender>
    <signal>toggled(bool)</signal>
-   <receiver>spinBox_12</receiver>
+   <receiver>magentachan</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -735,7 +827,7 @@ supports</string>
   <connection>
    <sender>radioButton_2</sender>
    <signal>toggled(bool)</signal>
-   <receiver>spinBox_11</receiver>
+   <receiver>yellowchan</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -749,9 +841,9 @@ supports</string>
    </hints>
   </connection>
   <connection>
-   <sender>checkBox_5</sender>
+   <sender>hascolourwheel</sender>
    <signal>toggled(bool)</signal>
-   <receiver>spinBox_13</receiver>
+   <receiver>colourwheelchan</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -765,9 +857,9 @@ supports</string>
    </hints>
   </connection>
   <connection>
-   <sender>checkBox_4</sender>
+   <sender>hascto</sender>
    <signal>toggled(bool)</signal>
-   <receiver>spinBox_14</receiver>
+   <receiver>ctochan</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
