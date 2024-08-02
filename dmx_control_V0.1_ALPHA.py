@@ -203,12 +203,54 @@ def on_press():
 
     while True:
         if numpad == 'y' or 'Y':
-            if keyboard.read_key() == "8":
-                tilt += 1
-                dmx.set_channel(movementchannels['tilt'], tilt)
-            if keyboard.read_key() == "2":
+            if keyboard.is_pressed("8"):
+                tiltfine += 16                          #0.128 degrees per press
+                if tiltfine == 255:                     #If tiltfine maxed out
+                    tilt += 1                           #Add one to tilt
+                    tiltfine = int(-1)                  #Reset tiltfine (with -1 offset because dmx starts at 0 and ends at 255)
+                if tilt == 255 and tiltfine == 255:     #If fixture fully maxxed out, zero out
+                    tilt = -1
+                    tiltfine = -1
+                time.sleep(0.01)                        #Delay helps with the key issue 
+                if tiltfine == -1:                      
+                    dmx.set_channel(movementchannels['tilt_fine'], 0)               #If -1, turn 0
+                else:
+                    dmx.set_channel(movementchannels['tilt_fine'], tiltfine)        #Else use tiltfine value
+                if tilt == -1:
+                    dmx.set_channel(movementchannels['tilt'], 0)                    #If -1, turn 0
+                else:
+                    dmx.set_channel(movementchannels['tilt'], tilt)                 #Else use tilt value
+                    
+            elif keyboard.is_pressed("2"):
                 tilt -= 1
-                dmx.set_channel(movementchannels['tilt'], tilt)
+                print(tilt)
+                time.sleep(0.01)
+#                dmx.set_channel(movementchannels['tilt'], tilt)
+            elif keyboard.is_pressed("6"):
+                pan += 1
+                print('t')
+#                dmx.set_channel(movementchannels['pan'], pan)
+            elif keyboard.is_pressed("4"):
+                pan -= 1
+                print('t')
+#                dmx.set_channel(movementchannels['pan'], pan)
+        else:
+            if keyboard.read_key() == "up":
+                tilt += 1
+                print('t')
+#                dmx.set_channel(movementchannels['tilt'], tilt)
+            elif keyboard.read_key() == "down":
+                tilt -= 1
+                print('t')
+#                dmx.set_channel(movementchannels['tilt'], tilt)
+            elif keyboard.read_key() == "right":
+                pan += 1
+                print('t')
+#                dmx.set_channel(movementchannels['pan'], pan)
+            elif keyboard.read_key() == "left":
+                pan -= 1
+                print('t')
+#                dmx.set_channel(movementchannels['pan'], pan)
 
 
 def dmxcontrol():
