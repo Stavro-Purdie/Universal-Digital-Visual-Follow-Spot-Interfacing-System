@@ -302,11 +302,12 @@ def on_press():
         if keyboard.is_pressed("c"):
             time.sleep(0.1)
             print(f'{Back.BLUE + Style.BRIGHT}<<< Colour Selected >>>')
+            ## Conventional Section
             if isconventional == True:
                 while True:
                     if keyboard.is_pressed("w"):
                         time.sleep(0.1)
-                        print(f'{Back.BLUE + Style.BRIGHT}<<< Colour Wheel Selected, Press Arrow Up/Down to change, Press Enter to exit to Colour menu >>>')
+                        print(f'{Back.BLUE + Style.BRIGHT}<<< Colour Wheel Selected, Press Arrow Up/Down to change, Press Enter to exit to Colour Menu >>>')
                         while True:
                             if keyboard.is_pressed("up"):
                                 conventional += 1
@@ -329,6 +330,144 @@ def on_press():
                         time.sleep(0.5)
                         print(f'{Back.BLUE + Style.BRIGHT}<<< Back to Main control menu >>>')
                         break
+            ##RGB Section
+            if isrgb == True:
+                while True:
+                    ## Red Section
+                    if keyboard.is_pressed("r"):
+                        time.sleep(0.1)
+                        print(f'{Back.BLUE + Style.BRIGHT}<<< Red Selected, Press Arrow Up/Down to change, Press Enter to exit to Colour Menu >>>')
+                        while True:
+                            if keyboard.is_pressed("up"):
+                                red += 1
+                                if red > 255:
+                                    red = 255
+                                time.sleep(0.025)
+                                dmx.set_channel(colourchannels['red'], red)
+                            if keyboard.is_pressed("down"):
+                                red -= 1
+                                if red < 0:
+                                    red = 0
+                                time.sleep(0.025)
+                                dmx.set_channel(colourchannels['red'], red)
+                            if keyboard.is_pressed("enter"):
+                                time.sleep(0.5)
+                                print(f'{Back.BLUE + Style.BRIGHT}<<< Exiting to colour menu >>>')
+                                print(f'{Back.BLUE + Style.BRIGHT}<<< Colour Selected >>>')
+                                break
+                    ## Green Section
+                    if keyboard.is_pressed("g"):
+                        time.sleep(0.1)
+                        print(f'{Back.BLUE + Style.BRIGHT}<<< Green Selected, Press Arrow Up/Down to change, Press Enter to exit to Colour Menu >>>')
+                        while True:
+                            if keyboard.is_pressed("up"):
+                                green += 1
+                                if green > 255:
+                                    green = 255
+                                time.sleep(0.025)
+                                dmx.set_channel(colourchannels['green'], green)
+                            if keyboard.is_pressed("down"):
+                                green -= 1
+                                if green < 0:
+                                    green = 0
+                                time.sleep(0.025)
+                                dmx.set_channel(colourchannels['green'], green)
+                            if keyboard.is_pressed("enter"):
+                                time.sleep(0.5)
+                                print(f'{Back.BLUE + Style.BRIGHT}<<< Exiting to colour menu >>>')
+                                print(f'{Back.BLUE + Style.BRIGHT}<<< Colour Selected >>>')
+                                break
+                    ## Blue Section
+                    if keyboard.is_pressed("b"):
+                        time.sleep(0.1)
+                        print(f'{Back.BLUE + Style.BRIGHT}<<< Blue Selected, Press Arrow Up/Down to change, Press Enter to exit to Colour Menu >>>')
+                        while True:
+                            if keyboard.is_pressed("up"):
+                                blue += 1
+                                if blue > 255:
+                                    blue = 255
+                                time.sleep(0.025)
+                                dmx.set_channel(colourchannels['blue'], blue)
+                            if keyboard.is_pressed("down"):
+                                blue -= 1
+                                if blue < 0:
+                                    blue = 0
+                                time.sleep(0.025)
+                                dmx.set_channel(colourchannels['blue'], blue)
+                            if keyboard.is_pressed("enter"):
+                                time.sleep(0.5)
+                                print(f'{Back.BLUE + Style.BRIGHT}<<< Exiting to colour menu >>>')
+                                print(f'{Back.BLUE + Style.BRIGHT}<<< Colour Selected >>>')
+                                break
+            ##CMY Section
+            if iscmy == True:
+                while True:
+                    ## Cyan Section
+                    if keyboard.is_pressed("c"):
+                        time.sleep(0.1)
+                        print(f'{Back.BLUE + Style.BRIGHT}<<< Cyan Selected, Press Arrow Up/Down to change, Press Enter to exit to Colour Menu >>>')
+                        while True:
+                            if keyboard.is_pressed("up"):
+                                cyan += 1
+                                if cyan > 255:
+                                    cyan = 255
+                                time.sleep(0.025)
+                                dmx.set_channel(colourchannels['cyan'], cyan)
+                            if keyboard.is_pressed("down"):
+                                cyan -= 1
+                                if cyan < 0:
+                                    cyan = 0
+                                time.sleep(0.025)
+                                dmx.set_channel(colourchannels['cyan'], cyan)
+                            if keyboard.is_pressed("enter"):
+                                time.sleep(0.5)
+                                print(f'{Back.BLUE + Style.BRIGHT}<<< Exiting to colour menu >>>')
+                                print(f'{Back.BLUE + Style.BRIGHT}<<< Colour Selected >>>')
+                                break
+                    ## Magenta Section
+                    if keyboard.is_pressed("m"):
+                        time.sleep(0.1)
+                        print(f'{Back.BLUE + Style.BRIGHT}<<< Magenta Selected, Press Arrow Up/Down to change, Press Enter to exit to Colour Menu >>>')
+                        while True:
+                            if keyboard.is_pressed("up"):
+                                magenta += 1
+                                if magenta > 255:
+                                    magenta = 255
+                                time.sleep(0.025)
+                                dmx.set_channel(colourchannels['magenta'], magenta)
+                            if keyboard.is_pressed("down"):
+                                magenta -= 1
+                                if magenta < 0:
+                                    magenta = 0
+                                time.sleep(0.025)
+                                dmx.set_channel(colourchannels['magenta'], magenta)
+                            if keyboard.is_pressed("enter"):
+                                time.sleep(0.5)
+                                print(f'{Back.BLUE + Style.BRIGHT}<<< Exiting to colour menu >>>')
+                                print(f'{Back.BLUE + Style.BRIGHT}<<< Colour Selected >>>')
+                                break
+                    ## Yellow Section
+                    if keyboard.is_pressed("y"):
+                        time.sleep(0.1)
+                        print(f'{Back.BLUE + Style.BRIGHT}<<< Yellow Selected, Press Arrow Up/Down to change, Press Enter to exit to Colour Menu >>>')
+                        while True:
+                            if keyboard.is_pressed("up"):
+                                yellow += 1
+                                if yellow > 255:
+                                    yellow = 255
+                                time.sleep(0.025)
+                                dmx.set_channel(colourchannels['yellow'], yellow)
+                            if keyboard.is_pressed("down"):
+                                yellow -= 1
+                                if yellow < 0:
+                                    yellow = 0
+                                time.sleep(0.025)
+                                dmx.set_channel(colourchannels['yellow'], yellow)
+                            if keyboard.is_pressed("enter"):
+                                time.sleep(0.5)
+                                print(f'{Back.BLUE + Style.BRIGHT}<<< Exiting to colour menu >>>')
+                                print(f'{Back.BLUE + Style.BRIGHT}<<< Colour Selected >>>')
+                                break
 
                     
 
