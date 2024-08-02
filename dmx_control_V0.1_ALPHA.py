@@ -263,7 +263,7 @@ def on_press():
                 dmx.set_channel(movementchannels['tilt_fine'], tiltfine)        #send off 1 frame per var
                 dmx.set_channel(movementchannels['tilt'], tilt)
 
-            elif keyboard.read_key() == "down":
+            elif keyboard.is_pressed("down"):
                 tiltfine -= 16
                 if tiltfine < 0:
                     tilt -= 1
@@ -275,7 +275,7 @@ def on_press():
                 dmx.set_channel(movementchannels['tilt_fine'], tiltfine)
                 dmx.set_channel(movementchannels['tilt'], tilt)
 
-            elif keyboard.read_key() == "right":
+            elif keyboard.is_pressed("right"):
                 panfine += 16
                 if panfine > 255:
                     pan += 1
@@ -287,7 +287,7 @@ def on_press():
                 dmx.set_channel(movementchannels['pan_fine'], panfine)
                 dmx.set_channel(movementchannels['pan'], pan)
 
-            elif keyboard.read_key() == "left":
+            elif keyboard.is_pressed("left"):
                 panfine -= 16
                 if panfine < 0:
                     pan -= 1
@@ -298,6 +298,39 @@ def on_press():
                 time.sleep(0.01)
                 dmx.set_channel(movementchannels['pan_fine'], panfine)
                 dmx.set_channel(movementchannels['pan'], pan)
+        
+        if keyboard.is_pressed("c"):
+            time.sleep(0.1)
+            print(f'{Back.BLUE + Style.BRIGHT}<<< Colour Selected >>>')
+            if isconventional == True:
+                while True:
+                    if keyboard.is_pressed("w"):
+                        time.sleep(0.1)
+                        print(f'{Back.BLUE + Style.BRIGHT}<<< Colour Wheel Selected, Press Arrow Up/Down to change, Press Enter to exit to Colour menu >>>')
+                        while True:
+                            if keyboard.is_pressed("up"):
+                                conventional += 1
+                                if conventional > 255:
+                                    conventional = 255
+                                time.sleep(0.05)
+                                dmx.set_channel(colourchannels['colour_wheel'], conventional)
+                            if keyboard.is_pressed("down"):
+                                conventional -= 1
+                                if conventional < 0:
+                                    conventional = 0
+                                time.sleep(0.05)
+                                dmx.set_channel(colourchannels['colour_wheel'], conventional)
+                            if keyboard.is_pressed("enter"):
+                                time.sleep(0.5)
+                                print(f'{Back.BLUE + Style.BRIGHT}<<< Exiting to colour menu >>>')
+                                print(f'{Back.BLUE + Style.BRIGHT}<<< Colour Selected >>>')
+                                break
+                    if keyboard.is_pressed("enter"):
+                        time.sleep(0.5)
+                        print(f'{Back.BLUE + Style.BRIGHT}<<< Back to Main control menu >>>')
+                        break
+
+                    
 
 
 def dmxcontrol():
