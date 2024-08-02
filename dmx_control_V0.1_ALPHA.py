@@ -204,53 +204,100 @@ def on_press():
     while True:
         if numpad == 'y' or 'Y':
             if keyboard.is_pressed("8"):
-                tiltfine += 16                          #0.128 degrees per press
-                if tiltfine == 255:                     #If tiltfine maxed out
-                    tilt += 1                           #Add one to tilt
-                    tiltfine = int(-1)                  #Reset tiltfine (with -1 offset because dmx starts at 0 and ends at 255)
-                if tilt == 255 and tiltfine == 255:     #If fixture fully maxxed out, zero out
-                    tilt = -1
-                    tiltfine = -1
+                tiltfine += 16                          #0.128 degrees per 16 bits 0.008 degrees per bit
+                if tiltfine > 255:                     #If tiltfine maxed out
+                    tilt += 1                           #Add one to tilt (2.1 degrees per bit)
+                    tiltfine = 0                  #Reset tiltfine (dmx starts at 0 and ends at 255, total of 256 bits)
+                if tilt > 255 and tiltfine > 255:     #If fixture fully maxxed out, keep at 255
+                    tilt = 255
+                    tiltfine = 255
                 time.sleep(0.01)                        #Delay helps with the key issue 
-                if tiltfine == -1:                      
-                    dmx.set_channel(movementchannels['tilt_fine'], 0)               #If -1, turn 0
-                else:
-                    dmx.set_channel(movementchannels['tilt_fine'], tiltfine)        #Else use tiltfine value
-                if tilt == -1:
-                    dmx.set_channel(movementchannels['tilt'], 0)                    #If -1, turn 0
-                else:
-                    dmx.set_channel(movementchannels['tilt'], tilt)                 #Else use tilt value
-                    
+                dmx.set_channel(movementchannels['tilt_fine'], tiltfine)        #send off 1 frame per var
+                dmx.set_channel(movementchannels['tilt'], tilt)                 
+                
             elif keyboard.is_pressed("2"):
-                tilt -= 1
-                print(tilt)
+                tiltfine -= 16
+                if tiltfine < 0:
+                    tilt -= 1
+                    tiltfine = 255
+                if tilt < 0 and tiltfine < 0:
+                    tilt = 0
+                    tiltfine = 0
                 time.sleep(0.01)
-#                dmx.set_channel(movementchannels['tilt'], tilt)
+                dmx.set_channel(movementchannels['tilt_fine'], tiltfine)
+                dmx.set_channel(movementchannels['tilt'], tilt)
+
             elif keyboard.is_pressed("6"):
-                pan += 1
-                print('t')
-#                dmx.set_channel(movementchannels['pan'], pan)
+                panfine += 16
+                if panfine > 255:
+                    pan += 1
+                    panfine = 0
+                if pan > 255 and tiltfine > 255:
+                    pan = 255
+                    tilt = 255
+                time.sleep(0.01)
+                dmx.set_channel(movementchannels['pan_fine'], panfine)
+                dmx.set_channel(movementchannels['pan'], pan)
+
             elif keyboard.is_pressed("4"):
-                pan -= 1
-                print('t')
-#                dmx.set_channel(movementchannels['pan'], pan)
+                panfine -= 16
+                if panfine < 0:
+                    pan -= 1
+                    panfine = 255
+                if pan < 0 and panfine < 0:
+                    pan = 0
+                    panfine = 0
+                time.sleep(0.01)
+                dmx.set_channel(movementchannels['pan_fine'], panfine)
+                dmx.set_channel(movementchannels['pan'], pan)
         else:
-            if keyboard.read_key() == "up":
-                tilt += 1
-                print('t')
-#                dmx.set_channel(movementchannels['tilt'], tilt)
+            if keyboard.is_pressed("up"):
+                tiltfine += 16                          #0.128 degrees per 16 bits 0.008 degrees per bit
+                if tiltfine > 255:                     #If tiltfine maxed out
+                    tilt += 1                           #Add one to tilt (2.1 degrees per bit)
+                    tiltfine = 0                  #Reset tiltfine (dmx starts at 0 and ends at 255, total of 256 bits)
+                if tilt > 255 and tiltfine > 255:     #If fixture fully maxxed out, keep at 255
+                    tilt = 255
+                    tiltfine = 255
+                time.sleep(0.01)                        #Delay helps with the key issue 
+                dmx.set_channel(movementchannels['tilt_fine'], tiltfine)        #send off 1 frame per var
+                dmx.set_channel(movementchannels['tilt'], tilt)
+
             elif keyboard.read_key() == "down":
-                tilt -= 1
-                print('t')
-#                dmx.set_channel(movementchannels['tilt'], tilt)
+                tiltfine -= 16
+                if tiltfine < 0:
+                    tilt -= 1
+                    tiltfine = 255
+                if tilt < 0 and tiltfine < 0:
+                    tilt = 0
+                    tiltfine = 0
+                time.sleep(0.01)
+                dmx.set_channel(movementchannels['tilt_fine'], tiltfine)
+                dmx.set_channel(movementchannels['tilt'], tilt)
+
             elif keyboard.read_key() == "right":
-                pan += 1
-                print('t')
-#                dmx.set_channel(movementchannels['pan'], pan)
+                panfine += 16
+                if panfine > 255:
+                    pan += 1
+                    panfine = 0
+                if pan > 255 and tiltfine > 255:
+                    pan = 255
+                    tilt = 255
+                time.sleep(0.01)
+                dmx.set_channel(movementchannels['pan_fine'], panfine)
+                dmx.set_channel(movementchannels['pan'], pan)
+
             elif keyboard.read_key() == "left":
-                pan -= 1
-                print('t')
-#                dmx.set_channel(movementchannels['pan'], pan)
+                panfine -= 16
+                if panfine < 0:
+                    pan -= 1
+                    panfine = 255
+                if pan < 0 and panfine < 0:
+                    pan = 0
+                    panfine = 0
+                time.sleep(0.01)
+                dmx.set_channel(movementchannels['pan_fine'], panfine)
+                dmx.set_channel(movementchannels['pan'], pan)
 
 
 def dmxcontrol():
@@ -445,26 +492,26 @@ while flag == True:
     fixtureprofilename = fixtureindex[fixturenum]['profilename']
     print(f'\n {Fore.BLUE + Style.BRIGHT}You Have Selected {fixturename}')
 
-    pan = 0
-    panfine = 0
-    tilt = 0
-    tiltfine = 0
-    ptspeed = 0
-    conventional = 0
-    red = 0
-    green = 0
-    blue = 0
-    cyan = 0
-    magenta = 0
-    yellow = 0
-    cto = 0
-    zoom = 0
-    focus = 0
-    frost = 0
-    static_gobo = 0
-    rotating_gobo = 0
-    dimmer = 0
-    dimmer_fine = 0
+    pan = -1
+    panfine = -1
+    tilt = -1
+    tiltfine = -1
+    ptspeed = -1
+    conventional = -1
+    red = -1
+    green = -1
+    blue = -1
+    cyan = -1
+    magenta = -1
+    yellow = -1
+    cto = -1
+    zoom = -1
+    focus = -1
+    frost = -1
+    static_gobo = -1
+    rotating_gobo = -1
+    dimmer = -1
+    dimmer_fine = -1
 
     
     dmxcontrol()
