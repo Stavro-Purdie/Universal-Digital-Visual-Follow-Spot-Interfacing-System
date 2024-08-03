@@ -17,8 +17,7 @@
    <string>DMX Subsystem Configuration Tool</string>
   </property>
   <property name="windowIcon">
-   <iconset theme="security-high">
-    <normaloff>../../../../../../.designer/backup</normaloff>../../../../../../.designer/backup</iconset>
+   <iconset theme="utilities-terminal"/>
   </property>
   <property name="toolTip">
    <string/>
@@ -27,7 +26,7 @@
    <enum>QWizard::ClassicStyle</enum>
   </property>
   <property name="options">
-   <set>QWizard::HaveHelpButton|QWizard::NoBackButtonOnLastPage|QWizard::NoBackButtonOnStartPage|QWizard::NoCancelButtonOnLastPage</set>
+   <set>QWizard::HaveHelpButton|QWizard::NoBackButtonOnStartPage|QWizard::NoCancelButtonOnLastPage</set>
   </property>
   <property name="titleFormat">
    <enum>Qt::AutoText</enum>
@@ -82,7 +81,7 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>240</y>
+      <y>270</y>
       <width>371</width>
       <height>51</height>
      </rect>
@@ -100,9 +99,9 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>240</y>
+      <y>260</y>
       <width>371</width>
-      <height>51</height>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -123,7 +122,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:700;&quot;&gt;DMX ADAPTER SETUP&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QTreeView" name="AdapterSelect">
+   <widget class="QTreeView" name="adapterselect">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -156,8 +155,8 @@ of serial devices.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    <widget class="QLabel" name="label_8">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>80</y>
+      <x>0</x>
+      <y>300</y>
       <width>251</width>
       <height>21</height>
      </rect>
@@ -198,7 +197,7 @@ of serial devices.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>240</y>
+      <y>270</y>
       <width>371</width>
       <height>31</height>
      </rect>
@@ -214,10 +213,20 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       <x>0</x>
       <y>50</y>
       <width>262</width>
-      <height>54</height>
+      <height>51</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_12">
+       <property name="text">
+        <string>Reccommended Adapter Speed</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QSpinBox" name="ChannelReq"/>
+     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_11">
        <property name="text">
@@ -225,16 +234,6 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
        </property>
        <property name="buddy">
         <cstring>ChannelReq</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QSpinBox" name="ChannelReq"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_12">
-       <property name="text">
-        <string>Reccommended Adapter Speed</string>
        </property>
       </widget>
      </item>
@@ -247,32 +246,12 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>120</y>
+      <y>140</y>
       <width>338</width>
-      <height>51</height>
+      <height>61</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="1" column="1">
-      <widget class="QSpinBox" name="speedenter">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="readOnly">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_13">
-       <property name="text">
-        <string>Adapter Speed</string>
-       </property>
-       <property name="buddy">
-        <cstring>speedenter</cstring>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0" colspan="2">
       <widget class="QCheckBox" name="manadatspeed">
        <property name="enabled">
@@ -295,19 +274,52 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
        </property>
       </widget>
      </item>
+     <item row="1" column="1">
+      <widget class="QSpinBox" name="speedenter">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_13">
+       <property name="text">
+        <string>Adapter Speed</string>
+       </property>
+       <property name="buddy">
+        <cstring>speedenter</cstring>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
    <widget class="QLabel" name="label_39">
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>270</y>
+      <y>300</y>
       <width>251</width>
       <height>21</height>
      </rect>
     </property>
     <property name="text">
      <string>Press &lt;HELP&gt; For more information</string>
+    </property>
+   </widget>
+   <widget class="Line" name="line_5">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>120</y>
+      <width>491</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
     </property>
    </widget>
   </widget>
@@ -330,7 +342,7 @@ are below:</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>240</y>
+      <y>270</y>
       <width>371</width>
       <height>51</height>
      </rect>
@@ -476,9 +488,9 @@ Bulb info</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>230</y>
+      <y>270</y>
       <width>371</width>
-      <height>51</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -490,13 +502,39 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>270</y>
+      <y>300</y>
       <width>251</width>
       <height>21</height>
      </rect>
     </property>
     <property name="text">
      <string>Press &lt;HELP&gt; For more information</string>
+    </property>
+   </widget>
+   <widget class="Line" name="line_6">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>80</y>
+      <width>531</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="Line" name="line_8">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>190</y>
+      <width>481</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
     </property>
    </widget>
   </widget>
@@ -550,7 +588,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <string>Fixtures added to the system:</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="Addfixturebutton">
+   <widget class="QPushButton" name="addfixtureprofile">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -576,7 +614,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>250</y>
+      <y>270</y>
       <width>311</width>
       <height>31</height>
      </rect>
@@ -604,7 +642,7 @@ their properties</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>280</y>
+      <y>300</y>
       <width>251</width>
       <height>21</height>
      </rect>
@@ -672,7 +710,7 @@ profiles we created in the last section</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>240</y>
+      <y>270</y>
       <width>371</width>
       <height>51</height>
      </rect>
@@ -713,7 +751,7 @@ Press &lt;HELP&gt; for assistance</string>
       <x>0</x>
       <y>60</y>
       <width>471</width>
-      <height>111</height>
+      <height>151</height>
      </rect>
     </property>
     <property name="text">
@@ -728,7 +766,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Adapter Settings&lt;/span&gt;: Config/adapterconfig.ini&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Fixture Profiles: &lt;/span&gt;Config/profiles.json&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Patch Settings: &lt;/span&gt;Config/patchdata.json&lt;/p&gt;
-&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;You can now run the main program&lt;br /&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;TIP: &lt;/span&gt;To avoid having to reconfigure the adapters, keep it plugged into the &lt;br /&gt;same USB Port&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_36">
@@ -748,7 +786,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>250</y>
+      <y>270</y>
       <width>451</width>
       <height>51</height>
      </rect>
