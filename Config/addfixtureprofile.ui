@@ -45,7 +45,7 @@ to the DMX Subsystem</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>190</y>
+      <y>220</y>
       <width>371</width>
       <height>51</height>
      </rect>
@@ -83,25 +83,11 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <string>This section deals with some basic questions to get started.</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_27">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>230</y>
-      <width>371</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Press &lt;NEXT&gt; to continue with the configuration
-Press &lt;CANCEL&gt; to exit the configurator</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_28">
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>210</y>
+      <y>240</y>
       <width>371</width>
       <height>31</height>
      </rect>
@@ -195,7 +181,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>210</y>
+      <y>240</y>
       <width>371</width>
       <height>31</height>
      </rect>
@@ -324,7 +310,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>210</y>
+      <y>240</y>
       <width>371</width>
       <height>31</height>
      </rect>
@@ -659,7 +645,7 @@ supports</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>210</y>
+      <y>240</y>
       <width>371</width>
       <height>31</height>
      </rect>
@@ -765,7 +751,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>210</y>
+      <y>240</y>
       <width>371</width>
       <height>31</height>
      </rect>
@@ -979,7 +965,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>0</x>
