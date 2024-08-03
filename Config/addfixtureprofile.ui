@@ -669,7 +669,7 @@ supports</string>
 Press &lt;CANCEL&gt; to exit the configurator</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>170</x>
@@ -701,7 +701,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>160</x>
@@ -775,7 +775,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
 Press &lt;CANCEL&gt; to exit the configurator</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -800,17 +800,17 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       </widget>
      </item>
      <item row="2" column="2">
-      <widget class="QSpinBox" name="spinBox_14">
+      <widget class="QSpinBox" name="finedimmerchan">
        <property name="enabled">
         <bool>false</bool>
        </property>
       </widget>
      </item>
      <item row="1" column="2">
-      <widget class="QSpinBox" name="spinBox_13"/>
+      <widget class="QSpinBox" name="dimmerchan"/>
      </item>
      <item row="0" column="0" colspan="2">
-      <widget class="QCheckBox" name="checkBox_3">
+      <widget class="QCheckBox" name="hasfinedimmer">
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
        </property>
@@ -822,7 +822,164 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     </layout>
    </widget>
   </widget>
-  <widget class="QWizardPage" name="wizardPage_5"/>
+  <widget class="QWizardPage" name="wizardPage_5">
+   <widget class="QLabel" name="label_46">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>378</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:700;&quot;&gt;ADD FIXTURE PROFILE&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_47">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>20</y>
+      <width>371</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>This section deals with Advanced Parameters</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_56">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>210</y>
+      <width>371</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Press &lt;NEXT&gt; to continue with the configuration
+Press &lt;CANCEL&gt; to exit the configurator</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>60</y>
+      <width>111</width>
+      <height>54</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout_11">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_48">
+       <property name="text">
+        <string>Pan Limit:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QSpinBox" name="panlimit"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_49">
+       <property name="text">
+        <string>Tilt Limit:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QSpinBox" name="tiltlimit"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>60</y>
+      <width>157</width>
+      <height>112</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout_12">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_50">
+       <property name="text">
+        <string>Max Zoom Angle:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QSpinBox" name="spinBox_7"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_51">
+       <property name="text">
+        <string>Min Zoom Angle:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QSpinBox" name="spinBox_8"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_52">
+       <property name="text">
+        <string>Max Focus Angle:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QSpinBox" name="spinBox_9"/>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_53">
+       <property name="text">
+        <string>Min Focus Angle:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QSpinBox" name="spinBox_10"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>120</y>
+      <width>167</width>
+      <height>54</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout_13">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_54">
+       <property name="text">
+        <string>Bulb Wattage (W):</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0" colspan="2">
+      <widget class="QLabel" name="label_55">
+       <property name="text">
+        <string>Bulb Lumen Count:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QSpinBox" name="spinBox_12"/>
+     </item>
+     <item row="0" column="2">
+      <widget class="QSpinBox" name="spinBox_11"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
  </widget>
  <resources/>
  <connections>
@@ -1067,9 +1224,9 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
    </hints>
   </connection>
   <connection>
-   <sender>checkBox_3</sender>
+   <sender>hasfinedimmer</sender>
    <signal>toggled(bool)</signal>
-   <receiver>spinBox_14</receiver>
+   <receiver>finedimmerchan</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
