@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>415</width>
+    <height>333</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -853,7 +853,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>210</y>
+      <y>240</y>
       <width>371</width>
       <height>31</height>
      </rect>
@@ -863,16 +863,23 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
 Press &lt;CANCEL&gt; to exit the configurator</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>60</y>
+      <y>50</y>
       <width>111</width>
       <height>54</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_11">
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_49">
+       <property name="text">
+        <string>Tilt Limit:</string>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_48">
        <property name="text">
@@ -883,23 +890,16 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <item row="0" column="1">
       <widget class="QSpinBox" name="panlimit"/>
      </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_49">
-       <property name="text">
-        <string>Tilt Limit:</string>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="1">
       <widget class="QSpinBox" name="tiltlimit"/>
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>180</x>
-      <y>60</y>
+      <x>220</x>
+      <y>50</y>
       <width>157</width>
       <height>112</height>
      </rect>
@@ -913,7 +913,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QSpinBox" name="spinBox_7"/>
+      <widget class="QSpinBox" name="maxzoom"/>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_51">
@@ -923,7 +923,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QSpinBox" name="spinBox_8"/>
+      <widget class="QSpinBox" name="minzoom"/>
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_52">
@@ -933,7 +933,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QSpinBox" name="spinBox_9"/>
+      <widget class="QSpinBox" name="maxfocus"/>
      </item>
      <item row="3" column="0">
       <widget class="QLabel" name="label_53">
@@ -943,15 +943,15 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QSpinBox" name="spinBox_10"/>
+      <widget class="QSpinBox" name="minfocus"/>
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>120</y>
+      <y>110</y>
       <width>167</width>
       <height>54</height>
      </rect>
@@ -972,12 +972,86 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       </widget>
      </item>
      <item row="1" column="2">
-      <widget class="QSpinBox" name="spinBox_12"/>
+      <widget class="QSpinBox" name="bulblumen"/>
      </item>
      <item row="0" column="2">
-      <widget class="QSpinBox" name="spinBox_11"/>
+      <widget class="QSpinBox" name="bulbwattage"/>
      </item>
     </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>170</y>
+      <width>228</width>
+      <height>54</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout_14">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_57">
+       <property name="text">
+        <string>Degrees pan per DMX Bit:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLCDNumber" name="panaccuracy"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_58">
+       <property name="text">
+        <string>Degrees tilt per DMX Bit:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLCDNumber" name="tiltaccuracy"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QWizardPage" name="wizardPage_6">
+   <widget class="QLabel" name="label_59">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>378</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:700;&quot;&gt;ADD FIXTURE PROFILE&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_60">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>20</y>
+      <width>371</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>The fixture profile configurator has finished.</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_61">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>240</y>
+      <width>371</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Press &lt;FINISH&gt; to save and return to the main configurator
+Press &lt;CANCEL&gt; to quit the configurator</string>
+    </property>
    </widget>
   </widget>
  </widget>
