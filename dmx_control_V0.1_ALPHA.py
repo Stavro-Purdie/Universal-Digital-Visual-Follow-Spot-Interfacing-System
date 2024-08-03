@@ -533,6 +533,58 @@ def on_press():
                     print(f'{Back.BLUE + Style.BRIGHT}<<< Exiting to main menu >>>')
                     break
 
+        if keyboard.is_pressed("b"):
+            time.sleep(0.1)
+            print(f'{Back.BLUE + Style.BRIGHT}<<< Beam Selected >>>')
+            while True:
+                if keyboard.is_pressed("f"):
+                    time.sleep(0.1)
+                    print(f'{Back.BLUE + Style.BRIGHT}<<< Frost Selected, Press Arrow Up/Down to change, Press Enter to exit to Colour Menu >>>')
+                    while True:
+                        if keyboard.is_pressed("up"):
+                            frost += 1
+                            if frost > 255:
+                                frost = 255
+                            time.sleep(0.05)
+                            dmx.set_channel(beamchannels['frost'], frost)
+                        if keyboard.is_pressed("down"):
+                            frost -= 1
+                            if frost < 0:
+                                frost = 0
+                            time.sleep(0.05)
+                            dmx.set_channel(beamchannels['frost'], frost)
+                        if keyboard.is_pressed("enter"):
+                            time.sleep(0.5)
+                            print(f'{Back.BLUE + Style.BRIGHT}<<< Exiting to beam menu >>>')
+                            print(f'{Back.BLUE + Style.BRIGHT}<<< Beam Selected >>>')
+                            break
+                if keyboard.is_pressed("s"):
+                    time.sleep(0.1)
+                    print(f'{Back.BLUE + Style.BRIGHT}<<< Static Gobo Selected, Press Arrow Up/Down to change, Press Enter to exit to Colour Menu >>>')
+                    while True:
+                        if keyboard.is_pressed("up"):
+                            static_gobo += 1
+                            if static_gobo > 255:
+                                static_gobo = 255
+                            time.sleep(0.05)
+                            dmx.set_channel(beamchannels['static_gobo'], static_gobo)
+                        if keyboard.is_pressed("down"):
+                            static_gobo -= 1
+                            if static_gobo < 0:
+                                static_gobo = 0
+                            time.sleep(0.05)
+                            dmx.set_channel(beamchannels['static_gobo'], static_gobo)
+                        if keyboard.is_pressed("enter"):
+                            time.sleep(0.5)
+                            print(f'{Back.BLUE + Style.BRIGHT}<<< Exiting to beam menu >>>')
+                            print(f'{Back.BLUE + Style.BRIGHT}<<< Beam Selected >>>')
+                            break
+                
+                if keyboard.is_pressed("enter"):
+                    time.sleep(0.5)
+                    print(f'{Back.BLUE + Style.BRIGHT}<<< Back to Main control menu >>>')
+                    break
+
 
 def dmxcontrol():
     ## Make needed variables global because ceebs passing them through normally                                                  
