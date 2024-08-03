@@ -203,7 +203,7 @@ def on_press():
 
     while True:
         if numpad == 'y' or 'Y':
-            if keyboard.is_pressed("8"):
+            if keyboard.is_pressed("8"):                #movelimits/65536, values in comments are based off industry standard values such as 540pan 270 tilt
                 tiltfine += 16                          #0.128 degrees per 16 bits 0.008 degrees per bit
                 if tiltfine > 255:                     #If tiltfine maxed out
                     tilt += 1                           #Add one to tilt (2.1 degrees per bit)
@@ -579,11 +579,59 @@ def on_press():
                             print(f'{Back.BLUE + Style.BRIGHT}<<< Exiting to beam menu >>>')
                             print(f'{Back.BLUE + Style.BRIGHT}<<< Beam Selected >>>')
                             break
+                if keyboard.is_pressed("r"):
+                    time.sleep(0.1)
+                    print(f'{Back.BLUE + Style.BRIGHT}<<< Rotating Gobo Selected, Press Arrow Up/Down to change, Press Enter to exit to Colour Menu >>>')
+                    while True:
+                        if keyboard.is_pressed("up"):
+                            rotating_gobo += 1
+                            if rotating_gobo > 255:
+                                rotating_gobo = 255
+                            time.sleep(0.05)
+                            dmx.set_channel(beamchannels['rotating_gobo'], rotating_gobo)
+                        if keyboard.is_pressed("down"):
+                            rotating_gobo -= 1
+                            if rotating_gobo < 0:
+                                rotating_gobo = 0
+                            time.sleep(0.05)
+                            dmx.set_channel(beamchannels['rotating_gobo'], rotating_gobo)
+                        if keyboard.is_pressed("enter"):
+                            time.sleep(0.5)
+                            print(f'{Back.BLUE + Style.BRIGHT}<<< Exiting to beam menu >>>')
+                            print(f'{Back.BLUE + Style.BRIGHT}<<< Beam Selected >>>')
                 
                 if keyboard.is_pressed("enter"):
                     time.sleep(0.5)
                     print(f'{Back.BLUE + Style.BRIGHT}<<< Back to Main control menu >>>')
                     break
+        if keyboard.is_pressed("="):
+            dimmer_fine += 32
+            if dimmer_fine > 255:
+                dimmer += 1
+                dimmer_fine = 0
+            if dimmer > 255 and dimmer_fine > 255:
+                dimmer = 255
+                dimmer_fine = 255
+            time.sleep(0.01)
+            dmx.set_channel(dimmerchannels['dimmer_fine'], dimmer_fine)
+            dmx.set_channel(dimmerchannels['dimmer'], dimmer)
+        if keyboard.is_pressed("-"):
+            dimmer_fine -= 32
+            if dimmer_fine < 0:
+                dimmer -= 1
+                dimmer_fine = 255
+            if dimmer < 0 and dimmer_fine < 0:
+                dimmer = 0
+                dimmer_fine = 0
+            time.sleep(0.01)
+            dmx.set_channel(dimmerchannels['dimmer_fine'], dimmer_fine)
+            dmx.set_channel(dimmerchannels['dimmer'], dimmer)
+        
+        if keyboard.is_pressed("enter"):
+            time.sleep(0.5)
+            print(f'{Back.BLUE + Style.BRIGHT}<<< Returning to Fixture Selector >>>')
+            break
+    return
 
 
 def dmxcontrol():
@@ -741,7 +789,7 @@ def dmxcontrol():
 
 
     on_press()
-
+    return
 
 channel_values = {}
 fixtureindex = {}
