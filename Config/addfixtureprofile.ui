@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>415</width>
-    <height>333</height>
+    <width>451</width>
+    <height>370</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,15 +37,15 @@
      </rect>
     </property>
     <property name="text">
-     <string>This short Wizard will guide you through adding a fixture profile
-to the DMX Subsystem</string>
+     <string>This short Wizard will guide you through adding a fixture 
+profile to the DMX Subsystem</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_24">
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>220</y>
+      <y>240</y>
       <width>371</width>
       <height>51</height>
      </rect>
@@ -87,7 +87,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>240</y>
+      <y>250</y>
       <width>371</width>
       <height>31</height>
      </rect>
@@ -103,7 +103,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       <x>2</x>
       <y>55</y>
       <width>226</width>
-      <height>111</height>
+      <height>115</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
@@ -181,7 +181,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>240</y>
+      <y>250</y>
       <width>371</width>
       <height>31</height>
      </rect>
@@ -196,8 +196,8 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <rect>
       <x>0</x>
       <y>50</y>
-      <width>165</width>
-      <height>132</height>
+      <width>179</width>
+      <height>138</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_2">
@@ -253,9 +253,9 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>180</x>
+      <x>200</x>
       <y>50</y>
-      <width>161</width>
+      <width>171</width>
       <height>71</height>
      </rect>
     </property>
@@ -310,7 +310,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>240</y>
+      <y>250</y>
       <width>371</width>
       <height>31</height>
      </rect>
@@ -410,8 +410,8 @@ supports</string>
      <rect>
       <x>260</x>
       <y>60</y>
-      <width>108</width>
-      <height>83</height>
+      <width>115</width>
+      <height>86</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_5">
@@ -464,8 +464,8 @@ supports</string>
      <rect>
       <x>150</x>
       <y>60</y>
-      <width>92</width>
-      <height>83</height>
+      <width>97</width>
+      <height>86</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_4">
@@ -517,9 +517,9 @@ supports</string>
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>150</y>
-      <width>136</width>
-      <height>54</height>
+      <y>160</y>
+      <width>145</width>
+      <height>56</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_6">
@@ -645,7 +645,7 @@ supports</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>240</y>
+      <y>250</y>
       <width>371</width>
       <height>31</height>
      </rect>
@@ -660,8 +660,8 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <rect>
       <x>170</x>
       <y>130</y>
-      <width>141</width>
-      <height>54</height>
+      <width>151</width>
+      <height>56</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_8">
@@ -690,10 +690,10 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>160</x>
+      <x>170</x>
       <y>60</y>
-      <width>90</width>
-      <height>48</height>
+      <width>91</width>
+      <height>52</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_9">
@@ -751,7 +751,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>240</y>
+      <y>250</y>
       <width>371</width>
       <height>31</height>
      </rect>
@@ -764,20 +764,13 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>0</x>
+      <x>10</x>
       <y>50</y>
-      <width>153</width>
-      <height>80</height>
+      <width>161</width>
+      <height>84</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_10">
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_43">
-       <property name="text">
-        <string>Dimmer:</string>
-       </property>
-      </widget>
-     </item>
      <item row="2" column="0" colspan="2">
       <widget class="QLabel" name="label_44">
        <property name="text">
@@ -795,7 +788,14 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <item row="1" column="2">
       <widget class="QSpinBox" name="dimmerchan"/>
      </item>
-     <item row="0" column="0" colspan="2">
+     <item row="1" column="0" colspan="2">
+      <widget class="QLabel" name="label_43">
+       <property name="text">
+        <string>Dimmer:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
       <widget class="QCheckBox" name="hasfinedimmer">
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -839,7 +839,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>240</y>
+      <y>250</y>
       <width>371</width>
       <height>31</height>
      </rect>
@@ -854,8 +854,8 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <rect>
       <x>0</x>
       <y>50</y>
-      <width>111</width>
-      <height>54</height>
+      <width>118</width>
+      <height>56</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_11">
@@ -886,8 +886,8 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <rect>
       <x>220</x>
       <y>50</y>
-      <width>157</width>
-      <height>112</height>
+      <width>167</width>
+      <height>116</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_12">
@@ -938,8 +938,8 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <rect>
       <x>0</x>
       <y>110</y>
-      <width>167</width>
-      <height>54</height>
+      <width>178</width>
+      <height>56</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_13">
@@ -970,7 +970,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <rect>
       <x>0</x>
       <y>170</y>
-      <width>228</width>
+      <width>241</width>
       <height>54</height>
      </rect>
     </property>
@@ -1029,7 +1029,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>240</y>
+      <y>250</y>
       <width>371</width>
       <height>31</height>
      </rect>

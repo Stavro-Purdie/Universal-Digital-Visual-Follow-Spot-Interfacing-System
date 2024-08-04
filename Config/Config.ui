@@ -132,6 +132,12 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       <height>181</height>
      </rect>
     </property>
+    <property name="frameShape">
+     <enum>QFrame::WinPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Sunken</enum>
+    </property>
     <property name="sortingEnabled">
      <bool>true</bool>
     </property>
