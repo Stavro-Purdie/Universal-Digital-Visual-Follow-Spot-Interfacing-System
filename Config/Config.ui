@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>379</height>
+    <height>405</height>
    </rect>
   </property>
   <property name="cursor">
@@ -17,7 +17,8 @@
    <string>DMX Subsystem Configuration Tool</string>
   </property>
   <property name="windowIcon">
-   <iconset theme="utilities-terminal"/>
+   <iconset theme="utilities-terminal">
+    <normaloff>.</normaloff>.</iconset>
   </property>
   <property name="toolTip">
    <string/>
@@ -212,8 +213,8 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <rect>
       <x>0</x>
       <y>50</y>
-      <width>262</width>
-      <height>51</height>
+      <width>278</width>
+      <height>55</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
@@ -247,7 +248,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <rect>
       <x>0</x>
       <y>140</y>
-      <width>338</width>
+      <width>363</width>
       <height>61</height>
      </rect>
     </property>
@@ -309,19 +310,6 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <string>Press &lt;HELP&gt; For more information</string>
     </property>
    </widget>
-   <widget class="Line" name="line_5">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>120</y>
-      <width>491</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
   </widget>
   <widget class="QWizardPage" name="wizardPage_2">
    <widget class="QLabel" name="label_15">
@@ -358,7 +346,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       <x>0</x>
       <y>50</y>
       <width>250</width>
-      <height>80</height>
+      <height>83</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_3">
@@ -472,7 +460,7 @@ fixture profiles</string>
       <x>0</x>
       <y>110</y>
       <width>378</width>
-      <height>81</height>
+      <height>101</height>
      </rect>
     </property>
     <property name="text">
@@ -509,32 +497,6 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     </property>
     <property name="text">
      <string>Press &lt;HELP&gt; For more information</string>
-    </property>
-   </widget>
-   <widget class="Line" name="line_6">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>80</y>
-      <width>531</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
-   <widget class="Line" name="line_8">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>190</y>
-      <width>481</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
     </property>
    </widget>
   </widget>
@@ -684,7 +646,7 @@ their properties</string>
      <rect>
       <x>0</x>
       <y>90</y>
-      <width>411</width>
+      <width>461</width>
       <height>41</height>
      </rect>
     </property>
@@ -792,7 +754,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
      </rect>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Press &amp;lt;FINISH&amp;gt; to write the configuration and quit&lt;br/&gt;Press &amp;lt;CANCEL&amp;gt; to abort the configuration and quit without writing data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Press &amp;lt;FINISH&amp;gt; to write the configuration and quit&lt;br/&gt;Press &amp;lt;CANCEL&amp;gt; to abort the configuration and quit without &lt;br/&gt;writing data&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_38">
