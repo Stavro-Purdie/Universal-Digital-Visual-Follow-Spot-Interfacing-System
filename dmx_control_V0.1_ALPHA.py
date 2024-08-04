@@ -160,7 +160,7 @@ time.sleep(5)
 print(f'{Fore.BLUE + Style.BRIGHT}Starting the DMX Subsystem')
 time.sleep(3)
 
-## This section of the program initialized the adapter using the adapterconfig.ini file
+# This section of the program initialized the adapter using the adapterconfig.ini file
 try:
     dmx = Controller(serialport, auto_submit=True, dmx_size=dmxchanmax) 
     dmx.set_dmx_parameters(output_rate=adatspeed)
@@ -822,7 +822,7 @@ while flag == True:
         quit()
     
     fixturename = fixtureindex[fixturenum]['fixturename']
-    fixturestartchan = int(fixtureindex[fixturenum]['startingchannel'])
+    fixturestartchan = int(fixtureindex[fixturenum]['startingchannel'] - 1)
     fixtureprofilename = fixtureindex[fixturenum]['profilename']
     print(f'\n {Fore.BLUE + Style.BRIGHT}You Have Selected {fixturename}')
 
