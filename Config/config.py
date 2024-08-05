@@ -3,6 +3,7 @@ from PySide6.QtUiTools import QUiLoader
 from PySide6.QtWidgets import QApplication, QTreeWidget, QTreeWidgetItem
 from PySide6.QtCore import QFile, QIODevice
 import serial.tools.list_ports
+import serial.tools.list_ports_linux
 
 
 
@@ -38,16 +39,15 @@ if not afpui:
 ## Main Routine
 configui.show()                                         ## Show configui
 adatree = configui.adapterselect
-serialports = {}
-for port in serial.tools.list_ports.comports():
-    serialports[port.name] = {}
-    serialports[port.name]['description'] = port.description
-    serialports[port.name]['manufacturer'] = port.manufacturer
-    serialports[port.name]['hwid'] = port.hwid
 
-for serialport, descriptions in serialports:
-    item = QTreeWidgetItem([serialport])
-    for description in descriptions:
-        
+items = []
+for port in serial.tools.list_ports.comports():
+    item = QTreeWidgetItem([port.device])
+    item.setText(1, str(port.description) + " by " + str(port.manufacturer))
+#    child = QTreeWidgetItem([port.manufacturer])
+#    item.addChild(child)
+    items.append(item)
+adatree.insertTopLevelItems(0, items)
+
 configui.addfixtureprofile.clicked.connect(onafpclick)
 sys.exit(app.exec())

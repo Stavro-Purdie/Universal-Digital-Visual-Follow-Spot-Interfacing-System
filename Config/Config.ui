@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>405</height>
+    <width>499</width>
+    <height>468</height>
    </rect>
   </property>
   <property name="cursor">
@@ -93,6 +93,12 @@
    </widget>
   </widget>
   <widget class="QWizardPage" name="wizardPage2">
+   <property name="maximumSize">
+    <size>
+     <width>566</width>
+     <height>413</height>
+    </size>
+   </property>
    <property name="whatsThis">
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Adapter Config Starting Prompt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
@@ -100,9 +106,9 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>260</y>
+      <y>350</y>
       <width>371</width>
-      <height>41</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -110,26 +116,13 @@
 Press &lt;CANCEL&gt; to exit the configurator</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_6">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>381</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:700;&quot;&gt;DMX ADAPTER SETUP&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-   </widget>
    <widget class="QTreeWidget" name="adapterselect">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>40</y>
-      <width>301</width>
-      <height>201</height>
+      <width>481</width>
+      <height>291</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -138,8 +131,14 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="frameShadow">
      <enum>QFrame::Sunken</enum>
     </property>
+    <property name="lineWidth">
+     <number>1</number>
+    </property>
     <property name="alternatingRowColors">
      <bool>false</bool>
+    </property>
+    <property name="indentation">
+     <number>10</number>
     </property>
     <property name="sortingEnabled">
      <bool>true</bool>
@@ -147,6 +146,9 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="animated">
      <bool>true</bool>
     </property>
+    <attribute name="headerDefaultSectionSize">
+     <number>100</number>
+    </attribute>
     <column>
      <property name="text">
       <string>Port:</string>
@@ -161,21 +163,21 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
    <widget class="QLabel" name="label_7">
     <property name="geometry">
      <rect>
-      <x>310</x>
-      <y>40</y>
-      <width>171</width>
+      <x>0</x>
+      <y>0</y>
+      <width>481</width>
       <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please select your adapter from this &lt;br/&gt;list of serial devices.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Select your adapter from this tree of attached serial devices.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_8">
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>300</y>
+      <y>380</y>
       <width>251</width>
       <height>21</height>
      </rect>
@@ -204,7 +206,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <rect>
       <x>0</x>
       <y>30</y>
-      <width>378</width>
+      <width>451</width>
       <height>16</height>
      </rect>
     </property>
@@ -216,7 +218,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>270</y>
+      <y>350</y>
       <width>371</width>
       <height>31</height>
      </rect>
@@ -230,7 +232,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>50</y>
+      <y>60</y>
       <width>278</width>
       <height>55</height>
      </rect>
@@ -277,7 +279,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
         <bool>true</bool>
        </property>
        <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
+        <enum>Qt::LeftToRight</enum>
        </property>
        <property name="autoFillBackground">
         <bool>false</bool>
@@ -319,7 +321,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>300</y>
+      <y>380</y>
       <width>251</width>
       <height>21</height>
      </rect>
@@ -335,20 +337,19 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>391</width>
+      <width>481</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>The Adapter Configuration has now finished, Your settings 
-are below:</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;The Adapter Configuration has now finished, Your settings are&lt;br/&gt;below:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_19">
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>270</y>
+      <y>360</y>
       <width>371</width>
       <height>51</height>
      </rect>
@@ -450,13 +451,12 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <rect>
       <x>0</x>
       <y>30</y>
-      <width>378</width>
+      <width>471</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>This section of the configurator deals with the setup of 
-fixture profiles</string>
+     <string>This section of the configurator deals with the setup of fixture profiles</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_22">
@@ -494,7 +494,7 @@ Bulb info</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>270</y>
+      <y>350</y>
       <width>371</width>
       <height>31</height>
      </rect>
@@ -508,7 +508,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>300</y>
+      <y>380</y>
       <width>251</width>
       <height>21</height>
      </rect>
@@ -545,34 +545,11 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <string/>
     </property>
    </widget>
-   <widget class="QTreeView" name="profiletree">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>30</y>
-      <width>256</width>
-      <height>192</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_27">
-    <property name="geometry">
-     <rect>
-      <x>260</x>
-      <y>30</y>
-      <width>191</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Fixtures added to the system:</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="addfixtureprofile">
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>220</y>
+      <y>250</y>
       <width>121</width>
       <height>22</height>
      </rect>
@@ -594,7 +571,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>270</y>
+      <y>350</y>
       <width>311</width>
       <height>31</height>
      </rect>
@@ -607,22 +584,21 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
    <widget class="QLabel" name="label_34">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>90</y>
-      <width>191</width>
-      <height>41</height>
+      <x>0</x>
+      <y>280</y>
+      <width>331</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>Click on each fixture to see
-their properties</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Click on each fixture to see their properties&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_42">
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>300</y>
+      <y>380</y>
       <width>251</width>
       <height>21</height>
      </rect>
@@ -631,6 +607,28 @@ their properties</string>
      <string>Press &lt;HELP&gt; For more information</string>
     </property>
    </widget>
+   <widget class="QTreeWidget" name="treeWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>30</y>
+      <width>481</width>
+      <height>241</height>
+     </rect>
+    </property>
+    <column>
+     <property name="text">
+      <string notr="true">1</string>
+     </property>
+    </column>
+   </widget>
+   <zorder>treeWidget</zorder>
+   <zorder>label_25</zorder>
+   <zorder>label_26</zorder>
+   <zorder>addfixtureprofile</zorder>
+   <zorder>label_28</zorder>
+   <zorder>label_34</zorder>
+   <zorder>label_42</zorder>
   </widget>
   <widget class="QWizardPage" name="wizardPage_5">
    <widget class="QLabel" name="label_29">
