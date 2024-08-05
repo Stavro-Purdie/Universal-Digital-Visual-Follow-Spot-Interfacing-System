@@ -20,7 +20,14 @@ if not configui:
 
 ## Add Fixture Profile UI
 afpuifile = QFile("addfixtureprofile.ui")
-
+if not afpuifile.open(QIODevice.ReadOnly):
+    print(f'Cannot open addfixtureprofile.ui: {afpuifile.errorString()}')
+    sys.exit(-1)
+afpui = loader.load(afpuifile)
+afpuifile.close()
+if not afpui:
+    print(loader.errorString)
+    sys.exit
 ## Show configui
 configui.show()
 

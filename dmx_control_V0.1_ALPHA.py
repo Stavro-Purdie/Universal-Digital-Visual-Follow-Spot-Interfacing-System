@@ -160,10 +160,11 @@ time.sleep(5)
 print(f'{Fore.BLUE + Style.BRIGHT}Starting the DMX Subsystem')
 time.sleep(3)
 
-## This section of the program initialized the adapter using the adapterconfig.ini file
+# This section of the program initialized the adapter using the adapterconfig.ini file
 try:
     dmx = Controller(serialport, auto_submit=True, dmx_size=dmxchanmax) 
     dmx.set_dmx_parameters(output_rate=adatspeed)
+    dmx.clear_channels
 except:
     print(f'{Fore.RED + Style.BRIGHT}    [XX] Serial Port {serialport} is unreachable. The DMX Subsystem is unable to start.\n')
     time.sleep(2)
@@ -204,7 +205,7 @@ def on_press():
     while True:
         if numpad == 'y' or 'Y':
             if keyboard.is_pressed("8"):                #movelimits/65536, values in comments are based off industry standard values such as 540pan 270 tilt
-                tiltfine += 16                          #0.128 degrees per 16 bits 0.008 degrees per bit
+                tiltfine += 60                          #0.128 degrees per 16 bits 0.008 degrees per bit
                 if tiltfine > 255:                     #If tiltfine maxed out
                     tilt += 1                           #Add one to tilt (2.1 degrees per bit)
                     tiltfine = 0                  #Reset tiltfine (dmx starts at 0 and ends at 255, total of 256 bits)
@@ -216,7 +217,7 @@ def on_press():
                 dmx.set_channel(movementchannels['tilt'], tilt)                 
                 
             elif keyboard.is_pressed("2"):
-                tiltfine -= 16
+                tiltfine -= 60
                 if tiltfine < 0:
                     tilt -= 1
                     tiltfine = 255
@@ -228,7 +229,7 @@ def on_press():
                 dmx.set_channel(movementchannels['tilt'], tilt)
 
             elif keyboard.is_pressed("6"):
-                panfine += 16
+                panfine += 60
                 if panfine > 255:
                     pan += 1
                     panfine = 0
@@ -240,7 +241,7 @@ def on_press():
                 dmx.set_channel(movementchannels['pan'], pan)
 
             elif keyboard.is_pressed("4"):
-                panfine -= 16
+                panfine -= 60
                 if panfine < 0:
                     pan -= 1
                     panfine = 255
@@ -399,6 +400,10 @@ def on_press():
                                 print(f'{Back.BLUE + Style.BRIGHT}<<< Exiting to colour menu >>>')
                                 print(f'{Back.BLUE + Style.BRIGHT}<<< Colour Selected >>>')
                                 break
+                    if keyboard.is_pressed("enter"):
+                        time.sleep(0.5)
+                        print(f'{Back.BLUE + Style.BRIGHT}<<< Back to Main control menu >>>')
+                        break
             ##CMY Section
             if iscmy == True:
                 while True:
@@ -491,6 +496,7 @@ def on_press():
                                 print(f'{Back.BLUE + Style.BRIGHT}<<< Exiting to colour menu >>>')
                                 print(f'{Back.BLUE + Style.BRIGHT}<<< Colour Selected >>>')
                                 break
+            
         if keyboard.is_pressed("z"):
             time.sleep(0.1)
             print(f'{Back.BLUE + Style.BRIGHT}<<< Zoom Selected, Press Arrow Up/Down to change, Press Enter to exit to main menu >>>')
@@ -506,7 +512,7 @@ def on_press():
                     if zoom < 0:
                         zoom = 0
                     time.sleep(0.025)
-                    dmx.set_channel(colourchannels['zoom'], zoom)
+                    dmx.set_channel(beamchannels['zoom'], zoom)
                 if keyboard.is_pressed("enter"):
                     time.sleep(0.5)
                     print(f'{Back.BLUE + Style.BRIGHT}<<< Exiting to main menu >>>')
@@ -527,7 +533,7 @@ def on_press():
                     if focus < 0:
                         focus = 0
                     time.sleep(0.025)
-                    dmx.set_channel(colourchannels['focus'], focus)
+                    dmx.set_channel(beamchannels['focus'], focus)
                 if keyboard.is_pressed("enter"):
                     time.sleep(0.5)
                     print(f'{Back.BLUE + Style.BRIGHT}<<< Exiting to main menu >>>')
@@ -605,7 +611,7 @@ def on_press():
                     print(f'{Back.BLUE + Style.BRIGHT}<<< Back to Main control menu >>>')
                     break
         if keyboard.is_pressed("="):
-            dimmer_fine += 32
+            dimmer_fine += 125
             if dimmer_fine > 255:
                 dimmer += 1
                 dimmer_fine = 0
@@ -616,7 +622,7 @@ def on_press():
             dmx.set_channel(dimmerchannels['dimmer_fine'], dimmer_fine)
             dmx.set_channel(dimmerchannels['dimmer'], dimmer)
         if keyboard.is_pressed("-"):
-            dimmer_fine -= 32
+            dimmer_fine -= 125
             if dimmer_fine < 0:
                 dimmer -= 1
                 dimmer_fine = 255
@@ -822,30 +828,30 @@ while flag == True:
         quit()
     
     fixturename = fixtureindex[fixturenum]['fixturename']
-    fixturestartchan = int(fixtureindex[fixturenum]['startingchannel'])
+    fixturestartchan = int(fixtureindex[fixturenum]['startingchannel']) - 1
     fixtureprofilename = fixtureindex[fixturenum]['profilename']
     print(f'\n {Fore.BLUE + Style.BRIGHT}You Have Selected {fixturename}')
 
-    pan = -1
-    panfine = -1
-    tilt = -1
-    tiltfine = -1
-    ptspeed = -1
-    conventional = -1
-    red = -1
-    green = -1
-    blue = -1
-    cyan = -1
-    magenta = -1
-    yellow = -1
-    cto = -1
-    zoom = -1
-    focus = -1
-    frost = -1
-    static_gobo = -1
-    rotating_gobo = -1
-    dimmer = -1
-    dimmer_fine = -1
+    pan = 0
+    panfine = 0
+    tilt = 0
+    tiltfine = 0
+    ptspeed = 0
+    conventional = 0
+    red = 0
+    green = 0
+    blue = 0
+    cyan = 0
+    magenta = 0
+    yellow = 0
+    cto = 0
+    zoom = 0
+    focus = 0
+    frost = 0
+    static_gobo = 0
+    rotating_gobo = 0
+    dimmer = 0
+    dimmer_fine = 0
 
     
     dmxcontrol()
