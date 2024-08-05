@@ -1,9 +1,8 @@
-import sys
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtWidgets import QApplication, QTreeWidget, QTreeWidgetItem
-from PySide6.QtCore import QFile, QIODevice
+from PySide6.QtWidgets import QApplication, QTreeWidget, QTreeWidgetItem 
+from PySide6.QtCore import QFile, QIODevice, Qt
 import serial.tools.list_ports
-import serial.tools.list_ports_linux
+import sys
 
 
 
@@ -38,16 +37,27 @@ if not afpui:
 
 ## Main Routine
 configui.show()                                         ## Show configui
-adatree = configui.adapterselect
 
+if configui.currentId != 2:
+   print('yay')
+
+
+## Adapter Tree
+adatree = configui.adapterselect
 items = []
 for port in serial.tools.list_ports.comports():
-    item = QTreeWidgetItem([port.device])
-    item.setText(1, str(port.description) + " by " + str(port.manufacturer))
-#    child = QTreeWidgetItem([port.manufacturer])
-#    item.addChild(child)
-    items.append(item)
+    if port.device.startswith('/dev/ttyUSB'):               ## Only add USB serial devices 
+        item = QTreeWidgetItem([port.device])
+        item.setText(1, str(port.description) + " by " + str(port.manufacturer))
+        item.setFlags(item.flags() | Qt.ItemFlag.ItemIsUserCheckable)
+        item.setCheckState(0, Qt.CheckState.Unchecked)
+#       child = QTreeWidgetItem([port.manufacturer])
+#       item.addChild(child)
+        items.append(item)
 adatree.insertTopLevelItems(0, items)
-
+for itemscheck in items:
+    if item.checkState(1):
+            print (item.text(1),item.checkState(1))
 configui.addfixtureprofile.clicked.connect(onafpclick)
+
 sys.exit(app.exec())

@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>Wizard</class>
  <widget class="QWizard" name="Wizard">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -82,7 +85,7 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>270</y>
+      <y>350</y>
       <width>371</width>
       <height>51</height>
      </rect>
@@ -134,11 +137,14 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="lineWidth">
      <number>1</number>
     </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
+    </property>
     <property name="alternatingRowColors">
      <bool>false</bool>
     </property>
     <property name="indentation">
-     <number>10</number>
+     <number>0</number>
     </property>
     <property name="sortingEnabled">
      <bool>true</bool>
@@ -146,8 +152,11 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="animated">
      <bool>true</bool>
     </property>
+    <property name="columnCount">
+     <number>2</number>
+    </property>
     <attribute name="headerDefaultSectionSize">
-     <number>100</number>
+     <number>125</number>
     </attribute>
     <column>
      <property name="text">
@@ -788,6 +797,18 @@ li.checked::marker { content: &quot;\2612&quot;; }
    </widget>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>adapterselect</tabstop>
+  <tabstop>ChannelReq</tabstop>
+  <tabstop>manadatspeed</tabstop>
+  <tabstop>speedenter</tabstop>
+  <tabstop>serialport</tabstop>
+  <tabstop>chanreq</tabstop>
+  <tabstop>adatspeedshow</tabstop>
+  <tabstop>addfixtureprofile</tabstop>
+  <tabstop>treeWidget</tabstop>
+  <tabstop>pushButton</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
