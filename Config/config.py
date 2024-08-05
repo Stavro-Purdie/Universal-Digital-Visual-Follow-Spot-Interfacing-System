@@ -1,7 +1,13 @@
 import sys
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication, QTreeWidget, QTreeWidgetItem
 from PySide6.QtCore import QFile, QIODevice
+import serial.tools.list_ports
+
+
+
+def onafpclick():
+    afpui.show()
 
 ## Init section
 app = QApplication(sys.argv)
@@ -28,7 +34,20 @@ afpuifile.close()
 if not afpui:
     print(loader.errorString)
     sys.exit
-## Show configui
-configui.show()
 
+## Main Routine
+configui.show()                                         ## Show configui
+adatree = configui.adapterselect
+serialports = {}
+for port in serial.tools.list_ports.comports():
+    serialports[port.name] = {}
+    serialports[port.name]['description'] = port.description
+    serialports[port.name]['manufacturer'] = port.manufacturer
+    serialports[port.name]['hwid'] = port.hwid
+
+for serialport, descriptions in serialports:
+    item = QTreeWidgetItem([serialport])
+    for description in descriptions:
+        
+configui.addfixtureprofile.clicked.connect(onafpclick)
 sys.exit(app.exec())

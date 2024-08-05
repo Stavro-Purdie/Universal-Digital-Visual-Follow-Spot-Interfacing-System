@@ -123,13 +123,13 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:700;&quot;&gt;DMX ADAPTER SETUP&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QTreeView" name="adapterselect">
+   <widget class="QTreeWidget" name="adapterselect">
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>50</y>
-      <width>191</width>
-      <height>181</height>
+      <y>40</y>
+      <width>301</width>
+      <height>201</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -138,25 +138,37 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="frameShadow">
      <enum>QFrame::Sunken</enum>
     </property>
+    <property name="alternatingRowColors">
+     <bool>false</bool>
+    </property>
     <property name="sortingEnabled">
      <bool>true</bool>
     </property>
     <property name="animated">
      <bool>true</bool>
     </property>
+    <column>
+     <property name="text">
+      <string>Port:</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Description:</string>
+     </property>
+    </column>
    </widget>
    <widget class="QLabel" name="label_7">
     <property name="geometry">
      <rect>
-      <x>200</x>
+      <x>310</x>
       <y>40</y>
-      <width>251</width>
+      <width>171</width>
       <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please select your adapter from this list&lt;br&gt;
-of serial devices.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Please select your adapter from this &lt;br/&gt;list of serial devices.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_8">

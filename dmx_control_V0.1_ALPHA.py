@@ -205,7 +205,7 @@ def on_press():
     while True:
         if numpad == 'y' or 'Y':
             if keyboard.is_pressed("8"):                #movelimits/65536, values in comments are based off industry standard values such as 540pan 270 tilt
-                tiltfine += 60                          #0.128 degrees per 16 bits 0.008 degrees per bit
+                tiltfine += 85                          #0.128 degrees per 16 bits 0.008 degrees per bit
                 if tiltfine > 255:                     #If tiltfine maxed out
                     tilt += 1                           #Add one to tilt (2.1 degrees per bit)
                     tiltfine = 0                  #Reset tiltfine (dmx starts at 0 and ends at 255, total of 256 bits)
@@ -217,7 +217,7 @@ def on_press():
                 dmx.set_channel(movementchannels['tilt'], tilt)                 
                 
             elif keyboard.is_pressed("2"):
-                tiltfine -= 60
+                tiltfine -= 85
                 if tiltfine < 0:
                     tilt -= 1
                     tiltfine = 255
@@ -229,7 +229,7 @@ def on_press():
                 dmx.set_channel(movementchannels['tilt'], tilt)
 
             elif keyboard.is_pressed("6"):
-                panfine += 60
+                panfine += 85
                 if panfine > 255:
                     pan += 1
                     panfine = 0
@@ -241,7 +241,7 @@ def on_press():
                 dmx.set_channel(movementchannels['pan'], pan)
 
             elif keyboard.is_pressed("4"):
-                panfine -= 60
+                panfine -= 85
                 if panfine < 0:
                     pan -= 1
                     panfine = 255
@@ -253,7 +253,7 @@ def on_press():
                 dmx.set_channel(movementchannels['pan'], pan)
         else:
             if keyboard.is_pressed("up"):
-                tiltfine += 16                          #0.128 degrees per 16 bits 0.008 degrees per bit
+                tiltfine += 85                          #0.128 degrees per 16 bits 0.008 degrees per bit
                 if tiltfine > 255:                     #If tiltfine maxed out
                     tilt += 1                           #Add one to tilt (2.1 degrees per bit)
                     tiltfine = 0                  #Reset tiltfine (dmx starts at 0 and ends at 255, total of 256 bits)
@@ -265,7 +265,7 @@ def on_press():
                 dmx.set_channel(movementchannels['tilt'], tilt)
 
             elif keyboard.is_pressed("down"):
-                tiltfine -= 16
+                tiltfine -= 85
                 if tiltfine < 0:
                     tilt -= 1
                     tiltfine = 255
@@ -277,7 +277,7 @@ def on_press():
                 dmx.set_channel(movementchannels['tilt'], tilt)
 
             elif keyboard.is_pressed("right"):
-                panfine += 16
+                panfine += 85
                 if panfine > 255:
                     pan += 1
                     panfine = 0
@@ -289,7 +289,7 @@ def on_press():
                 dmx.set_channel(movementchannels['pan'], pan)
 
             elif keyboard.is_pressed("left"):
-                panfine -= 16
+                panfine -= 85
                 if panfine < 0:
                     pan -= 1
                     panfine = 255
@@ -611,7 +611,7 @@ def on_press():
                     print(f'{Back.BLUE + Style.BRIGHT}<<< Back to Main control menu >>>')
                     break
         if keyboard.is_pressed("="):
-            dimmer_fine += 125
+            dimmer_fine += 85
             if dimmer_fine > 255:
                 dimmer += 1
                 dimmer_fine = 0
@@ -622,7 +622,7 @@ def on_press():
             dmx.set_channel(dimmerchannels['dimmer_fine'], dimmer_fine)
             dmx.set_channel(dimmerchannels['dimmer'], dimmer)
         if keyboard.is_pressed("-"):
-            dimmer_fine -= 125
+            dimmer_fine -= 85
             if dimmer_fine < 0:
                 dimmer -= 1
                 dimmer_fine = 255
