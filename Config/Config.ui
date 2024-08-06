@@ -42,6 +42,9 @@
    <property name="inputMethodHints">
     <set>Qt::ImhNone</set>
    </property>
+   <attribute name="pageId">
+    <string notr="true">1</string>
+   </attribute>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
@@ -105,6 +108,9 @@
    <property name="whatsThis">
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Adapter Config Starting Prompt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
+   <attribute name="pageId">
+    <string notr="true">2</string>
+   </attribute>
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
@@ -125,7 +131,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       <x>0</x>
       <y>40</y>
       <width>481</width>
-      <height>291</height>
+      <height>261</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -179,7 +185,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      </rect>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Select your adapter from this tree of attached serial devices.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Enter your DMX adapter from this tree into the text box&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_8">
@@ -195,8 +201,40 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <string>Press &lt;HELP&gt; For more information</string>
     </property>
    </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>300</y>
+      <width>236</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout_4">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>Adapter Port:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="adatpath">
+       <property name="inputMethodHints">
+        <set>Qt::ImhNone</set>
+       </property>
+       <property name="text">
+        <string>/dev/ttyUSBx</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
   <widget class="QWizardPage" name="wizardPage">
+   <attribute name="pageId">
+    <string notr="true">3</string>
+   </attribute>
    <widget class="QLabel" name="label_9">
     <property name="geometry">
      <rect>
@@ -341,6 +379,9 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
    </widget>
   </widget>
   <widget class="QWizardPage" name="wizardPage_2">
+   <attribute name="pageId">
+    <string notr="true">3</string>
+   </attribute>
    <widget class="QLabel" name="label_15">
     <property name="geometry">
      <rect>
@@ -442,6 +483,9 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
    </widget>
   </widget>
   <widget class="QWizardPage" name="wizardPage_3">
+   <attribute name="pageId">
+    <string notr="true">4</string>
+   </attribute>
    <widget class="QLabel" name="label_20">
     <property name="geometry">
      <rect>
@@ -528,6 +572,9 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
    </widget>
   </widget>
   <widget class="QWizardPage" name="wizardPage_4">
+   <attribute name="pageId">
+    <string notr="true">5</string>
+   </attribute>
    <widget class="QLabel" name="label_25">
     <property name="geometry">
      <rect>
@@ -640,6 +687,9 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
    <zorder>label_42</zorder>
   </widget>
   <widget class="QWizardPage" name="wizardPage_5">
+   <attribute name="pageId">
+    <string notr="true">5</string>
+   </attribute>
    <widget class="QLabel" name="label_29">
     <property name="geometry">
      <rect>
@@ -732,6 +782,9 @@ Press &lt;HELP&gt; for assistance</string>
    </widget>
   </widget>
   <widget class="QWizardPage" name="wizardPage_6">
+   <attribute name="pageId">
+    <string notr="true">6</string>
+   </attribute>
    <widget class="QLabel" name="label_35">
     <property name="geometry">
      <rect>
