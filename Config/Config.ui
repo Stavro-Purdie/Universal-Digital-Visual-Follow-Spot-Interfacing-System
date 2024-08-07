@@ -201,7 +201,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <string>Press &lt;HELP&gt; For more information</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -388,11 +388,11 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       <x>0</x>
       <y>0</y>
       <width>481</width>
-      <height>31</height>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;The Adapter Configuration has now finished, Your settings are&lt;br/&gt;below:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;The Adapter Configuration has now finished.&lt;br/&gt;&lt;br/&gt;&lt;/span&gt;To change these settings, please run this program again.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_19">
@@ -408,78 +408,6 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <string>Press &lt;NEXT&gt; to continue with the configuration
 Press &lt;CANCEL&gt; to exit the configurator</string>
     </property>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>50</y>
-      <width>250</width>
-      <height>83</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout_3">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_16">
-       <property name="text">
-        <string>Adapter Serial Port:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="serialport">
-       <property name="text">
-        <string notr="true"/>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-       <property name="clearButtonEnabled">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_18">
-       <property name="text">
-        <string>Channels Required:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLineEdit" name="chanreq">
-       <property name="text">
-        <string notr="true"/>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-       <property name="clearButtonEnabled">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_17">
-       <property name="text">
-        <string>Adapter Speed:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QLineEdit" name="adatspeedshow">
-       <property name="text">
-        <string notr="true"/>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
-       </property>
-       <property name="clearButtonEnabled">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </widget>
   </widget>
   <widget class="QWizardPage" name="wizardPage_3">
@@ -747,7 +675,7 @@ profiles we created in the last section</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>270</y>
+      <y>340</y>
       <width>371</width>
       <height>51</height>
      </rect>
@@ -826,7 +754,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>270</y>
+      <y>340</y>
       <width>451</width>
       <height>51</height>
      </rect>
@@ -855,9 +783,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
   <tabstop>ChannelReq</tabstop>
   <tabstop>manadatspeed</tabstop>
   <tabstop>speedenter</tabstop>
-  <tabstop>serialport</tabstop>
-  <tabstop>chanreq</tabstop>
-  <tabstop>adatspeedshow</tabstop>
   <tabstop>addfixtureprofile</tabstop>
   <tabstop>treeWidget</tabstop>
   <tabstop>pushButton</tabstop>

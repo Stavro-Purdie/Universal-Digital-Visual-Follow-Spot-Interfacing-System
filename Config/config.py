@@ -1,5 +1,5 @@
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtWidgets import QApplication, QTreeWidget, QTreeWidgetItem 
+from PySide6.QtWidgets import QApplication, QTreeWidget, QTreeWidgetItem, QSpinBox
 from PySide6.QtCore import QFile, QIODevice, Qt
 import threading
 import time
@@ -57,6 +57,7 @@ for port in serial.tools.list_ports.comports():
          
 adatree.insertTopLevelItems(0, items)
 configui.addfixtureprofile.clicked.connect(onafpclick)
+
 
 app.exec()
 sys.exit
