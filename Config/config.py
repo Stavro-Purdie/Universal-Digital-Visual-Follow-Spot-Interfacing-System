@@ -63,8 +63,35 @@ def onafpclick():
         ctocontrol = True
     else:
         ctocontrol = False
+    zoomchan = afpui.zoomchan.value()
+    finezoomchan = afpui.zoomfinechan.value()
+    if finezoomchan == True:
+        finezoomcontrol = True
+    else:
+        finezoomcontrol = False
+    focuschan = afpui.focuschan.value()
+    finefocuschan = afpui.focusfinechan.value()
+    if finefocuschan == True:
+        finefocuscontrol = True
+    else:
+        finefocuscontrol = False
+    staticgobochan = afpui.staticgobochan.value()
+    rotgobochan = afpui.rotgobochan.value()
+    dimmerchan = afpui.dimmerchan.value()
+    finedimmerchan = afpui.finedimmerchan.value()
+    if finedimmerchan == True:
+        finedimmercontrol = True
+    else:
+        finedimmercontrol = False
+    panlimit = afpui.panlimit.value()
+    tiltlimit = afpui.tiltlimit.value()
+    bulbwattage = afpui.bulbwattage.value()
+    bulblumen = afpui.bulblumen.value()
+    maxzoom = afpui.maxzoom.value()
+    minzoom = afpui.minzoom.value()
+    maxfocus = afpui.maxfocus.value()
+    minfocus = afpui.minfocus.value()
     
-
     
 ## Init section
 app = QApplication(sys.argv)
