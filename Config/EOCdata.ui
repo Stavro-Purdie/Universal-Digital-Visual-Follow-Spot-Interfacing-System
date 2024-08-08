@@ -45,7 +45,7 @@
       </widget>
      </item>
      <item row="0" column="1" colspan="3">
-      <widget class="QLineEdit" name="lineEdit"/>
+      <widget class="QLineEdit" name="showadatpath"/>
      </item>
      <item row="2" column="0" colspan="3">
       <widget class="QLabel" name="label_3">
@@ -62,7 +62,7 @@
       </widget>
      </item>
      <item row="3" column="3">
-      <widget class="QLCDNumber" name="lcdNumber_3"/>
+      <widget class="QLCDNumber" name="showadatspeed"/>
      </item>
      <item row="4" column="0">
       <widget class="QLabel" name="label_5">
@@ -86,16 +86,16 @@
       </widget>
      </item>
      <item row="2" column="3">
-      <widget class="QLCDNumber" name="lcdNumber_2"/>
+      <widget class="QLCDNumber" name="showadatchan"/>
      </item>
      <item row="4" column="3">
-      <widget class="QLCDNumber" name="lcdNumber_4"/>
+      <widget class="QLCDNumber" name="showfixcount"/>
      </item>
      <item row="5" column="3">
-      <widget class="QLCDNumber" name="lcdNumber_5"/>
+      <widget class="QLCDNumber" name="showchanused"/>
      </item>
      <item row="6" column="3">
-      <widget class="QLCDNumber" name="lcdNumber_6"/>
+      <widget class="QLCDNumber" name="showchanleft"/>
      </item>
     </layout>
    </widget>

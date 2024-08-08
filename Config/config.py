@@ -6,13 +6,17 @@ import time
 import serial.tools.list_ports
 import sys
 
+global configui
 
 def onafpclick():
     afpui.show()
+    fixname = afpui.fixname.text()
+    chancount = afpui.chancount.value()
+    panlimit = afpui.panlimits.value()
+    tiltlimit = afpui.tiltlimits.value
+    
 
-def seladat():
-    global item, items
-    print(item.checkState(1))
+    
 ## Init section
 app = QApplication(sys.argv)
 loader = QUiLoader()
@@ -50,16 +54,23 @@ for port in serial.tools.list_ports.comports():
     if port.device.startswith('/dev/ttyUSB'):               ## Only add USB serial devices 
         item = QTreeWidgetItem([port.device])
         item.setText(1, str(port.description) + " by " + str(port.manufacturer))
-#       child = QTreeWidgetItem([port.manufacturer])
-#       item.addChild(child)
-        items.append(item)
-
-         
+        items.append(item)    
 adatree.insertTopLevelItems(0, items)
+
+
 configui.addfixtureprofile.clicked.connect(onafpclick)
 
 
 app.exec()
+adatport = configui.adatpath.text()
+chanreq = configui.ChannelReq.value()
+adatspeed = configui.speedenter.value()
+if adatspeed == True:
+    manspeed = True
+else:
+    manspeed = False
+
+
 sys.exit
 
    
