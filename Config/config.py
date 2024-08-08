@@ -13,7 +13,56 @@ def onafpclick():
     fixname = afpui.fixname.text()
     chancount = afpui.chancount.value()
     panlimit = afpui.panlimits.value()
-    tiltlimit = afpui.tiltlimits.value
+    tiltlimit = afpui.tiltlimits.value()
+    panchan = afpui.panchan.value()
+    finepanchan = afpui.finepanchan.value()
+    tiltchan = afpui.tiltchan.value()
+    finetiltchan = afpui.finetiltchan.value()
+    ptspeedchan = afpui.ptspeedchan.value()
+    if ptspeedchan == True:
+        ptspeedcontrol = True
+    else:
+        ptspeedcontrol = False
+    redchan = afpui.redchan.value()
+    if redchan == True:
+        redcontrol = True
+    else:
+        redcontrol = False
+    greenchan = afpui.greenchan.value()
+    if greenchan == True:
+        greencontrol = True
+    else:
+        greencontrol = False
+    bluechan = afpui.bluechan.value()
+    if bluechan == True:
+        bluecontrol = True
+    else:
+        bluecontrol = False
+    cyanchan = afpui.cyanchan.value()
+    if cyanchan == True:
+        cyancontrol = True
+    else:
+        cyancontrol = False
+    magentachan = afpui.magentachan.value()
+    if magentachan == True:
+        magentacontrol = True
+    else:
+        magentacontrol = False
+    yellowchan = afpui.yellowchan.value()
+    if yellowchan == True:
+        yellowcontrol = True
+    else:
+        yellowcontrol = False
+    colourwheelchan = afpui.colourwheelchan.value()
+    if colourwheelchan == True:
+        colourwheelcontrol = True
+    else:
+        colourwheelcontrol = False
+    ctochan = afpui.ctochan.value()
+    if ctochan == True:
+        ctocontrol = True
+    else:
+        ctocontrol = False
     
 
     
