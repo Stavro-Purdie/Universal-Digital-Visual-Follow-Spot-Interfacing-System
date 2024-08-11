@@ -95,61 +95,68 @@ def savefixprof():
     minfocus = afpui.minfocus.value()
 
     ## Save to dict
+    ## Real world parameters
     fixtureprofiles[fixname] = {}
     fixtureprofiles[fixname]['channel_count'] = chancount
-    fixtureprofiles[fixname]['pan_limit'] = panlimit
-    fixtureprofiles[fixname]['tilt_limit'] = tiltlimit
-    fixtureprofiles[fixname]['bulb_wattage'] = bulbwattage
-    fixtureprofiles[fixname]['bulb_lumens'] = bulblumen
-    fixtureprofiles[fixname]['max_zoom_angle'] = maxzoom
-    fixtureprofiles[fixname]['min_zoom_angle'] = minzoom
-    fixtureprofiles[fixname]['max_focus_angle'] = maxfocus
-    fixtureprofiles[fixname]['min_focus_angle'] = minfocus
-    fixtureprofiles[fixname]['pan'] = panchan
-    fixtureprofiles[fixname]['fine_pan'] = finepanchan
-    fixtureprofiles[fixname]['tilt'] = tiltchan
-    fixtureprofiles[fixname]['fine_tilt'] = finetiltchan
+    fixtureprofiles[fixname]['physical_params'] = {}
+    fixtureprofiles[fixname]['physical_params']['pan_limit'] = panlimit
+    fixtureprofiles[fixname]['physical_params']['tilt_limit'] = tiltlimit
+    fixtureprofiles[fixname]['physical_params']['bulb_wattage'] = bulbwattage
+    fixtureprofiles[fixname]['physical_params']['bulb_lumens'] = bulblumen
+    fixtureprofiles[fixname]['physical_params']['max_zoom_angle'] = maxzoom
+    fixtureprofiles[fixname]['physical_params']['min_zoom_angle'] = minzoom
+    fixtureprofiles[fixname]['physical_params']['max_focus_angle'] = maxfocus
+    fixtureprofiles[fixname]['physical_params']['min_focus_angle'] = minfocus
+    ## Movement Control
+    fixtureprofiles[fixname]['movement'] = {}
+    fixtureprofiles[fixname]['movement']['pan'] = panchan
+    fixtureprofiles[fixname]['movement']['fine_pan'] = finepanchan
+    fixtureprofiles[fixname]['movement']['tilt'] = tiltchan
+    fixtureprofiles[fixname]['movement']['fine_tilt'] = finetiltchan
     ## Speed Control
     if ptspeedcontrol == True:
-        fixtureprofiles[fixname]['pan_tilt_speed_control'] = ptspeedchan
+        fixtureprofiles[fixname]['movement']['pan_tilt_speed_control'] = ptspeedchan
     else:
-        fixtureprofiles[fixname]['pan_tilt_speed_control'] = 'none'
+        fixtureprofiles[fixname]['movement']['pan_tilt_speed_control'] = 'none'
     ## RGB Control
+    fixtureprofiles[fixname]['colour'] = {}
+    fixtureprofiles[fixname]['colour']['rgb'] = {}
+    fixtureprofiles[fixname]['colour']['cmy'] = {}
     if redcontrol == True:
-        fixtureprofiles[fixname]['red'] = redchan
+        fixtureprofiles[fixname]['colour']['rgb']['red'] = redchan
     else:
-        fixtureprofiles[fixname]['red'] = 'none'
+        fixtureprofiles[fixname]['colour']['rgb']['red'] = 'none'
     if bluecontrol == True:
-        fixtureprofiles[fixname]['blue'] = bluechan
+        fixtureprofiles[fixname]['colour']['rgb']['blue'] = bluechan
     else:
-        fixtureprofiles[fixname]['blue'] = 'none'
+        fixtureprofiles[fixname]['colour']['rgb']['blue'] = 'none'
     if greencontrol == True:
-        fixtureprofiles[fixname]['green'] = greenchan
+        fixtureprofiles[fixname]['colour']['rgb']['green'] = greenchan
     else:
-        fixtureprofiles[fixname]['green'] = 'none'
+        fixtureprofiles[fixname]['colour']['rgb']['green'] = 'none'
     ## CMY Control
     if cyancontrol == True:
-        fixtureprofiles[fixname]['cyan'] = cyanchan
+        fixtureprofiles[fixname]['colour']['cmy']['cyan'] = cyanchan
     else:
-        fixtureprofiles[fixname]['cyan'] = 'none'
+        fixtureprofiles[fixname]['colour']['cmy']['cyan'] = 'none'
     if magentacontrol == True:
-        fixtureprofiles[fixname]['magenta'] = magentachan
+        fixtureprofiles[fixname]['colour']['cmy']['magenta'] = magentachan
     else:
-        fixtureprofiles[fixname]['magenta'] = 'none'
+        fixtureprofiles[fixname]['colour']['cmy']['magenta'] = 'none'
     if yellowcontrol == True:
-        fixtureprofiles[fixname]['yellow'] = yellowchan
+        fixtureprofiles[fixname]['colour']['cmy']['yellow'] = yellowchan
     else:
-        fixtureprofiles[fixname]['yellow'] = 'none'
+        fixtureprofiles[fixname]['colour']['cmy']['yellow'] = 'none'
     ## Colour Wheel Control
     if colourwheelcontrol == True:
-        fixtureprofiles[fixname]['colour_wheel'] = colourwheelchan
+        fixtureprofiles[fixname]['colour']['colour_wheel'] = colourwheelchan
     else:
-        fixtureprofiles[fixname]['colour_wheel'] = 'none'
+        fixtureprofiles[fixname]['colour']['colour_wheel'] = 'none'
     ## CTO Control
     if ctocontrol == True:
-        fixtureprofiles[fixname]['cto'] = ctochan
+        fixtureprofiles[fixname]['colour']['cto'] = ctochan
     else:
-        fixtureprofiles[fixname]['cto'] = 'none'
+        fixtureprofiles[fixname]['colour']['cto'] = 'none'
     ## Zoom Control
     fixtureprofiles[fixname]['zoom'] = zoomchan
     if finezoomcontrol == True:
@@ -163,7 +170,14 @@ def savefixprof():
     else:
         fixtureprofiles[fixname]['fine_focus'] = 'none'
     ## Gobo Control
-    
+    fixtureprofiles[fixname]['static_gobo'] =  staticgobochan
+    fixtureprofiles[fixname]['rot_gobo'] = rotgobochan
+    ## Dimmer
+    fixtureprofiles[fixname]['dimmer'] = dimmerchan
+    if finedimmercontrol == True:
+        fixtureprofiles[fixname]['fine_dimmer'] = finedimmerchan
+    else:
+        fixtureprofiles[fixname]['fine_dimmer'] = 'none'
 
 def afpuirun():
     afpui.show()
