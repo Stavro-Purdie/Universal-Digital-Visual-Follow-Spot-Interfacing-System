@@ -1,5 +1,5 @@
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtWidgets import QApplication, QTreeWidget, QTreeWidgetItem, QSpinBox
+from PySide6.QtWidgets import QApplication, QTreeWidget, QTreeWidgetItem, QSpinBox, QWizard, QWizardPage
 from PySide6.QtCore import QFile, QIODevice, Qt
 import threading
 import time
@@ -7,9 +7,11 @@ import serial.tools.list_ports
 import sys
 
 global configui
+global afpui
+global fixtureprofiles
 
-def onafpclick():
-    afpui.show()
+def savefixprof():
+    ## Save Stuff to Vars
     fixname = afpui.fixname.text()
     chancount = afpui.chancount.value()
     panlimit = afpui.panlimits.value()
@@ -91,11 +93,28 @@ def onafpclick():
     minzoom = afpui.minzoom.value()
     maxfocus = afpui.maxfocus.value()
     minfocus = afpui.minfocus.value()
-    
-    
+    fixtureprofiles[fixname] = {}
+    fixtureprofiles[fixname]['channel_count'] = chancount
+    fixtureprofiles[fixname]['pan_limit'] = panlimit
+    fixtureprofiles[fixname]['tilt_limit'] = tiltlimit
+    fixtureprofiles[fixname]['bulb_wattage'] = bulbwattage
+    fixtureprofiles[fixname]['bulb_lumens'] = bulblumen
+    fixtureprofiles[fixname]['max_zoom_angle'] = maxzoom
+    fixtureprofiles[fixname]['min_zoom_angle'] = minzoom
+    fixtureprofiles[fixname]['max_focus_angle'] = maxfocus
+    fixtureprofiles[fixname]['min_focus_angle'] = minfocus
+
+def afpuirun():
+    afpui.show()
+    afpui.button(QWizard.FinishButton).clicked.connect(savefixprof)
+
+
+            
+
 ## Init section
 app = QApplication(sys.argv)
 loader = QUiLoader()
+fixtureprofiles = {}
 
 ## Main config UI
 configuifile = QFile("Config.ui")
@@ -133,8 +152,7 @@ for port in serial.tools.list_ports.comports():
         items.append(item)    
 adatree.insertTopLevelItems(0, items)
 
-
-configui.addfixtureprofile.clicked.connect(onafpclick)
+configui.addfixtureprofile.clicked.connect(afpuirun)
 
 
 app.exec()
