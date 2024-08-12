@@ -1,10 +1,11 @@
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtWidgets import QApplication, QTreeWidget, QTreeWidgetItem, QSpinBox, QWizard, QWizardPage
 from PySide6.QtCore import QFile, QIODevice, Qt
-import threading
 import time
 import serial.tools.list_ports
 import sys
+import json
+import os
 
 global configui
 global afpui
@@ -12,6 +13,7 @@ global fixtureprofiles
 
 def savefixprof():
     ## Save Stuff to Vars
+    print("Saving to Vars")
     fixname = afpui.fixname.text()
     chancount = afpui.chancount.value()
     panlimit = afpui.panlimits.value()
@@ -93,9 +95,11 @@ def savefixprof():
     minzoom = afpui.minzoom.value()
     maxfocus = afpui.maxfocus.value()
     minfocus = afpui.minfocus.value()
+    print("Saving to Var COMPLETE")
 
     ## Save to dict
     ## Real world parameters
+    print("Save to dict")
     fixtureprofiles[fixname] = {}
     fixtureprofiles[fixname]['channel_count'] = chancount
     fixtureprofiles[fixname]['physical_params'] = {}
@@ -158,26 +162,29 @@ def savefixprof():
     else:
         fixtureprofiles[fixname]['colour']['cto'] = 'none'
     ## Zoom Control
-    fixtureprofiles[fixname]['zoom'] = zoomchan
+    fixtureprofiles[fixname]['beam']
+    fixtureprofiles[fixname]['beam']['zoom'] = zoomchan
     if finezoomcontrol == True:
-        fixtureprofiles[fixname]['fine_zoom'] = finezoomchan
+        fixtureprofiles[fixname]['beam']['fine_zoom'] = finezoomchan
     else:
-        fixtureprofiles[fixname]['fine_zoom'] = 'none'
+        fixtureprofiles[fixname]['beam']['fine_zoom'] = 'none'
     ## Focus Control
-    fixtureprofiles[fixname]['focus'] = focuschan
+    fixtureprofiles[fixname]['beam']['focus'] = focuschan
     if finefocuscontrol == True:
-        fixtureprofiles[fixname]['fine_focus'] = finefocuschan
+        fixtureprofiles[fixname]['beam']['fine_focus'] = finefocuschan
     else:
-        fixtureprofiles[fixname]['fine_focus'] = 'none'
+        fixtureprofiles[fixname]['beam']['fine_focus'] = 'none'
     ## Gobo Control
-    fixtureprofiles[fixname]['static_gobo'] =  staticgobochan
-    fixtureprofiles[fixname]['rot_gobo'] = rotgobochan
+    fixtureprofiles[fixname]['beam']['static_gobo'] =  staticgobochan
+    fixtureprofiles[fixname]['beam']['rot_gobo'] = rotgobochan
     ## Dimmer
     fixtureprofiles[fixname]['dimmer'] = dimmerchan
     if finedimmercontrol == True:
         fixtureprofiles[fixname]['fine_dimmer'] = finedimmerchan
     else:
         fixtureprofiles[fixname]['fine_dimmer'] = 'none'
+    print("Save to dict COMPLETE")
+
 
 def afpuirun():
     afpui.show()
@@ -212,6 +219,15 @@ afpuifile.close()
 if not afpui:
     print(loader.errorString)
     sys.exit
+
+## Load previous fixture profiles (if there are any)
+try:
+    with open('profiles.json', 'r') as file:         
+        fixtureprofiles = json.load(file)
+    print("Fixture profile database found and loaded")
+except:
+    print("No Fixture Profile Database found, This is normal on new installs")
+
 
 ## Main Routine
 configui.show()                                         ## Show configui
