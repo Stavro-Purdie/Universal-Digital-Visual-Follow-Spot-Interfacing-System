@@ -165,7 +165,7 @@ def savefixprof():
     else:
         fixtureprofiles[fixname]['colour']['cto'] = 'none'
     ## Zoom Control
-    fixtureprofiles[fixname]['beam']
+    fixtureprofiles[fixname]['beam'] = {}
     fixtureprofiles[fixname]['beam']['zoom'] = zoomchan
     if finezoomcontrol == True:
         fixtureprofiles[fixname]['beam']['fine_zoom'] = finezoomchan
@@ -181,13 +181,26 @@ def savefixprof():
     fixtureprofiles[fixname]['beam']['static_gobo'] =  staticgobochan
     fixtureprofiles[fixname]['beam']['rot_gobo'] = rotgobochan
     ## Dimmer
+    fixtureprofiles[fixname]['dimmer'] = {}
     fixtureprofiles[fixname]['dimmer'] = dimmerchan
     if finedimmercontrol == True:
         fixtureprofiles[fixname]['fine_dimmer'] = finedimmerchan
     else:
         fixtureprofiles[fixname]['fine_dimmer'] = 'none'
     print("Save to dict COMPLETE")
+    
+    ## Update Tree View
 
+    fixtureprofiletree = configui.fixtureprofiletree
+    profile = []
+    for key, values in fixtureprofiles.items():
+        item = QTreeWidgetItem([key])
+        for value in values:
+            ext = value.split(".")[-1].upper()
+            child = QTreeWidgetItem([value, ext])
+            item.addChild(child)
+        profile.append(item)
+    fixtureprofiletree.insertTopLevelItems(0, profile)
 
 def afpuirun():
     afpui.show()
@@ -298,6 +311,11 @@ with open('adapterconfig.ini', 'w') as configfile:
     config.write(adatvalues)
 
 ## Save fixture profile values to file
+print("Saving profiles to 'profiles.json'....")
+with open('profiles.json', 'w') as profilefile: 
+    profilefile.write(json.dumps(fixtureprofiles, indent=4))
+print('Profiles saved to profiles.json')
+
 
 sys.exit
 

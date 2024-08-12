@@ -29,5 +29,83 @@
             "dimmer": "5",
             "dimmer_fine": "0"
         }
+    },
+    "": {
+        "channel_count": 0,
+        "physical_params": {
+            "pan_limit": 0,
+            "tilt_limit": 0,
+            "bulb_wattage": 0,
+            "bulb_lumens": 0,
+            "max_zoom_angle": 0,
+            "min_zoom_angle": 0,
+            "max_focus_angle": 0,
+            "min_focus_angle": 0
+        },
+        "movement": {
+            "pan": 0,
+            "fine_pan": 0,
+            "tilt": 0,
+            "fine_tilt": 0,
+            "pan_tilt_speed_control": "none"
+        },
+        "colour": {
+            "rgb": {
+                "red": "none",
+                "blue": "none",
+                "green": "none"
+            },
+            "cmy": {
+                "cyan": "none",
+                "magenta": "none",
+                "yellow": "none"
+            },
+            "colour_wheel": "none",
+            "cto": "none"
+        },
+        "beam": {
+            "zoom": 0,
+            "fine_zoom": "none",
+            "focus": 0,
+            "fine_focus": "none",
+            "static_gobo": 0,
+            "rot_gobo": 0
+        },
+        "dimmer": 0,
+        "fine_dimmer": "none"
+    },
+    "Test": {
+        "channel_count": 27,
+        "physical_params": {
+            "pan_limit": 44,
+            "tilt_limit": 44,
+            "bulb_wattage": 44,
+            "bulb_lumens": 44,
+            "max_zoom_angle": 44,
+            "min_zoom_angle": 44,
+            "max_focus_angle": 44,
+            "min_focus_angle": 44
+        },
+        "movement": {
+            "pan": 1,
+            "fine_pan": 4,
+            "tilt": 2,
+            "fine_tilt": 3,
+            "pan_tilt_speed_control": "none"
+        },
+        "colour": {
+            "rgb": {
+                "red": "none",
+                "blue": "none",
+                "green": "none"
+            },
+            "cmy": {
+                "cyan": "none",
+                "magenta": "none",
+                "yellow": "none"
+            },
+            "colour_wheel": "none",
+            "cto": "none"
+        }
     }
 }

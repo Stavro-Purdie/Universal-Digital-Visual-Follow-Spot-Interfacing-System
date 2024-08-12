@@ -591,7 +591,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <string>Press &lt;HELP&gt; For more information</string>
     </property>
    </widget>
-   <widget class="QTreeWidget" name="treeWidget">
+   <widget class="QTreeWidget" name="fixtureprofiletree">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -600,13 +600,8 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       <height>241</height>
      </rect>
     </property>
-    <column>
-     <property name="text">
-      <string notr="true">1</string>
-     </property>
-    </column>
    </widget>
-   <zorder>treeWidget</zorder>
+   <zorder>fixtureprofiletree</zorder>
    <zorder>label_25</zorder>
    <zorder>label_26</zorder>
    <zorder>addfixtureprofile</zorder>
@@ -784,7 +779,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
   <tabstop>manadatspeed</tabstop>
   <tabstop>speedenter</tabstop>
   <tabstop>addfixtureprofile</tabstop>
-  <tabstop>treeWidget</tabstop>
+  <tabstop>fixtureprofiletree</tabstop>
   <tabstop>pushButton</tabstop>
  </tabstops>
  <resources/>
