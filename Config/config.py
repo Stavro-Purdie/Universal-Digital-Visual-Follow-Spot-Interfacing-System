@@ -190,16 +190,25 @@ def savefixprof():
     print("Save to dict COMPLETE")
     
     ## Update Tree View
+    def add_children(item, value):
+        if isinstance(value, dict):
+            for key, val in value.items():
+                child = QTreeWidgetItem([key])
+                item.addChild(child)
+                add_children(child, val)
+        else:
+            child = QTreeWidgetItem([str(value)])
+            item.addChild(child)
 
+    # Update Tree View
     fixtureprofiletree = configui.fixtureprofiletree
     profile = []
+
     for key, values in fixtureprofiles.items():
         item = QTreeWidgetItem([key])
-        for value in values:
-            ext = value.split(".")[-1].upper()
-            child = QTreeWidgetItem([value, ext])
-            item.addChild(child)
+        add_children(item, values)  # Add the nested dictionary structure
         profile.append(item)
+
     fixtureprofiletree.insertTopLevelItems(0, profile)
 
 def afpuirun():
@@ -285,6 +294,27 @@ for port in serial.tools.list_ports.comports():
         item.setText(1, str(port.description) + " by " + str(port.manufacturer))
         items.append(item)    
 adatree.insertTopLevelItems(0, items)
+
+## Create Profile Tree View
+def add_children(item, value):
+    if isinstance(value, dict):
+        for key, val in value.items():
+            child = QTreeWidgetItem([key])
+            item.addChild(child)
+            add_children(child, val)
+    else:
+        child = QTreeWidgetItem([str(value)])
+        item.addChild(child)
+
+fixtureprofiletree = configui.fixtureprofiletree
+profile = []
+
+for key, values in fixtureprofiles.items():
+    item = QTreeWidgetItem([key])
+    add_children(item, values)  # Add the nested dictionary structure
+    profile.append(item)
+
+fixtureprofiletree.insertTopLevelItems(0, profile)
 
 configui.addfixtureprofile.clicked.connect(afpuirun)
 
