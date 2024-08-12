@@ -600,6 +600,28 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       <height>241</height>
      </rect>
     </property>
+    <property name="indentation">
+     <number>20</number>
+    </property>
+    <property name="columnCount">
+     <number>2</number>
+    </property>
+    <attribute name="headerMinimumSectionSize">
+     <number>28</number>
+    </attribute>
+    <attribute name="headerDefaultSectionSize">
+     <number>350</number>
+    </attribute>
+    <column>
+     <property name="text">
+      <string notr="true">1</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string notr="true">2</string>
+     </property>
+    </column>
    </widget>
    <zorder>fixtureprofiletree</zorder>
    <zorder>label_25</zorder>
@@ -681,7 +703,7 @@ Press &lt;CANCEL&gt; to exit the configurator
 Press &lt;HELP&gt; for assistance</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="patchfixtures">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -780,7 +802,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
   <tabstop>speedenter</tabstop>
   <tabstop>addfixtureprofile</tabstop>
   <tabstop>fixtureprofiletree</tabstop>
-  <tabstop>pushButton</tabstop>
+  <tabstop>patchfixtures</tabstop>
  </tabstops>
  <resources/>
  <connections>

@@ -215,7 +215,9 @@ def afpuirun():
     afpui.show()
     afpui.button(QWizard.FinishButton).clicked.connect(savefixprof)
 
-
+def patchfixrun():
+    fixpatch.show()
+    
             
 
 ## Init section
@@ -242,6 +244,17 @@ if not afpuifile.open(QIODevice.ReadOnly):
 afpui = loader.load(afpuifile)
 afpuifile.close()
 if not afpui:
+    print(loader.errorString)
+    sys.exit
+
+## Add Fixture Patch UI
+fixpatchfile = QFile("fixturepatch.ui")
+if not fixpatchfile.open(QIODevice.ReadOnly):
+    print(f'Cannot open addfixtureprofile.ui: {afpuifile.errorString()}')
+    sys.exit(-1)
+fixpatch = loader.load(fixpatchfile)
+fixpatchfile.close()
+if not fixpatch:
     print(loader.errorString)
     sys.exit
 
@@ -317,7 +330,7 @@ for key, values in fixtureprofiles.items():
 fixtureprofiletree.insertTopLevelItems(0, profile)
 
 configui.addfixtureprofile.clicked.connect(afpuirun)
-
+configui.patchfixtures.clicked.connect(patchfixrun)
 
 app.exec()
 ## Get adat values
