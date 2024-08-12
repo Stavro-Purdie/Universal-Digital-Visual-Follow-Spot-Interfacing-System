@@ -6,10 +6,13 @@ import serial.tools.list_ports
 import sys
 import json
 import os
+import configparser
 
 global configui
 global afpui
 global fixtureprofiles
+global fixturepatch
+global adatvalues
 
 def savefixprof():
     ## Save Stuff to Vars
@@ -220,6 +223,26 @@ if not afpui:
     print(loader.errorString)
     sys.exit
 
+## Load previous adapter config file
+try:
+    config = configparser.ConfigParser()                        ## INIT section: create a configparser object & read file
+    config.read('adapterconfig.ini') 
+
+    dmxchanmax = config.get('dmxconfig', 'dmx_channel_count')   ## READ section: access all of the config settings
+    serialport = config.get('dmxconfig', 'adapter_serial_port')
+    adatspeed = config.get('dmxconfig', 'user_adapter_speed')
+    autoadatspeed = config.get('dmxconfig', 'max_dmx_adapter_speed')
+
+    adatvalues = {                                           ## Export our config values in a nice dictionary for easy upgradibility
+        'dmxchanmax': dmxchanmax,   
+        'serialport': serialport,
+        'adatspeed': adatspeed,
+        'autoadatspeed': autoadatspeed,
+    }
+    print("Adapter Settings found and loaded")
+except:
+    print("Adapter Config file not found, this is normal on new installs")
+
 ## Load previous fixture profiles (if there are any)
 try:
     with open('profiles.json', 'r') as file:         
@@ -228,6 +251,13 @@ try:
 except:
     print("No Fixture Profile Database found, This is normal on new installs")
 
+## Load previous patch (if exists)
+try:
+    with open('patchdata.json', 'r') as file:
+        fixturepatch = json.load(file)
+    print("Patch data found and loaded")
+except:
+    print("No Patch Database found, this is normal on new installs")
 
 ## Main Routine
 configui.show()                                         ## Show configui
@@ -247,6 +277,7 @@ configui.addfixtureprofile.clicked.connect(afpuirun)
 
 
 app.exec()
+## Get adat values
 adatport = configui.adatpath.text()
 chanreq = configui.ChannelReq.value()
 adatspeed = configui.speedenter.value()
@@ -254,7 +285,19 @@ if adatspeed == True:
     manspeed = True
 else:
     manspeed = False
+    autoadatspeed = int(1000000 / (140 + (44 * chanreq)))
 
+## Save adat values to file
+adatvalues = {
+    'dmxchanmax': chanreq,
+    'serialport': adatport,
+    'adatspeed': adatspeed,
+    'autoadatspeed': autoadatspeed,
+}
+with open('adapterconfig.ini', 'w') as configfile:
+    config.write(adatvalues)
+
+## Save fixture profile values to file
 
 sys.exit
 
