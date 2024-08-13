@@ -14,6 +14,8 @@ global fixtureprofiles
 global fixturepatch
 global adatvalues
 
+## Functions
+# This function saves all the new fixture profiles to the dictionary
 def savefixprof():
     ## Save Stuff to Vars
     print("Saving to Vars")
@@ -189,7 +191,8 @@ def savefixprof():
         fixtureprofiles[fixname]['fine_dimmer'] = 'none'
     print("Save to dict COMPLETE")
     
-    ## Update Tree View
+    ## Update Fixture Tree View in configui
+    ## Generate data
     def add_children(item, value):
         if isinstance(value, dict):
             for key, val in value.items():
@@ -200,21 +203,25 @@ def savefixprof():
             child = QTreeWidgetItem([str(value)])
             item.addChild(child)
 
-    # Update Tree View
+    ## Push data to Tree View
     fixtureprofiletree = configui.fixtureprofiletree
     profile = []
 
     for key, values in fixtureprofiles.items():
         item = QTreeWidgetItem([key])
+        item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
+        item.setCheckState(0, Qt.Unchecked)
         add_children(item, values)  # Add the nested dictionary structure
         profile.append(item)
 
     fixtureprofiletree.insertTopLevelItems(0, profile)
 
+## Run Add Fixture Profile UI
 def afpuirun():
     afpui.show()
-    afpui.button(QWizard.FinishButton).clicked.connect(savefixprof)
+    afpui.button(QWizard.FinishButton).clicked.connect(savefixprof)   ## When finish button pressed
 
+## Run Fixture Patch UI
 def patchfixrun():
     fixpatch.show()
     
@@ -306,6 +313,8 @@ for port in serial.tools.list_ports.comports():
         item = QTreeWidgetItem([port.device])
         item.setText(1, str(port.description) + " by " + str(port.manufacturer))
         items.append(item)    
+        item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
+        item.setCheckState(0, Qt.Unchecked)
 adatree.insertTopLevelItems(0, items)
 
 ## Create Profile Tree View
@@ -324,9 +333,11 @@ profile = []
 
 for key, values in fixtureprofiles.items():
     item = QTreeWidgetItem([key])
+    item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
+    item.setCheckState(0, Qt.Unchecked)
     add_children(item, values)  # Add the nested dictionary structure
     profile.append(item)
-
+    
 fixtureprofiletree.insertTopLevelItems(0, profile)
 
 configui.addfixtureprofile.clicked.connect(afpuirun)
