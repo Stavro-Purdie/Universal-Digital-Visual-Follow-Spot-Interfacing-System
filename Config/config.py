@@ -209,8 +209,8 @@ def savefixprof():
 
     for key, values in fixtureprofiles.items():
         item = QTreeWidgetItem([key])
-        item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
-        item.setCheckState(0, Qt.Unchecked)
+#        item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
+#        item.setCheckState(0, Qt.Unchecked)
         add_children(item, values)  # Add the nested dictionary structure
         profile.append(item)
 
@@ -224,6 +224,21 @@ def afpuirun():
 ## Run Fixture Patch UI
 def patchfixrun():
     fixpatch.show()
+    ## On item Changed
+    def on_item_changed(item, column):
+        parent = item.parent()
+        if parent is None:
+            fixtureprofiles[item.text(0)] = item.text(column)
+        else:
+            keys = []
+            while parent is not None:
+                keys.append(parent.text(0))
+                parent = parent.parent()
+            keys.reverse()
+            d = fixtureprofiles
+            for key in keys:
+                d = d[key]
+            d[item.text(0)] = item.text(column)
     ## Create Profile Tree View
     def add_children(item, value):
         if isinstance(value, dict):
@@ -245,7 +260,7 @@ def patchfixrun():
         profile.append(item)
             
     fixpatchtree.insertTopLevelItems(0, profile)
-
+    fixtureprofiletree.itemChanged.connect(on_item_changed)
             
 
 ## Init section
@@ -354,8 +369,8 @@ profile = []
 
 for key, values in fixtureprofiles.items():
     item = QTreeWidgetItem([key])
-    item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
-    item.setCheckState(0, Qt.Unchecked)
+#    item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
+#    item.setCheckState(0, Qt.Unchecked)
     add_children(item, values)  # Add the nested dictionary structure
     profile.append(item)
     
