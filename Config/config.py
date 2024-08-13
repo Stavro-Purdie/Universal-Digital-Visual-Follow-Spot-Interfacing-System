@@ -224,7 +224,28 @@ def afpuirun():
 ## Run Fixture Patch UI
 def patchfixrun():
     fixpatch.show()
-    
+    ## Create Profile Tree View
+    def add_children(item, value):
+        if isinstance(value, dict):
+            for key, val in value.items():
+                child = QTreeWidgetItem([key])
+                item.addChild(child)
+                add_children(child, val)
+        else:
+            child = QTreeWidgetItem([str(value)])
+            item.addChild(child)
+
+    fixpatchtree = fixpatch.fixturepatchtree
+    profile = []
+
+    for key, values in fixtureprofiles.items():
+        item = QTreeWidgetItem([key])
+        item.setFlags(item.flags() | Qt.ItemIsEditable)  # Allow text to be edited
+        add_children(item, values)  # Add the nested dictionary structure
+        profile.append(item)
+            
+    fixpatchtree.insertTopLevelItems(0, profile)
+
             
 
 ## Init section
