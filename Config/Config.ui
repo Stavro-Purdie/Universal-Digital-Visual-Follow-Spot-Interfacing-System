@@ -315,7 +315,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     </property>
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="0" column="0" colspan="2">
-      <widget class="QCheckBox" name="manadatspeed">
+      <widget class="QCheckBox" name="setspeedman">
        <property name="enabled">
         <bool>true</bool>
        </property>
@@ -337,7 +337,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QSpinBox" name="speedenter">
+      <widget class="QSpinBox" name="manspeedenter">
        <property name="enabled">
         <bool>false</bool>
        </property>
@@ -358,7 +358,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
         <string>Adapter Speed (Hz):</string>
        </property>
        <property name="buddy">
-        <cstring>speedenter</cstring>
+        <cstring>manspeedenter</cstring>
        </property>
       </widget>
      </item>
@@ -830,8 +830,8 @@ li.checked::marker { content: &quot;\2612&quot;; }
  <tabstops>
   <tabstop>adapterselect</tabstop>
   <tabstop>ChannelReq</tabstop>
-  <tabstop>manadatspeed</tabstop>
-  <tabstop>speedenter</tabstop>
+  <tabstop>setspeedman</tabstop>
+  <tabstop>manspeedenter</tabstop>
   <tabstop>addfixtureprofile</tabstop>
   <tabstop>fixtureprofiletree</tabstop>
   <tabstop>patchfixtures</tabstop>
@@ -839,9 +839,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
  <resources/>
  <connections>
   <connection>
-   <sender>manadatspeed</sender>
+   <sender>setspeedman</sender>
    <signal>toggled(bool)</signal>
-   <receiver>speedenter</receiver>
+   <receiver>manspeedenter</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -855,9 +855,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
    </hints>
   </connection>
   <connection>
-   <sender>manadatspeed</sender>
+   <sender>setspeedman</sender>
    <signal>toggled(bool)</signal>
-   <receiver>speedenter</receiver>
+   <receiver>manspeedenter</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">

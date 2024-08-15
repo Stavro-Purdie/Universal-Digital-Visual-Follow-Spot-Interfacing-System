@@ -13,8 +13,6 @@ global afpui
 global fixtureprofiles
 global fixturepatch
 global adatvalues
-global adatport
-global adatchannel
 
 ## Functions
 # This function saves all the new fixture profiles to the dictionary
@@ -361,6 +359,8 @@ configui.show()                                         ## Show configui
 
 ## ADAPTER SECTION
 #Tree Select
+adatport = None
+
 def on_item_changed(item, column):
     global adatport
     if item.flags() & Qt.ItemIsUserCheckable:
@@ -373,7 +373,7 @@ def on_item_changed(item, column):
 #                fixtureprofiles[item.text(0)] = True
             else:
                 print("Adapter Unchecked")
-                fixtureprofiles[item.text(0)] = False
+#                fixtureprofiles[item.text(0)] = False
 
 adatree = configui.adapterselect
 items = []
@@ -388,8 +388,13 @@ adatree.insertTopLevelItems(0, items)
 
 adatree.itemChanged.connect(on_item_changed)         ## On item changed, run funct
 
-# Adapter Channels 
+# Adapter AutoSpeed QLCDnumber 
+adatchannel = 512
+adatspeed = 44
+estadatspeed = int(1000000 / (140 + (44 * adatchannel)))
+
 def on_spinbox_value_changed(value):
+    global estadatspeed
     global adatchannel
     # This function will be called whenever the spinbox value changes
     adatchannel = int(value)
@@ -400,6 +405,28 @@ def on_spinbox_value_changed(value):
 adatchannelspinbox = configui.ChannelReq
 adatchannelspinbox.valueChanged.connect(on_spinbox_value_changed)
 
+# Adapter Speed Values (This section deals with the logic behind using the autoadatspeed or the man adat speed)
+def on_manspeed_value_changed(manspeedenter):
+    global adatspeed
+    adatspeed = manspeedenter
+    print(f"Manually set Adapter Speed {adatspeed}")
+
+def on_manspeed_changed(value):
+    global adatspeed
+    if value == 2:
+        manspeed = True
+        print("Non-Reccommended option Manual Speed Enabled")
+        manspeedenter = configui.manspeedenter
+        manspeedenter.valueChanged.connect(on_manspeed_value_changed)
+    else:
+        manspeed = False
+        adatspeed = estadatspeed
+        print("Reccommended Autoassigned Speed Value Enabled")
+    
+manspeedcheck = configui.setspeedman
+manspeedcheck.stateChanged.connect(on_manspeed_changed)
+
+# Print All Adat Values on Last adat config page....
 
 ## Create Profile Tree View
 def add_children(item, value):
@@ -429,19 +456,13 @@ configui.patchfixtures.clicked.connect(patchfixrun)
 
 app.exec()
 ## Get adat values
-adatspeed = configui.speedenter.value()
-if adatspeed == True:
-    manspeed = True
-else:
-    manspeed = False
-    autoadatspeed = int(1000000 / (140 + (44 * adatchannel)))
 
 ## Save adat values to file
 adatvalues = {
     'dmxchanmax': adatchannel,
     'serialport': adatport,
     'adatspeed': adatspeed,
-    'autoadatspeed': autoadatspeed,
+    'autoadatspeed': estadatspeed,
 }
 with open('adapterconfig.ini', 'w') as configfile:
     config.write(adatvalues)
