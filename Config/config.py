@@ -16,13 +16,16 @@ global adatvalues
 
 ## Functions
 # This function saves all the new fixture profiles to the dictionary
+def eocdatawindow():
+    eocdata.show()
+    eocdata.showadatpath.setText(str('TEST'))
+
 def savefixprof():
     ## Save Stuff to Vars
     print("Saving to Vars")
     fixname = afpui.fixname.text()
+    fixmanufacturer = afpui.fixmanu.text()
     chancount = afpui.chancount.value()
-    panlimit = afpui.panlimits.value()
-    tiltlimit = afpui.tiltlimits.value()
     panchan = afpui.panchan.value()
     finepanchan = afpui.finepanchan.value()
     tiltchan = afpui.tiltchan.value()
@@ -106,6 +109,7 @@ def savefixprof():
     ## Real world parameters
     print("Save to dict")
     fixtureprofiles[fixname] = {}
+    fixtureprofiles[fixname]['manufacturer'] = fixmanufacturer
     fixtureprofiles[fixname]['channel_count'] = chancount
     fixtureprofiles[fixname]['physical_params'] = {}
     fixtureprofiles[fixname]['physical_params']['pan_limit'] = panlimit
@@ -262,7 +266,7 @@ def patchfixrun():
     fixpatchtree.insertTopLevelItems(0, profile)
     fixtureprofiletree.itemChanged.connect(on_item_changed)
             
-
+## UI IMPORT SECTION
 ## Init section
 app = QApplication(sys.argv)
 loader = QUiLoader()
@@ -301,6 +305,18 @@ if not fixpatch:
     print(loader.errorString)
     sys.exit
 
+## Add End-Of-Config Window
+eocdatafile = QFile('EOCdata.ui')
+if not eocdatafile.open(QIODevice.ReadOnly):
+    print(f'Cannot open EOCdata.ui: {fixpatchfile.errorString()}')
+    sys.exit(-1)
+eocdata = loader.load(eocdatafile)
+eocdatafile.close()
+if not eocdata:
+    print(loader.errorString)
+    sys.exit
+
+## DATA IMPORT SECTION
 ## Load previous adapter config file
 try:
     config = configparser.ConfigParser()                        ## INIT section: create a configparser object & read file
@@ -406,6 +422,7 @@ with open('profiles.json', 'w') as profilefile:
     profilefile.write(json.dumps(fixtureprofiles, indent=4))
 print('Profiles saved to profiles.json')
 
+eocdatawindow()
 
 sys.exit
 
