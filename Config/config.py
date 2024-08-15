@@ -14,6 +14,7 @@ global fixtureprofiles
 global fixturepatch
 global adatvalues
 global adatport
+global adatchannel
 
 ## Functions
 # This function saves all the new fixture profiles to the dictionary
@@ -361,6 +362,7 @@ configui.show()                                         ## Show configui
 ## ADAPTER SECTION
 #Tree Select
 def on_item_changed(item, column):
+    global adatport
     if item.flags() & Qt.ItemIsUserCheckable:
         parent = item.parent()
         if parent is None:
@@ -386,6 +388,17 @@ adatree.insertTopLevelItems(0, items)
 
 adatree.itemChanged.connect(on_item_changed)         ## On item changed, run funct
 
+# Adapter Channels 
+def on_spinbox_value_changed(value):
+    global adatchannel
+    # This function will be called whenever the spinbox value changes
+    adatchannel = int(value)
+    # Est adat speed
+    estadatspeed = int(1000000 / (140 + (44 * adatchannel)))
+    configui.recadatspeed.display(estadatspeed)
+
+adatchannelspinbox = configui.ChannelReq
+adatchannelspinbox.valueChanged.connect(on_spinbox_value_changed)
 
 
 ## Create Profile Tree View
@@ -416,17 +429,16 @@ configui.patchfixtures.clicked.connect(patchfixrun)
 
 app.exec()
 ## Get adat values
-chanreq = configui.ChannelReq.value()
 adatspeed = configui.speedenter.value()
 if adatspeed == True:
     manspeed = True
 else:
     manspeed = False
-    autoadatspeed = int(1000000 / (140 + (44 * chanreq)))
+    autoadatspeed = int(1000000 / (140 + (44 * adatchannel)))
 
 ## Save adat values to file
 adatvalues = {
-    'dmxchanmax': chanreq,
+    'dmxchanmax': adatchannel,
     'serialport': adatport,
     'adatspeed': adatspeed,
     'autoadatspeed': autoadatspeed,
