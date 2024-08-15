@@ -21,7 +21,7 @@
   </property>
   <property name="windowIcon">
    <iconset theme="utilities-terminal">
-    <normaloff>.</normaloff>.</iconset>
+    <normaloff>../../../../.designer/backup</normaloff>../../../../.designer/backup</iconset>
   </property>
   <property name="toolTip">
    <string/>
@@ -129,9 +129,9 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>40</y>
+      <y>20</y>
       <width>481</width>
-      <height>261</height>
+      <height>311</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -181,11 +181,11 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       <x>0</x>
       <y>0</y>
       <width>481</width>
-      <height>41</height>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Enter your DMX adapter from this tree into the text box&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Select your DMX adapter from this list&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_8">
@@ -200,35 +200,6 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="text">
      <string>Press &lt;HELP&gt; For more information</string>
     </property>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>300</y>
-      <width>236</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout_4">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_6">
-       <property name="text">
-        <string>Adapter Port:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="adatpath">
-       <property name="inputMethodHints">
-        <set>Qt::ImhNone</set>
-       </property>
-       <property name="text">
-        <string>/dev/ttyUSBx</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </widget>
   </widget>
   <widget class="QWizardPage" name="wizardPage">
@@ -293,7 +264,14 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QSpinBox" name="ChannelReq"/>
+      <widget class="QSpinBox" name="ChannelReq">
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>512</number>
+       </property>
+      </widget>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_11">
@@ -306,7 +284,20 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QLCDNumber" name="Recadatspeed"/>
+      <widget class="QLCDNumber" name="Recadatspeed">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="smallDecimalPoint">
+        <bool>false</bool>
+       </property>
+       <property name="mode">
+        <enum>QLCDNumber::Dec</enum>
+       </property>
+       <property name="intValue" stdset="0">
+        <number>44</number>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
@@ -349,6 +340,12 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
        </property>
        <property name="readOnly">
         <bool>false</bool>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>4000</number>
        </property>
       </widget>
      </item>
@@ -620,12 +617,12 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     </attribute>
     <column>
      <property name="text">
-      <string notr="true">1</string>
+      <string notr="true">Fixture</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string notr="true">2</string>
+      <string notr="true">Channel</string>
      </property>
     </column>
    </widget>

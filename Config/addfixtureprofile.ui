@@ -97,55 +97,49 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
 Press &lt;CANCEL&gt; to exit the configurator</string>
     </property>
    </widget>
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>2</x>
-      <y>55</y>
-      <width>226</width>
-      <height>115</height>
+      <x>0</x>
+      <y>60</y>
+      <width>242</width>
+      <height>84</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0" colspan="2">
+     <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
         <string>Fixture Name:</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QLineEdit" name="fixname"/>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Manufacturer:</string>
+       </property>
+      </widget>
      </item>
-     <item row="1" column="0" colspan="2">
+     <item row="2" column="0" colspan="2">
       <widget class="QLabel" name="label_2">
        <property name="text">
         <string>Channel Count:</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="2">
-      <widget class="QSpinBox" name="chancount"/>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>Pan Limits:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Tilt Limits:</string>
-       </property>
-      </widget>
-     </item>
      <item row="2" column="2">
-      <widget class="QSpinBox" name="panlimits"/>
+      <widget class="QSpinBox" name="chancount">
+       <property name="maximum">
+        <number>512</number>
+       </property>
+      </widget>
      </item>
-     <item row="3" column="2">
-      <widget class="QSpinBox" name="tiltlimits"/>
+     <item row="1" column="2">
+      <widget class="QLineEdit" name="fixmanu"/>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLineEdit" name="fixname"/>
      </item>
     </layout>
    </widget>
@@ -209,7 +203,17 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       </widget>
      </item>
      <item row="1" column="1" rowspan="2" colspan="2">
-      <widget class="QSpinBox" name="panchan"/>
+      <widget class="QSpinBox" name="panchan">
+       <property name="minimum">
+        <number>0</number>
+       </property>
+       <property name="maximum">
+        <number>512</number>
+       </property>
+       <property name="value">
+        <number>0</number>
+       </property>
+      </widget>
      </item>
      <item row="3" column="0">
       <widget class="QLabel" name="label_8">
@@ -226,7 +230,17 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       </widget>
      </item>
      <item row="4" column="1" colspan="2">
-      <widget class="QSpinBox" name="tiltchan"/>
+      <widget class="QSpinBox" name="tiltchan">
+       <property name="minimum">
+        <number>0</number>
+       </property>
+       <property name="maximum">
+        <number>512</number>
+       </property>
+       <property name="value">
+        <number>0</number>
+       </property>
+      </widget>
      </item>
      <item row="5" column="0">
       <widget class="QLabel" name="label_10">
@@ -236,10 +250,30 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       </widget>
      </item>
      <item row="5" column="1" colspan="2">
-      <widget class="QSpinBox" name="finetiltchan"/>
+      <widget class="QSpinBox" name="finetiltchan">
+       <property name="minimum">
+        <number>0</number>
+       </property>
+       <property name="maximum">
+        <number>512</number>
+       </property>
+       <property name="value">
+        <number>0</number>
+       </property>
+      </widget>
      </item>
      <item row="3" column="1" colspan="2">
-      <widget class="QSpinBox" name="finepanchan"/>
+      <widget class="QSpinBox" name="finepanchan">
+       <property name="minimum">
+        <number>0</number>
+       </property>
+       <property name="maximum">
+        <number>512</number>
+       </property>
+       <property name="value">
+        <number>0</number>
+       </property>
+      </widget>
      </item>
      <item row="1" column="0" rowspan="2">
       <widget class="QLabel" name="label_7">
@@ -271,6 +305,15 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       <widget class="QSpinBox" name="ptspeedchan">
        <property name="enabled">
         <bool>false</bool>
+       </property>
+       <property name="minimum">
+        <number>0</number>
+       </property>
+       <property name="maximum">
+        <number>512</number>
+       </property>
+       <property name="value">
+        <number>0</number>
        </property>
       </widget>
      </item>
@@ -410,7 +453,7 @@ supports</string>
      <rect>
       <x>260</x>
       <y>60</y>
-      <width>115</width>
+      <width>123</width>
       <height>86</height>
      </rect>
     </property>
@@ -427,12 +470,18 @@ supports</string>
        <property name="enabled">
         <bool>false</bool>
        </property>
+       <property name="maximum">
+        <number>512</number>
+       </property>
       </widget>
      </item>
      <item row="2" column="1" colspan="2">
       <widget class="QSpinBox" name="yellowchan">
        <property name="enabled">
         <bool>false</bool>
+       </property>
+       <property name="maximum">
+        <number>512</number>
        </property>
       </widget>
      </item>
@@ -447,6 +496,9 @@ supports</string>
       <widget class="QSpinBox" name="magentachan">
        <property name="enabled">
         <bool>false</bool>
+       </property>
+       <property name="maximum">
+        <number>512</number>
        </property>
       </widget>
      </item>
@@ -464,7 +516,7 @@ supports</string>
      <rect>
       <x>150</x>
       <y>60</y>
-      <width>97</width>
+      <width>105</width>
       <height>86</height>
      </rect>
     </property>
@@ -481,12 +533,24 @@ supports</string>
        <property name="enabled">
         <bool>false</bool>
        </property>
+       <property name="minimum">
+        <number>0</number>
+       </property>
+       <property name="maximum">
+        <number>512</number>
+       </property>
+       <property name="value">
+        <number>0</number>
+       </property>
       </widget>
      </item>
      <item row="2" column="1" colspan="2">
       <widget class="QSpinBox" name="bluechan">
        <property name="enabled">
         <bool>false</bool>
+       </property>
+       <property name="maximum">
+        <number>512</number>
        </property>
       </widget>
      </item>
@@ -501,6 +565,9 @@ supports</string>
       <widget class="QSpinBox" name="greenchan">
        <property name="enabled">
         <bool>false</bool>
+       </property>
+       <property name="maximum">
+        <number>512</number>
        </property>
       </widget>
      </item>
@@ -518,7 +585,7 @@ supports</string>
      <rect>
       <x>150</x>
       <y>160</y>
-      <width>145</width>
+      <width>153</width>
       <height>56</height>
      </rect>
     </property>
@@ -535,6 +602,9 @@ supports</string>
        <property name="enabled">
         <bool>false</bool>
        </property>
+       <property name="maximum">
+        <number>512</number>
+       </property>
       </widget>
      </item>
      <item row="1" column="0">
@@ -548,6 +618,9 @@ supports</string>
       <widget class="QSpinBox" name="ctochan">
        <property name="enabled">
         <bool>false</bool>
+       </property>
+       <property name="maximum">
+        <number>512</number>
        </property>
       </widget>
      </item>
@@ -603,6 +676,9 @@ supports</string>
        <property name="enabled">
         <bool>false</bool>
        </property>
+       <property name="maximum">
+        <number>512</number>
+       </property>
       </widget>
      </item>
      <item row="4" column="0" colspan="2">
@@ -624,10 +700,17 @@ supports</string>
        <property name="enabled">
         <bool>false</bool>
        </property>
+       <property name="maximum">
+        <number>512</number>
+       </property>
       </widget>
      </item>
      <item row="4" column="3">
-      <widget class="QSpinBox" name="focuschan"/>
+      <widget class="QSpinBox" name="focuschan">
+       <property name="maximum">
+        <number>512</number>
+       </property>
+      </widget>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_34">
@@ -637,7 +720,11 @@ supports</string>
       </widget>
      </item>
      <item row="0" column="3">
-      <widget class="QSpinBox" name="zoomchan"/>
+      <widget class="QSpinBox" name="zoomchan">
+       <property name="maximum">
+        <number>512</number>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
@@ -660,16 +747,24 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <rect>
       <x>170</x>
       <y>130</y>
-      <width>151</width>
+      <width>159</width>
       <height>56</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_8">
      <item row="0" column="1">
-      <widget class="QSpinBox" name="staticgobochan"/>
+      <widget class="QSpinBox" name="staticgobochan">
+       <property name="maximum">
+        <number>512</number>
+       </property>
+      </widget>
      </item>
      <item row="1" column="1" rowspan="2">
-      <widget class="QSpinBox" name="rotgobochan"/>
+      <widget class="QSpinBox" name="rotgobochan">
+       <property name="maximum">
+        <number>512</number>
+       </property>
+      </widget>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_38">
@@ -766,7 +861,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <rect>
       <x>10</x>
       <y>50</y>
-      <width>168</width>
+      <width>176</width>
       <height>84</height>
      </rect>
     </property>
@@ -783,10 +878,17 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
        <property name="enabled">
         <bool>false</bool>
        </property>
+       <property name="maximum">
+        <number>512</number>
+       </property>
       </widget>
      </item>
      <item row="1" column="2">
-      <widget class="QSpinBox" name="dimmerchan"/>
+      <widget class="QSpinBox" name="dimmerchan">
+       <property name="maximum">
+        <number>512</number>
+       </property>
+      </widget>
      </item>
      <item row="1" column="0" colspan="2">
       <widget class="QLabel" name="label_43">
@@ -854,7 +956,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <rect>
       <x>0</x>
       <y>50</y>
-      <width>118</width>
+      <width>142</width>
       <height>56</height>
      </rect>
     </property>
@@ -874,10 +976,18 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QSpinBox" name="panlimit"/>
+      <widget class="QSpinBox" name="panlimit">
+       <property name="maximum">
+        <number>10000</number>
+       </property>
+      </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QSpinBox" name="tiltlimit"/>
+      <widget class="QSpinBox" name="tiltlimit">
+       <property name="maximum">
+        <number>10000</number>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
@@ -886,7 +996,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <rect>
       <x>220</x>
       <y>50</y>
-      <width>167</width>
+      <width>191</width>
       <height>116</height>
      </rect>
     </property>
@@ -899,7 +1009,11 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QSpinBox" name="maxzoom"/>
+      <widget class="QSpinBox" name="maxzoom">
+       <property name="maximum">
+        <number>10000</number>
+       </property>
+      </widget>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_51">
@@ -909,7 +1023,11 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QSpinBox" name="minzoom"/>
+      <widget class="QSpinBox" name="minzoom">
+       <property name="maximum">
+        <number>10000</number>
+       </property>
+      </widget>
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_52">
@@ -919,7 +1037,11 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QSpinBox" name="maxfocus"/>
+      <widget class="QSpinBox" name="maxfocus">
+       <property name="maximum">
+        <number>10000</number>
+       </property>
+      </widget>
      </item>
      <item row="3" column="0">
       <widget class="QLabel" name="label_53">
@@ -929,7 +1051,11 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QSpinBox" name="minfocus"/>
+      <widget class="QSpinBox" name="minfocus">
+       <property name="maximum">
+        <number>10000</number>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
@@ -938,7 +1064,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <rect>
       <x>0</x>
       <y>110</y>
-      <width>178</width>
+      <width>202</width>
       <height>56</height>
      </rect>
     </property>
@@ -958,42 +1084,18 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
       </widget>
      </item>
      <item row="1" column="2">
-      <widget class="QSpinBox" name="bulblumen"/>
+      <widget class="QSpinBox" name="bulblumen">
+       <property name="maximum">
+        <number>10000</number>
+       </property>
+      </widget>
      </item>
      <item row="0" column="2">
-      <widget class="QSpinBox" name="bulbwattage"/>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>170</y>
-      <width>241</width>
-      <height>54</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout_14">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_57">
-       <property name="text">
-        <string>Degrees pan per DMX Bit:</string>
+      <widget class="QSpinBox" name="bulbwattage">
+       <property name="maximum">
+        <number>10000</number>
        </property>
       </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLCDNumber" name="panaccuracy"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_58">
-       <property name="text">
-        <string>Degrees tilt per DMX Bit:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLCDNumber" name="tiltaccuracy"/>
      </item>
     </layout>
    </widget>

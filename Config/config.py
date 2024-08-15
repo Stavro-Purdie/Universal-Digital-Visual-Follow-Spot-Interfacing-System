@@ -256,7 +256,7 @@ def patchfixrun():
     for key, values in fixtureprofiles.items():
         item = QTreeWidgetItem([key])
         item.setFlags(item.flags() | Qt.ItemIsEditable)  # Allow text to be edited
-        add_children(item, values)  # Add the nested dictionary structure
+#        add_children(item, values)  # Add the nested dictionary structure
         profile.append(item)
             
     fixpatchtree.insertTopLevelItems(0, profile)
