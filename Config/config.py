@@ -13,6 +13,7 @@ global afpui
 global fixtureprofiles
 global fixturepatch
 global adatvalues
+global adatport
 
 ## Functions
 # This function saves all the new fixture profiles to the dictionary
@@ -357,7 +358,21 @@ except:
 configui.show()                                         ## Show configui
 
 
-## Adapter Tree
+## ADAPTER SECTION
+#Tree Select
+def on_item_changed(item, column):
+    if item.flags() & Qt.ItemIsUserCheckable:
+        parent = item.parent()
+        if parent is None:
+            if item.checkState(0) == Qt.Checked:
+                adatport = item.text(0)
+                print(f'Port: {adatport} Selected')
+                configui.adapterportview.setText(adatport)
+#                fixtureprofiles[item.text(0)] = True
+            else:
+                print("Adapter Unchecked")
+                fixtureprofiles[item.text(0)] = False
+
 adatree = configui.adapterselect
 items = []
 for port in serial.tools.list_ports.comports():
@@ -368,6 +383,10 @@ for port in serial.tools.list_ports.comports():
         item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
         item.setCheckState(0, Qt.Unchecked)
 adatree.insertTopLevelItems(0, items)
+
+adatree.itemChanged.connect(on_item_changed)         ## On item changed, run funct
+
+
 
 ## Create Profile Tree View
 def add_children(item, value):
@@ -397,7 +416,6 @@ configui.patchfixtures.clicked.connect(patchfixrun)
 
 app.exec()
 ## Get adat values
-adatport = configui.adatpath.text()
 chanreq = configui.ChannelReq.value()
 adatspeed = configui.speedenter.value()
 if adatspeed == True:
