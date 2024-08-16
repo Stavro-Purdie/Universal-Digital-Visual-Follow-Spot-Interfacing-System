@@ -360,6 +360,7 @@ configui.show()                                         ## Show configui
 ## ADAPTER SECTION
 #Tree Select
 adatport = None
+configui.adapterportview.setText(adatport)
 
 def on_item_changed(item, column):
     global adatport
@@ -392,6 +393,8 @@ adatree.itemChanged.connect(on_item_changed)         ## On item changed, run fun
 adatchannel = 512
 adatspeed = 44
 estadatspeed = int(1000000 / (140 + (44 * adatchannel)))
+configui.chanreqdisp.display(adatchannel)
+configui.adatspeeddisp.display(adatspeed)
 
 def on_spinbox_value_changed(value):
     global estadatspeed
@@ -401,15 +404,21 @@ def on_spinbox_value_changed(value):
     # Est adat speed
     estadatspeed = int(1000000 / (140 + (44 * adatchannel)))
     configui.recadatspeed.display(estadatspeed)
+    configui.adatspeeddisp.display(estadatspeed)
+    configui.chanreqdisp.display(adatchannel)
+
 
 adatchannelspinbox = configui.ChannelReq
 adatchannelspinbox.valueChanged.connect(on_spinbox_value_changed)
 
 # Adapter Speed Values (This section deals with the logic behind using the autoadatspeed or the man adat speed)
+configui.adatspeeddisp.display(estadatspeed)
+
 def on_manspeed_value_changed(manspeedenter):
     global adatspeed
     adatspeed = manspeedenter
     print(f"Manually set Adapter Speed {adatspeed}")
+    configui.adatspeeddisp.display(adatspeed)
 
 def on_manspeed_changed(value):
     global adatspeed
@@ -422,11 +431,12 @@ def on_manspeed_changed(value):
         manspeed = False
         adatspeed = estadatspeed
         print("Reccommended Autoassigned Speed Value Enabled")
+        configui.adatspeeddisp.display(estadatspeed)
+
     
 manspeedcheck = configui.setspeedman
 manspeedcheck.stateChanged.connect(on_manspeed_changed)
 
-# Print All Adat Values on Last adat config page....
 
 ## Create Profile Tree View
 def add_children(item, value):
