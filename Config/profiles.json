@@ -1,33 +1,5 @@
 {
-    "Roylite Spin Eye 715": {
-        "channel_count": "27",
-        "movement": {
-            "pan": "1",
-            "pan_fine": "2",
-            "tilt": "3",
-            "tilt_fine": "4",
-            "pan_tilt_speed": "0"
-        },
-        "colour": {
-            "led": {
-                "rgb": {
-                    "red": "7",
-                    "green": "8",
-                    "blue": "9"
-                }
-            },
-            "cto": "11"
-        },
-        "beam": {
-            "zoom": "14",
-            "focus": "0",
-            "frost": "0",
-            "static_gobo": "0",
-            "rotating_gobo": "0"
-        },
-        "dimmer": {
-            "dimmer": "5",
-            "dimmer_fine": "0"
-        }
-    }
+    "Roylite Spin Eye 715": "50",
+    "": "70,80",
+    "Test": "50"
 }
