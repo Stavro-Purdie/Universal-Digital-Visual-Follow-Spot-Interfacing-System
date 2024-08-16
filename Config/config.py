@@ -227,50 +227,66 @@ def afpuirun():
 
 ## Run Fixture Patch UI
 def patchfixrun():
+    global edited_values
+    fixturepatch = {}
+    fixturepatchtree = fixpatch.fixturepatchtree
     fixpatch.show()
-    ## On item Changed
-    def on_item_changed(item, column):
-        if column == 1:  # Check if the second column was edited
-            parent = item.parent()
-            if parent is None:
-                # If it's a top-level item, update directly
-                fixturepatch[item.text(0)] = item.text(column)
-            else:
-                keys = []
-                while parent is not None:
-                    keys.append(parent.text(0))
-                    parent = parent.parent()
-                keys.reverse()
-                d = fixturepatch
-                for key in keys:
-                    if key not in d:
-                        d[key] = {}
-                    d = d[key]
-                # Update the dictionary with the new value
-                d[item.text(0)] = item.text(column)
-
-    ## Create Profile Tree View
     def add_children(item, value):
         if isinstance(value, dict):
             for key, val in value.items():
-                child = QTreeWidgetItem([key])
+                child = QTreeWidgetItem([key, str(val) if not isinstance(val, dict) else ""])
+                child.setFlags(child.flags() | Qt.ItemIsEditable)
                 item.addChild(child)
                 add_children(child, val)
         else:
-            child = QTreeWidgetItem([str(value)])
+            child = QTreeWidgetItem(["", str(value)])
+            child.setFlags(child.flags() | Qt.ItemIsEditable)
             item.addChild(child)
 
-    fixpatchtree = fixpatch.fixturepatchtree
-    profile = []
+    # Function to handle item changes and update both dictionaries
+    def on_item_changed(item, column):
+        if column == 1:  # Only handle changes in the second column
+            parent = item.parent()
+            if parent is None:
+                # If it's a top-level item, update directly
+                fixtureprofiles[item.text(0)] = item.text(column)
+                fixturepatch[item.text(0)] = item.text(column)
+                #### THIS BELOW CODE IS FOR NESTED TREES, I KEPT THIS JUST IN CASE ####
+#            else:
+#                keys = []
+#                while parent is not None:
+#                    keys.append(parent.text(0))
+#                    parent = parent.parent()
+#                keys.reverse()
+#                d = fixtureprofiles
+#                for key in keys:
+#                    if key not in d:
+#                        d[key] = {}
+#                    d = d[key]
+                # Update the original dictionary
+#                d[item.text(0)] = item.text(column)
+                
+                # Update the separate dictionary
+#                ed = fixturepatch
+#                for key in keys:
+#                    if key not in ed:
+#                        ed[key] = {}
+#                    ed = ed[key]
+#                ed[item.text(0)] = item.text(column)
 
+    # Populate the tree
+    profile = []
     for key, values in fixtureprofiles.items():
-        item = QTreeWidgetItem([key])
-        item.setFlags(item.flags() | Qt.ItemIsEditable)  # Allow text to be edited
-#        add_children(item, values)  # Add the nested dictionary structure
+        item = QTreeWidgetItem([key, ""])
+        item.setFlags(item.flags() | Qt.ItemIsEditable)
+        add_children(item, values)
         profile.append(item)
-            
-    fixpatchtree.insertTopLevelItems(0, profile)
-    fixtureprofiletree.itemChanged.connect(on_item_changed)
+
+    fixturepatchtree.insertTopLevelItems(0, profile)
+
+    # Connect the itemChanged signal to the on_item_changed function
+    fixturepatchtree.itemChanged.connect(on_item_changed)
+
             
 ## UI IMPORT SECTION
 ## Init section
