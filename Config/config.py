@@ -230,19 +230,25 @@ def patchfixrun():
     fixpatch.show()
     ## On item Changed
     def on_item_changed(item, column):
-        parent = item.parent()
-        if parent is None:
-            fixtureprofiles[item.text(0)] = item.text(column)
-        else:
-            keys = []
-            while parent is not None:
-                keys.append(parent.text(0))
-                parent = parent.parent()
-            keys.reverse()
-            d = fixtureprofiles
-            for key in keys:
-                d = d[key]
-            d[item.text(0)] = item.text(column)
+        if column == 1:  # Check if the second column was edited
+            parent = item.parent()
+            if parent is None:
+                # If it's a top-level item, update directly
+                fixturepatch[item.text(0)] = item.text(column)
+            else:
+                keys = []
+                while parent is not None:
+                    keys.append(parent.text(0))
+                    parent = parent.parent()
+                keys.reverse()
+                d = fixturepatch
+                for key in keys:
+                    if key not in d:
+                        d[key] = {}
+                    d = d[key]
+                # Update the dictionary with the new value
+                d[item.text(0)] = item.text(column)
+
     ## Create Profile Tree View
     def add_children(item, value):
         if isinstance(value, dict):
@@ -271,6 +277,7 @@ def patchfixrun():
 app = QApplication(sys.argv)
 loader = QUiLoader()
 fixtureprofiles = {}
+fixturepatch = {}
 
 ## Main config UI
 configuifile = QFile("Config.ui")
@@ -319,21 +326,9 @@ if not eocdata:
 ## DATA IMPORT SECTION
 ## Load previous adapter config file
 try:
-    config = configparser.ConfigParser()                        ## INIT section: create a configparser object & read file
-    config.read('adapterconfig.ini') 
-
-    dmxchanmax = config.get('dmxconfig', 'dmx_channel_count')   ## READ section: access all of the config settings
-    serialport = config.get('dmxconfig', 'adapter_serial_port')
-    adatspeed = config.get('dmxconfig', 'user_adapter_speed')
-    autoadatspeed = config.get('dmxconfig', 'max_dmx_adapter_speed')
-
-    adatvalues = {                                           ## Export our config values in a nice dictionary for easy upgradibility
-        'dmxchanmax': dmxchanmax,   
-        'serialport': serialport,
-        'adatspeed': adatspeed,
-        'autoadatspeed': autoadatspeed,
-    }
-    print("Adapter Settings found and loaded")
+    with open('adapterconfig.json', 'r') as file:
+        adatvalues = json.load(file)
+    print('Adapter Config file found and loaded')
 except:
     print("Adapter Config file not found, this is normal on new installs")
 
@@ -465,17 +460,16 @@ configui.addfixtureprofile.clicked.connect(afpuirun)
 configui.patchfixtures.clicked.connect(patchfixrun)
 
 app.exec()
-## Get adat values
+## Get and save adat values to file
+adatvalues = {'dmx_channel_count': adatchannel, 
+              'adapter_serial_port': adatport, 
+              'user_adapter_speed': adatspeed,
+              'max_dmx_adapter_speed': estadatspeed}
 
-## Save adat values to file
-adatvalues = {
-    'dmxchanmax': adatchannel,
-    'serialport': adatport,
-    'adatspeed': adatspeed,
-    'autoadatspeed': estadatspeed,
-}
-with open('adapterconfig.ini', 'w') as configfile:
-    config.write(adatvalues)
+print("Saving profiles to 'adapterconfig.json'....")
+with open('adapterconfig.json', 'w') as configfile:
+    configfile.write(json.dumps(adatvalues, indent=4))
+print("Adapter settings saved to 'adapterconfig.json'")
 
 ## Save fixture profile values to file
 print("Saving profiles to 'profiles.json'....")
@@ -483,8 +477,10 @@ with open('profiles.json', 'w') as profilefile:
     profilefile.write(json.dumps(fixtureprofiles, indent=4))
 print('Profiles saved to profiles.json')
 
-eocdatawindow()
+## Save patch to file
 
+eocdatawindow()
+print(fixturepatch)
 sys.exit
 
    
