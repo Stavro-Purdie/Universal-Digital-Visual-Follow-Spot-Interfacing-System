@@ -227,10 +227,10 @@ def afpuirun():
 
 ## Run Fixture Patch UI
 def patchfixrun():
-    global edited_values
+    global fixturepatch
     fixturepatch = {}
-    fixturepatchtree = fixpatch.fixturepatchtree
     fixpatch.show()
+
     def add_children(item, value):
         if isinstance(value, dict):
             for key, val in value.items():
@@ -243,36 +243,22 @@ def patchfixrun():
             child.setFlags(child.flags() | Qt.ItemIsEditable)
             item.addChild(child)
 
-    # Function to handle item changes and update both dictionaries
+    # Function to handle changes and save to a separate dictionary
     def on_item_changed(item, column):
         if column == 1:  # Only handle changes in the second column
+            keys = []
             parent = item.parent()
-            if parent is None:
-                # If it's a top-level item, update directly
-                fixtureprofiles[item.text(0)] = item.text(column)
-                fixturepatch[item.text(0)] = item.text(column)
-                #### THIS BELOW CODE IS FOR NESTED TREES, I KEPT THIS JUST IN CASE ####
-#            else:
-#                keys = []
-#                while parent is not None:
-#                    keys.append(parent.text(0))
-#                    parent = parent.parent()
-#                keys.reverse()
-#                d = fixtureprofiles
-#                for key in keys:
-#                    if key not in d:
-#                        d[key] = {}
-#                    d = d[key]
-                # Update the original dictionary
-#                d[item.text(0)] = item.text(column)
-                
-                # Update the separate dictionary
-#                ed = fixturepatch
-#                for key in keys:
-#                    if key not in ed:
-#                        ed[key] = {}
-#                    ed = ed[key]
-#                ed[item.text(0)] = item.text(column)
+            
+            # Traverse up to the root to get the full path
+            while parent is not None:
+                keys.append(parent.text(0))
+                parent = parent.parent()
+            
+            keys.reverse()
+            key_path = " -> ".join(keys) if keys else item.text(0)
+            
+            # Save the edited value in the separate dictionary
+            fixturepatch[key_path] = item.text(column)
 
     # Populate the tree
     profile = []
@@ -282,6 +268,7 @@ def patchfixrun():
         add_children(item, values)
         profile.append(item)
 
+    fixturepatchtree = fixpatch.fixturepatchtree
     fixturepatchtree.insertTopLevelItems(0, profile)
 
     # Connect the itemChanged signal to the on_item_changed function
