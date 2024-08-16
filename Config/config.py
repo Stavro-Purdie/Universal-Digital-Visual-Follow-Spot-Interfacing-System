@@ -16,9 +16,7 @@ global adatvalues
 
 ## Functions
 # This function saves all the new fixture profiles to the dictionary
-def eocdatawindow():
-    eocdata.show()
-    eocdata.showadatpath.setText(str('TEST'))
+
 
 def savefixprof():
     ## Save Stuff to Vars
@@ -481,9 +479,27 @@ with open('profiles.json', 'w') as profilefile:
 print('Profiles saved to profiles.json')
 
 ## Save patch to file
+print("Saving Patch to 'patchdata.json'....")
+with open('patchdata.json', 'w') as patchfile:
+    patchfile.write(json.dumps(fixturepatch, indent=4))
+print("Patchdata saved to 'patchdata.json'")
 
-eocdatawindow()
-print(fixturepatch)
+def eocui():
+    eocdata.show()
+    showadatpath = eocdata.showadatpath
+    showadatpath.setText(adatport)
+    showadatchan = eocdata.showadatchan
+    showadatchan.display(adatchannel)
+    showadatspeed = eocdata.showadatspeed
+    showadatspeed.display(adatspeed)
+    i = 0
+    for items in fixturepatch.items:
+        i + 1
+    showfixturecount = eocdata.showfixcount
+    showfixturecount.display(i)
+    
+eocui()
+
 sys.exit
 
    

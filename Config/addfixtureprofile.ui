@@ -45,7 +45,7 @@ profile to the DMX Subsystem</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>240</y>
+      <y>260</y>
       <width>371</width>
       <height>51</height>
      </rect>
@@ -75,7 +75,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <rect>
       <x>0</x>
       <y>30</y>
-      <width>371</width>
+      <width>401</width>
       <height>16</height>
      </rect>
     </property>
@@ -97,7 +97,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
 Press &lt;CANCEL&gt; to exit the configurator</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>0</x>
