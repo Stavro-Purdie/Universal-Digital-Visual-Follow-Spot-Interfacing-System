@@ -175,7 +175,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>280</y>
+      <y>260</y>
       <width>371</width>
       <height>31</height>
      </rect>
@@ -353,7 +353,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>280</y>
+      <y>250</y>
       <width>371</width>
       <height>31</height>
      </rect>
@@ -732,7 +732,7 @@ supports</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>280</y>
+      <y>250</y>
       <width>371</width>
       <height>31</height>
      </rect>
@@ -846,7 +846,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>280</y>
+      <y>250</y>
       <width>371</width>
       <height>31</height>
      </rect>
@@ -941,7 +941,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>280</y>
+      <y>250</y>
       <width>371</width>
       <height>31</height>
      </rect>
@@ -1131,7 +1131,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>280</y>
+      <y>250</y>
       <width>411</width>
       <height>31</height>
      </rect>

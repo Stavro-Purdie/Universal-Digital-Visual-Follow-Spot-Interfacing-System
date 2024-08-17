@@ -29,59 +29,59 @@ def savefixprof():
     tiltchan = afpui.tiltchan.value()
     finetiltchan = afpui.finetiltchan.value()
     ptspeedchan = afpui.ptspeedchan.value()
-    if ptspeedchan == True:
+    if ptspeedchan > 0:
         ptspeedcontrol = True
     else:
         ptspeedcontrol = False
     redchan = afpui.redchan.value()
-    if redchan == True:
+    if redchan > 0:
         redcontrol = True
     else:
         redcontrol = False
     greenchan = afpui.greenchan.value()
-    if greenchan == True:
+    if greenchan > 0:
         greencontrol = True
     else:
         greencontrol = False
     bluechan = afpui.bluechan.value()
-    if bluechan == True:
+    if bluechan > 0:
         bluecontrol = True
     else:
         bluecontrol = False
     cyanchan = afpui.cyanchan.value()
-    if cyanchan == True:
+    if cyanchan > 0:
         cyancontrol = True
     else:
         cyancontrol = False
     magentachan = afpui.magentachan.value()
-    if magentachan == True:
+    if magentachan > 0:
         magentacontrol = True
     else:
         magentacontrol = False
     yellowchan = afpui.yellowchan.value()
-    if yellowchan == True:
+    if yellowchan > 0:
         yellowcontrol = True
     else:
         yellowcontrol = False
     colourwheelchan = afpui.colourwheelchan.value()
-    if colourwheelchan == True:
+    if colourwheelchan > 0:
         colourwheelcontrol = True
     else:
         colourwheelcontrol = False
     ctochan = afpui.ctochan.value()
-    if ctochan == True:
+    if ctochan > 0:
         ctocontrol = True
     else:
         ctocontrol = False
     zoomchan = afpui.zoomchan.value()
     finezoomchan = afpui.zoomfinechan.value()
-    if finezoomchan == True:
+    if finezoomchan > 0:
         finezoomcontrol = True
     else:
         finezoomcontrol = False
     focuschan = afpui.focuschan.value()
     finefocuschan = afpui.focusfinechan.value()
-    if finefocuschan == True:
+    if finefocuschan > 0:
         finefocuscontrol = True
     else:
         finefocuscontrol = False
@@ -89,7 +89,7 @@ def savefixprof():
     rotgobochan = afpui.rotgobochan.value()
     dimmerchan = afpui.dimmerchan.value()
     finedimmerchan = afpui.finedimmerchan.value()
-    if finedimmerchan == True:
+    if finedimmerchan > 0:
         finedimmercontrol = True
     else:
         finedimmercontrol = False
@@ -137,7 +137,7 @@ def savefixprof():
         fixtureprofiles[fixname]['colour']['rgb']['red'] = redchan
     else:
         fixtureprofiles[fixname]['colour']['rgb']['red'] = 'none'
-    if bluecontrol == True:
+    if bluecontrol is True:
         fixtureprofiles[fixname]['colour']['rgb']['blue'] = bluechan
     else:
         fixtureprofiles[fixname]['colour']['rgb']['blue'] = 'none'
@@ -493,11 +493,9 @@ def eocui():
     showadatspeed = eocdata.showadatspeed
     showadatspeed.display(adatspeed)
     i = 0
-    for items in fixturepatch.items:
-        i + 1
     showfixturecount = eocdata.showfixcount
     showfixturecount.display(i)
-    
+
 eocui()
 
 sys.exit
