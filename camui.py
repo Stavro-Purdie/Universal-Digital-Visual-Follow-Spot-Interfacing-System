@@ -8,7 +8,7 @@ import cv2
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
-        uic.loadUi('test.ui', self)  # Load the UI file
+        uic.loadUi('camui.ui', self)  # Load the UI file
 
         # Initialize video streams (replace with actual stream URLs if needed)
         self.video_streams = {

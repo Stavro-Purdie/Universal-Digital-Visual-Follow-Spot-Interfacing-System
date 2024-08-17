@@ -13,10 +13,20 @@
   <property name="windowTitle">
    <string>Automated Follow Spots Controller</string>
   </property>
+  <property name="styleSheet">
+   <string>
+    background-color: black;
+   </string>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QListWidget" name="spotListWidget">
+      <property name="styleSheet">
+       <string>
+        background-color: black; color: white;
+       </string>
+      </property>
       <item>
        <property name="text">
         <string>Follow Spot 1</string>
@@ -37,11 +47,21 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <widget class="QWidget" name="spotControl1">
+       <property name="styleSheet">
+        <string>
+         background-color: black; color: white;
+        </string>
+       </property>
        <layout class="QVBoxLayout" name="spotControl1Layout">
         <item>
          <widget class="QLabel" name="label1">
           <property name="text">
            <string>Follow Spot 1</string>
+          </property>
+          <property name="styleSheet">
+           <string>
+            color: white;
+           </string>
           </property>
          </widget>
         </item>
@@ -50,12 +70,22 @@
           <property name="text">
            <string>Move Up</string>
           </property>
+          <property name="styleSheet">
+           <string>
+            background-color: #333; color: white;
+           </string>
+          </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="moveDownButton1">
           <property name="text">
            <string>Move Down</string>
+          </property>
+          <property name="styleSheet">
+           <string>
+            background-color: #333; color: white;
+           </string>
           </property>
          </widget>
         </item>
@@ -64,6 +94,11 @@
           <property name="text">
            <string>Move Left</string>
           </property>
+          <property name="styleSheet">
+           <string>
+            background-color: #333; color: white;
+           </string>
+          </property>
          </widget>
         </item>
         <item>
@@ -71,16 +106,31 @@
           <property name="text">
            <string>Move Right</string>
           </property>
+          <property name="styleSheet">
+           <string>
+            background-color: #333; color: white;
+           </string>
+          </property>
          </widget>
         </item>
        </layout>
       </widget>
       <widget class="QWidget" name="spotControl2">
+       <property name="styleSheet">
+        <string>
+         background-color: black; color: white;
+        </string>
+       </property>
        <layout class="QVBoxLayout" name="spotControl2Layout">
         <item>
          <widget class="QLabel" name="label2">
           <property name="text">
            <string>Follow Spot 2</string>
+          </property>
+          <property name="styleSheet">
+           <string>
+            color: white;
+           </string>
           </property>
          </widget>
         </item>
@@ -89,12 +139,22 @@
           <property name="text">
            <string>Move Up</string>
           </property>
+          <property name="styleSheet">
+           <string>
+            background-color: #333; color: white;
+           </string>
+          </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="moveDownButton2">
           <property name="text">
            <string>Move Down</string>
+          </property>
+          <property name="styleSheet">
+           <string>
+            background-color: #333; color: white;
+           </string>
           </property>
          </widget>
         </item>
@@ -103,6 +163,11 @@
           <property name="text">
            <string>Move Left</string>
           </property>
+          <property name="styleSheet">
+           <string>
+            background-color: #333; color: white;
+           </string>
+          </property>
          </widget>
         </item>
         <item>
@@ -110,16 +175,31 @@
           <property name="text">
            <string>Move Right</string>
           </property>
+          <property name="styleSheet">
+           <string>
+            background-color: #333; color: white;
+           </string>
+          </property>
          </widget>
         </item>
        </layout>
       </widget>
       <widget class="QWidget" name="spotControl3">
+       <property name="styleSheet">
+        <string>
+         background-color: black; color: white;
+        </string>
+       </property>
        <layout class="QVBoxLayout" name="spotControl3Layout">
         <item>
          <widget class="QLabel" name="label3">
           <property name="text">
            <string>Follow Spot 3</string>
+          </property>
+          <property name="styleSheet">
+           <string>
+            color: white;
+           </string>
           </property>
          </widget>
         </item>
@@ -128,12 +208,22 @@
           <property name="text">
            <string>Move Up</string>
           </property>
+          <property name="styleSheet">
+           <string>
+            background-color: #333; color: white;
+           </string>
+          </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="moveDownButton3">
           <property name="text">
            <string>Move Down</string>
+          </property>
+          <property name="styleSheet">
+           <string>
+            background-color: #333; color: white;
+           </string>
           </property>
          </widget>
         </item>
@@ -142,12 +232,22 @@
           <property name="text">
            <string>Move Left</string>
           </property>
+          <property name="styleSheet">
+           <string>
+            background-color: #333; color: white;
+           </string>
+          </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="moveRightButton3">
           <property name="text">
            <string>Move Right</string>
+          </property>
+          <property name="styleSheet">
+           <string>
+            background-color: #333; color: white;
+           </string>
           </property>
          </widget>
         </item>
@@ -162,6 +262,11 @@
         <property name="text">
          <string>Video Stream 1</string>
         </property>
+        <property name="styleSheet">
+         <string>
+          background-color: black; color: white;
+         </string>
+        </property>
        </widget>
       </item>
       <item>
@@ -169,12 +274,22 @@
         <property name="text">
          <string>Video Stream 2</string>
         </property>
+        <property name="styleSheet">
+         <string>
+          background-color: black; color: white;
+         </string>
+        </property>
        </widget>
       </item>
       <item>
        <widget class="QLabel" name="videoStream3">
         <property name="text">
          <string>Video Stream 3</string>
+        </property>
+        <property name="styleSheet">
+         <string>
+          background-color: black; color: white;
+         </string>
         </property>
        </widget>
       </item>
