@@ -828,7 +828,9 @@ while flag == True:
         quit()
     
     fixturename = fixtureindex[fixturenum]['fixturename']
+
     fixturestartchan = int(fixtureindex[fixturenum]['startingchannel']) - 1
+
     fixtureprofilename = fixtureindex[fixturenum]['profilename']
     print(f'\n {Fore.BLUE + Style.BRIGHT}You Have Selected {fixturename}')
 
