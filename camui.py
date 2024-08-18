@@ -41,6 +41,9 @@ class MainWindow(QMainWindow):
         # Connect tree widget selection change to resizing logic
         self.fixtureTreeWidget.itemSelectionChanged.connect(self.on_fixture_selected)
 
+        # Automatically select the first fixture on startup
+        self.select_first_fixture()
+
     def setup_tree_widget(self):
         fixtures = ["videoStream1", "videoStream2", "videoStream3"]
         for fixture in fixtures:
@@ -51,6 +54,13 @@ class MainWindow(QMainWindow):
         cap = self.caps[label_name]
         ret, frame = cap.read()
         if ret:
+            # Draw a green circle on the frame to represent the beam
+            height, width, _ = frame.shape
+            center_x = width // 2
+            center_y = height // 2
+            radius = min(width, height) // 10  # Adjust radius as needed
+            cv2.circle(frame, (center_x, center_y), radius, (0, 255, 0), 3)  # Green color in RGB
+
             # Convert the frame to QImage
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             h, w, ch = frame.shape
@@ -80,6 +90,13 @@ class MainWindow(QMainWindow):
 
         # Update the previously selected fixture
         self.previous_selected_fixture = selected_fixture
+
+    def select_first_fixture(self):
+        # Select the first fixture in the tree widget by default
+        first_item = self.fixtureTreeWidget.topLevelItem(0)
+        if first_item:
+            self.fixtureTreeWidget.setCurrentItem(first_item)
+            self.resize_camera_widgets(first_item.text(0))
 
     def closeEvent(self, event):
         # Release all VideoCapture objects when the application is closed
