@@ -43,11 +43,14 @@ class MainWindow(QMainWindow):
         # Setup the tree widget for selecting fixtures
         self.setup_tree_widget()
 
+        # Track the previously selected fixture
+        self.previous_selected_fixture = None
+
         # Connect tree widget selection change to resizing logic
         self.fixtureTreeWidget.itemSelectionChanged.connect(self.on_fixture_selected)
 
     def setup_tree_widget(self):
-        fixtures = ["Fixture1", "Fixture2", "Fixture3"]
+        fixtures = ["videoStream1", "videoStream2", "videoStream3"]
         for fixture in fixtures:
             item = QTreeWidgetItem([fixture])
             self.fixtureTreeWidget.addTopLevelItem(item)
@@ -67,15 +70,22 @@ class MainWindow(QMainWindow):
         selected_items = self.fixtureTreeWidget.selectedItems()
         if selected_items:
             selected_fixture = selected_items[0].text(0)
+
+            # Resize the newly selected camera widget
             self.resize_camera_widgets(selected_fixture)
 
     def resize_camera_widgets(self, selected_fixture):
-        for label_name in self.video_streams.keys():
-            label = self.findChild(QLabel, label_name)
-            if label_name == selected_fixture:
-                label.setFixedSize(640, 480)  # Enlarge the selected camera
-            else:
-                label.setFixedSize(320, 240)  # Shrink other cameras
+        # If there was a previous selection, revert its size back
+        if self.previous_selected_fixture:
+            prev_label = self.findChild(QLabel, self.previous_selected_fixture)
+            prev_label.setFixedSize(320, 240)  # Shrink the previously selected camera
+
+        # Enlarge the newly selected camera
+        selected_label = self.findChild(QLabel, selected_fixture)
+        selected_label.setFixedSize(640, 480)
+
+        # Update the previously selected fixture
+        self.previous_selected_fixture = selected_fixture
 
     def closeEvent(self, event):
         # Release all VideoCapture objects when the application is closed
