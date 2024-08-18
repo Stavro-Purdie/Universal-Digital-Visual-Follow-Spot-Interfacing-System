@@ -4,17 +4,18 @@ from PyQt6.QtGui import QPixmap, QImage
 from PyQt6.QtCore import QTimer, Qt
 from PyQt6 import uic
 import cv2
+import numpy as np
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         uic.loadUi('camui.ui', self)  # Load the UI file
 
-        # Initialize video streams (replace with actual stream URLs if needed)
+        # Initialize video streams (replace with actual stream URLs if needed, can also be X in /dev/videoX)
         self.video_streams = {
             "videoStream1": 0,  # Using default webcam for testing
-            "videoStream2": 0,  # Can be replaced with another video source
-            "videoStream3": 0   # Can be replaced with another video source
+            "videoStream2": 1,  # Can be replaced with another video source
+            "videoStream3": 4   # Can be replaced with another video source
         }
 
         # Dictionary to store OpenCV VideoCapture objects
@@ -44,6 +45,9 @@ class MainWindow(QMainWindow):
         # Automatically select the first fixture on startup
         self.select_first_fixture()
 
+        # Percentage control for the halo's thickness
+        self.halo_percentage = 0.3  # 30% thickness by default
+
     def setup_tree_widget(self):
         fixtures = ["videoStream1", "videoStream2", "videoStream3"]
         for fixture in fixtures:
@@ -54,12 +58,34 @@ class MainWindow(QMainWindow):
         cap = self.caps[label_name]
         ret, frame = cap.read()
         if ret:
-            # Draw a green circle on the frame to represent the beam
             height, width, _ = frame.shape
             center_x = width // 2
             center_y = height // 2
-            radius = min(width, height) // 10  # Adjust radius as needed
-            cv2.circle(frame, (center_x, center_y), radius, (0, 255, 0), 3)  # Green color in RGB
+            radius = min(width, height) // 10  # Main circle radius
+
+            # Draw the main green circle
+            cv2.circle(frame, (center_x, center_y), radius, (0, 255, 0), 3)  # Green circle
+
+            # Calculate the inner circle radius
+            inner_radius = radius // 3
+
+            # Draw the crosshair lines outside the inner circle
+            # Vertical line
+            cv2.line(frame, (center_x, center_y - radius), (center_x, center_y - inner_radius), (0, 255, 0), 2)
+            cv2.line(frame, (center_x, center_y + inner_radius), (center_x, center_y + radius), (0, 255, 0), 2)
+            # Horizontal line
+            cv2.line(frame, (center_x - radius, center_y), (center_x - inner_radius, center_y), (0, 255, 0), 2)
+            cv2.line(frame, (center_x + inner_radius, center_y), (center_x + radius, center_y), (0, 255, 0), 2)
+
+            # Draw the smaller inner circle
+            cv2.circle(frame, (center_x, center_y), inner_radius, (0, 255, 0), 2)  # Inner green circle
+
+            # Draw the halo around the outer circle
+            halo_thickness = int(radius * self.halo_percentage)  # Thickness based on percentage
+            overlay = frame.copy()
+            cv2.circle(overlay, (center_x, center_y), radius + halo_thickness // 2, (0, 255, 0), halo_thickness)
+            alpha = 0.3  # Transparency factor for the halo
+            cv2.addWeighted(overlay, alpha, frame, 1 - alpha, 0, frame)
 
             # Convert the frame to QImage
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -104,9 +130,9 @@ class MainWindow(QMainWindow):
             cap.release()
         event.accept()
 
+## Main Routine
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
     sys.exit(app.exec())
-
