@@ -50,54 +50,6 @@
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="QPushButton" name="moveUpButton1">
-          <property name="styleSheet">
-           <string>
-            background-color: #333; color: white;
-           </string>
-          </property>
-          <property name="text">
-           <string>Move Up</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="moveDownButton1">
-          <property name="styleSheet">
-           <string>
-            background-color: #333; color: white;
-           </string>
-          </property>
-          <property name="text">
-           <string>Move Down</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="moveLeftButton1">
-          <property name="styleSheet">
-           <string>
-            background-color: #333; color: white;
-           </string>
-          </property>
-          <property name="text">
-           <string>Move Left</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="moveRightButton1">
-          <property name="styleSheet">
-           <string>
-            background-color: #333; color: white;
-           </string>
-          </property>
-          <property name="text">
-           <string>Move Right</string>
-          </property>
-         </widget>
-        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="spotControl2">

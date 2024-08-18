@@ -1,7 +1,7 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QTreeWidgetItem, QTreeWidget
 from PyQt6.QtGui import QPixmap, QImage
-from PyQt6.QtCore import QTimer
+from PyQt6.QtCore import QTimer, Qt
 from PyQt6 import uic
 import cv2
 
@@ -9,14 +9,6 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         uic.loadUi('camui.ui', self)  # Load the UI file
-
-        # Debugging: Check if fixtureTreeWidget is correctly loaded
-        self.fixtureTreeWidget = self.findChild(QTreeWidget, 'fixtureTreeWidget')
-        if self.fixtureTreeWidget is None:
-            print("Error: Could not find fixtureTreeWidget in the UI file.")
-            sys.exit(1)
-        else:
-            print("fixtureTreeWidget found successfully.")
 
         # Initialize video streams (replace with actual stream URLs if needed)
         self.video_streams = {
@@ -64,7 +56,9 @@ class MainWindow(QMainWindow):
             h, w, ch = frame.shape
             bytes_per_line = ch * w
             qt_img = QImage(frame.data, w, h, bytes_per_line, QImage.Format.Format_RGB888)
-            label.setPixmap(QPixmap.fromImage(qt_img))
+            # Scale the pixmap while maintaining the aspect ratio
+            scaled_pixmap = QPixmap.fromImage(qt_img).scaled(label.size(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+            label.setPixmap(scaled_pixmap)
 
     def on_fixture_selected(self):
         selected_items = self.fixtureTreeWidget.selectedItems()
@@ -82,7 +76,7 @@ class MainWindow(QMainWindow):
 
         # Enlarge the newly selected camera
         selected_label = self.findChild(QLabel, selected_fixture)
-        selected_label.setFixedSize(640, 480)
+        selected_label.setFixedSize(640, 480)  # Enlarge the selected camera
 
         # Update the previously selected fixture
         self.previous_selected_fixture = selected_fixture
@@ -98,3 +92,4 @@ if __name__ == '__main__':
     window = MainWindow()
     window.show()
     sys.exit(app.exec())
+
