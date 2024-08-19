@@ -287,7 +287,7 @@ def patchfixrun():
     fixturepatchtree = fixpatch.fixturepatchtree
     fixturepatchtree.insertTopLevelItems(0, profile)
 
-    # Connect the itemChanged signal to the on_item_changed function
+    # Connect the itemChanged signal to the on_startchan_changed function
     fixturepatchtree.itemChanged.connect(on_startchan_changed)
 
     ## Fixture Alias Assignment Tree
@@ -301,22 +301,35 @@ def patchfixrun():
             for idx, value in values.items():
                 fixnum += 1
                 spot_name = f'Spot{fixnum}'
-                spot_item = QTreeWidgetItem([spot_name, ""])  # Create spot entry
+                spot_item = QTreeWidgetItem([spot_name, value])  # Show start channel value
                 spot_item.setFlags(spot_item.flags() | Qt.ItemIsEditable)
 
                 # Save the spot entry to the fixture alias dictionary
-                fixturealias[spot_name] = {"URI": ""}
+                fixturealias[spot_name] = {"Start Channel": value}
 
                 # Add the spot item to the alias tree
                 singlefixpatchtree.addTopLevelItem(spot_item)
 
     # Function to handle changes and save to a separate dictionary
     def on_alias_changed(item, column):
-        if column == 1:  # Only handle changes in the second column
+        if column == 0:  # Handle changes in the first column (fixture name)
+            old_name = None
+
+            # Search for the item that was renamed by comparing the current tree items with the fixturealias dictionary
+            for name in fixturealias.keys():
+                if fixturealias[name]["Start Channel"] == item.text(1) and name != item.text(0):
+                    old_name = name
+                    break
+
+            if old_name is not None:
+                new_name = item.text(0)
+                # Rename the key in the dictionary
+                fixturealias[new_name] = fixturealias.pop(old_name)
+
+        elif column == 1:  # Handle changes in the second column (start channel)
             spot_name = item.text(0)
-            if spot_name.startswith("Spot"):
-                # Update the URI in the fixture alias dictionary
-                fixturealias[spot_name]["URI"] = item.text(1)
+            if spot_name in fixturealias:
+                fixturealias[spot_name]["Start Channel"] = item.text(1)
 
     # Alias Tree Setup
     singlefixpatchtree = fixpatch.singlefixpatchtree
@@ -537,6 +550,10 @@ with open('patchdata.json', 'w') as patchfile:
     patchfile.write(json.dumps(fixturepatch, indent=4))
 print("Patchdata saved to 'patchdata.json'")
 
+print("Saving Fixture Alias to 'fixtureconfig.json'....")
+with open('fixtureconfig.json', 'w') as fixconf:
+    fixconf.write(json.dumps(fixturealias, indent=4))
+print("Fixture config data saved to 'fixtureconfig.json'")
 def eocui():
     eocdata.show()
     showadatpath = eocdata.showadatpath
