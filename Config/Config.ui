@@ -846,6 +846,28 @@ Press &lt;CANCEL&gt; to exit the configurator
 Press &lt;HELP&gt; for assistance</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="addcamera">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>170</y>
+      <width>91</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Add Camera</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+    <property name="default">
+     <bool>true</bool>
+    </property>
+   </widget>
   </widget>
   <widget class="QWizardPage" name="wizardPage_6">
    <attribute name="pageId">

@@ -45,7 +45,7 @@ profiles we created in the last section</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>270</y>
+      <y>280</y>
       <width>371</width>
       <height>51</height>
      </rect>
@@ -87,7 +87,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>270</y>
+      <y>280</y>
       <width>371</width>
       <height>51</height>
      </rect>
