@@ -82,7 +82,7 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:700;&quot;&gt;CAMERA PATCH WIZARD&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QTreeWidget" name="fixturepatchtree">
+   <widget class="QTreeWidget" name="camerapatchtree">
     <property name="geometry">
      <rect>
       <x>0</x>

@@ -225,7 +225,7 @@ def afpuirun():
 
 ## Run Fixture Patch UI
 def patchfixrun():
-    global fixturepatch
+    global fixturepatch, fixturealias
     fixturepatch = {}
     fixturealias = {}
     fixpatch.show()
@@ -243,8 +243,7 @@ def patchfixrun():
             child.setFlags(child.flags() | Qt.ItemIsEditable)
             item.addChild(child)
 
-    ## Initial Fixture Patch Tree by Make
-    # Function to handle changes and save to a separate dictionary
+    ## Function to handle changes and save to a separate dictionary
     def on_startchan_changed(item, column):
         if column == 1:  # Only handle changes in the second column
             keys = []
@@ -274,7 +273,7 @@ def patchfixrun():
             for i, value in enumerate(values):
                 fixturepatch[base_key][i] = value
 
-    # Populate the tree
+    # Populate the tree with initial fixture profiles
     profile = []
     for key, values in fixtureprofiles.items():
         item = QTreeWidgetItem([key, ""])
@@ -285,41 +284,46 @@ def patchfixrun():
     fixturepatchtree = fixpatch.fixturepatchtree
     fixturepatchtree.insertTopLevelItems(0, profile)
 
-    # Connect the itemChanged signal to the on_item_changed function
+    # Connect the itemChanged signal to the on_startchan_changed function
     fixturepatchtree.itemChanged.connect(on_startchan_changed)
 
-    ##Fixture Alias Assignment
-    # Function to handle changes and save to a separate dictionary
+    ## Function to handle changes in the alias tree and save to another dictionary
     def on_alias_changed(item, column):
         if column == 1:  # Only handle changes in the second column
-            keys = []
-            parent = item.parent()
+            spot_name = item.text(0)
+            if not spot_name.startswith("spot"):
+                return  # Ensure we are only dealing with spot entries
             
-            # Traverse up to the root to get the full path
-            while parent is not None:
-                keys.append(parent.text(0))
-                parent = parent.parent()
+            # Get the URI and Name from the child items
+            uri = item.child(0).text(1) if item.child(0) else ""
+            name = item.child(1).text(1) if item.child(1) else ""
             
-            keys.reverse()
-            key_path = " -> ".join(keys) if keys else item.text(0)
-            
-            # Save the edited value in the separate dictionary
-            fixturealias[key_path] = item.text(column)
+            # Save the edited values in the fixturealias dictionary
+            fixturealias[spot_name] = {"URI": uri, "Name": name}
 
-    # Populate the tree
+    ## Populate the alias tree with fixture patch spots
     fixalias = []
     fixnum = 0
-    for key, values in fixturepatch.items():
+    for key in fixturepatch.keys():
         fixnum += 1
-        item = QTreeWidgetItem([f'spot{fixnum}', ""])
-        item.setFlags(item.flags() | Qt.ItemIsEditable)
-        add_children(item, values)
-        profile.append(item)
+        spot_item = QTreeWidgetItem([f'spot{fixnum}', ""])
+        spot_item.setFlags(spot_item.flags() | Qt.ItemIsEditable)
+
+        # Add URI and Name fields as children of each spot
+        uri_item = QTreeWidgetItem(["URI", ""])
+        uri_item.setFlags(uri_item.flags() | Qt.ItemIsEditable)
+        spot_item.addChild(uri_item)
+
+        name_item = QTreeWidgetItem(["Name", ""])
+        name_item.setFlags(name_item.flags() | Qt.ItemIsEditable)
+        spot_item.addChild(name_item)
+
+        fixalias.append(spot_item)
 
     singlefixpatchtree = fixpatch.singlefixpatchtree
     singlefixpatchtree.insertTopLevelItems(0, fixalias)
 
-    ## On Tree Change
+    ## Connect the itemChanged signal to the on_alias_changed function
     singlefixpatchtree.itemChanged.connect(on_alias_changed)
 
             
