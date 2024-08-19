@@ -243,7 +243,7 @@ def patchfixrun():
             child.setFlags(child.flags() | Qt.ItemIsEditable)
             item.addChild(child)
 
-    ## Function to handle changes and save to a separate dictionary
+    ## Initial Fixture Patch Tree by Make
     def on_startchan_changed(item, column):
         if column == 1:  # Only handle changes in the second column
             keys = []
@@ -273,7 +273,10 @@ def patchfixrun():
             for i, value in enumerate(values):
                 fixturepatch[base_key][i] = value
 
-    # Populate the tree with initial fixture profiles
+            # Update the second tree (fixture alias) with new spots
+            update_fixture_alias_tree()
+
+    # Populate the tree
     profile = []
     for key, values in fixtureprofiles.items():
         item = QTreeWidgetItem([key, ""])
@@ -284,47 +287,43 @@ def patchfixrun():
     fixturepatchtree = fixpatch.fixturepatchtree
     fixturepatchtree.insertTopLevelItems(0, profile)
 
-    # Connect the itemChanged signal to the on_startchan_changed function
+    # Connect the itemChanged signal to the on_item_changed function
     fixturepatchtree.itemChanged.connect(on_startchan_changed)
 
-    ## Function to handle changes in the alias tree and save to another dictionary
+    ## Fixture Alias Assignment Tree
+    def update_fixture_alias_tree():
+        fixturealias.clear()  # Clear the existing fixture alias dictionary
+        singlefixpatchtree.clear()  # Clear the existing tree entries
+
+        # Populate the alias tree with fixture patch spots
+        fixnum = 0
+        for key, values in fixturepatch.items():
+            for idx, value in values.items():
+                fixnum += 1
+                spot_name = f'Spot{fixnum}'
+                spot_item = QTreeWidgetItem([spot_name, ""])  # Create spot entry
+                spot_item.setFlags(spot_item.flags() | Qt.ItemIsEditable)
+
+                # Save the spot entry to the fixture alias dictionary
+                fixturealias[spot_name] = {"URI": ""}
+
+                # Add the spot item to the alias tree
+                singlefixpatchtree.addTopLevelItem(spot_item)
+
+    # Function to handle changes and save to a separate dictionary
     def on_alias_changed(item, column):
         if column == 1:  # Only handle changes in the second column
             spot_name = item.text(0)
-            if not spot_name.startswith("spot"):
-                return  # Ensure we are only dealing with spot entries
-            
-            # Get the URI and Name from the child items
-            uri = item.child(0).text(1) if item.child(0) else ""
-            name = item.child(1).text(1) if item.child(1) else ""
-            
-            # Save the edited values in the fixturealias dictionary
-            fixturealias[spot_name] = {"URI": uri, "Name": name}
+            if spot_name.startswith("Spot"):
+                # Update the URI in the fixture alias dictionary
+                fixturealias[spot_name]["URI"] = item.text(1)
 
-    ## Populate the alias tree with fixture patch spots
-    fixalias = []
-    fixnum = 0
-    for key in fixturepatch.keys():
-        fixnum += 1
-        spot_item = QTreeWidgetItem([f'spot{fixnum}', ""])
-        spot_item.setFlags(spot_item.flags() | Qt.ItemIsEditable)
-
-        # Add URI and Name fields as children of each spot
-        uri_item = QTreeWidgetItem(["URI", ""])
-        uri_item.setFlags(uri_item.flags() | Qt.ItemIsEditable)
-        spot_item.addChild(uri_item)
-
-        name_item = QTreeWidgetItem(["Name", ""])
-        name_item.setFlags(name_item.flags() | Qt.ItemIsEditable)
-        spot_item.addChild(name_item)
-
-        fixalias.append(spot_item)
-
+    # Alias Tree Setup
     singlefixpatchtree = fixpatch.singlefixpatchtree
-    singlefixpatchtree.insertTopLevelItems(0, fixalias)
-
-    ## Connect the itemChanged signal to the on_alias_changed function
     singlefixpatchtree.itemChanged.connect(on_alias_changed)
+
+    # Initially populate the alias tree
+    update_fixture_alias_tree()
 
             
 ## UI IMPORT SECTION
