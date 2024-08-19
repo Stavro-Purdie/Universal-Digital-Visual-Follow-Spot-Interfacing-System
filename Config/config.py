@@ -32,7 +32,7 @@ def savefixprof():
     if ptspeedchan > 0:
         ptspeedcontrol = True
     else:
-        ptspeedcontrol = False
+        ptspeedcontrol = Falsex
     redchan = afpui.redchan.value()
     if redchan > 0:
         redcontrol = True
@@ -338,6 +338,42 @@ def patchfixrun():
     # Initially populate the alias tree
     update_fixture_alias_tree()
 
+def addcamerarun():
+    global fixturecam
+    fixturecam = {}
+    
+    # Function to populate the camera tree with fixture aliases
+    def populate_camera_tree():
+        camera_tree = configui.camerapatchtree  # Assuming you have a QTreeWidget named `cameratree`
+        camera_tree.clear()  # Clear any existing entries
+
+        # Loop through the fixturealias dictionary
+        for alias, info in fixturealias.items():
+            # Create a new QTreeWidgetItem with the alias in the first column
+            item = QTreeWidgetItem([alias, info.get("URI", "")])
+            
+            # Set the second column (URI) to be editable
+            item.setFlags(item.flags() | Qt.ItemIsEditable)
+            camera_tree.addTopLevelItem(item)
+    
+    # Function to handle changes in the camera tree and save to fixturecam
+    def on_camera_item_changed(item, column):
+        alias = item.text(0)
+        if column == 1:  # Only handle changes in the second column (URI)
+            uri = item.text(1)
+            if uri:  # If there's something in the URI field
+                fixturecam[alias] = {"URI": uri}
+            elif alias in fixturecam:  # If the URI is cleared, remove the entry from fixturecam
+                del fixturecam[alias]
+    
+    # Set up the tree and connect signals
+    camera_tree = configui.camerapatchtree  # Assuming `cameratree` is your QTreeWidget
+    camera_tree.itemChanged.connect(on_camera_item_changed)
+    
+    # Initially populate the camera tree
+    populate_camera_tree()
+
+
             
 ## UI IMPORT SECTION
 ## Init section
@@ -512,6 +548,7 @@ def add_children(item, value):
         item.addChild(child)
 
 fixtureprofiletree = configui.fixtureprofiletree
+fixtureprofiletree.clear()
 profile = []
 
 for key, values in fixtureprofiles.items():
@@ -525,6 +562,8 @@ fixtureprofiletree.insertTopLevelItems(0, profile)
 
 configui.addfixtureprofile.clicked.connect(afpuirun)
 configui.patchfixtures.clicked.connect(patchfixrun)
+
+configui.addcamera.clicked.connect(addcamerarun)
 
 app.exec()
 ## Get and save adat values to file
@@ -554,6 +593,7 @@ print("Saving Fixture Alias to 'fixtureconfig.json'....")
 with open('fixtureconfig.json', 'w') as fixconf:
     fixconf.write(json.dumps(fixturealias, indent=4))
 print("Fixture config data saved to 'fixtureconfig.json'")
+
 def eocui():
     eocdata.show()
     showadatpath = eocdata.showadatpath

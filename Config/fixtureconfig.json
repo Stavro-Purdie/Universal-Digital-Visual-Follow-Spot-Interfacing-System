@@ -1,23 +1,14 @@
 {
-    "Spot2": {
-        "Start Channel": "20"
-    },
-    "Spot4": {
-        "Start Channel": "40"
-    },
-    "Spot6": {
-        "Start Channel": "60"
-    },
     "test2": {
-        "Start Channel": "10"
-    },
-    "tes6": {
-        "Start Channel": "30"
-    },
-    "check": {
         "Start Channel": "50"
     },
-    "boo": {
+    "kakaaka": {
+        "Start Channel": "60"
+    },
+    "uce": {
         "Start Channel": "70"
+    },
+    "kefe": {
+        "Start Channel": "80"
     }
 }
