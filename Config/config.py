@@ -341,10 +341,11 @@ def patchfixrun():
 def addcamerarun():
     global fixturecam
     fixturecam = {}
-    
+    camerapatch.show()
+
     # Function to populate the camera tree with fixture aliases
     def populate_camera_tree():
-        camera_tree = configui.camerapatchtree  # Assuming you have a QTreeWidget named `cameratree`
+        camera_tree = camerapatch.camerapatchtree  
         camera_tree.clear()  # Clear any existing entries
 
         # Loop through the fixturealias dictionary
@@ -367,7 +368,7 @@ def addcamerarun():
                 del fixturecam[alias]
     
     # Set up the tree and connect signals
-    camera_tree = configui.camerapatchtree  # Assuming `cameratree` is your QTreeWidget
+    camera_tree = camerapatch.camerapatchtree 
     camera_tree.itemChanged.connect(on_camera_item_changed)
     
     # Initially populate the camera tree
@@ -407,7 +408,7 @@ if not afpui:
 ## Add Fixture Patch UI
 fixpatchfile = QFile("fixturepatch.ui")
 if not fixpatchfile.open(QIODevice.ReadOnly):
-    print(f'Cannot open addfixtureprofile.ui: {afpuifile.errorString()}')
+    print(f'Cannot open fixturepatch.ui: {fixpatchfile.errorString()}')
     sys.exit(-1)
 fixpatch = loader.load(fixpatchfile)
 fixpatchfile.close()
@@ -415,10 +416,21 @@ if not fixpatch:
     print(loader.errorString)
     sys.exit
 
+## Add Camera Patch UI
+camerapatchfile = QFile('camerapatch.ui')
+if not camerapatchfile.open(QIODevice.ReadOnly):
+    print(f'Cannot open camerapatch.ui: {camerapatchfile.errorString()}')
+    sys.exit(-1)
+camerapatch = loader.load(camerapatchfile)
+camerapatchfile.close()
+if not camerapatch:
+    print(loader.errorString)
+    sys.exit
+
 ## Add End-Of-Config Window
 eocdatafile = QFile('EOCdata.ui')
 if not eocdatafile.open(QIODevice.ReadOnly):
-    print(f'Cannot open EOCdata.ui: {fixpatchfile.errorString()}')
+    print(f'Cannot open EOCdata.ui: {eocdatafile.errorString()}')
     sys.exit(-1)
 eocdata = loader.load(eocdatafile)
 eocdatafile.close()
@@ -589,10 +601,17 @@ with open('patchdata.json', 'w') as patchfile:
     patchfile.write(json.dumps(fixturepatch, indent=4))
 print("Patchdata saved to 'patchdata.json'")
 
+## Save fixture alias to file
 print("Saving Fixture Alias to 'fixtureconfig.json'....")
 with open('fixtureconfig.json', 'w') as fixconf:
     fixconf.write(json.dumps(fixturealias, indent=4))
 print("Fixture config data saved to 'fixtureconfig.json'")
+
+## Save fixture camera patch to file
+print("Saving Camera Patch to 'camerapatch.json'....")
+with open('camerapatch.json', 'w') as campatch:
+    campatch.write(json.dumps(fixturecam, indent=4))
+print("Fixture Camera Patch data saved to 'camerapatch.json'")
 
 def eocui():
     eocdata.show()
