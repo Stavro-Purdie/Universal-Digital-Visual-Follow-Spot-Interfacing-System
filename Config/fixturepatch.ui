@@ -121,6 +121,71 @@ Press &lt;CANCEL&gt; to exit the configurator</string>
     </column>
    </widget>
   </widget>
+  <widget class="QWizardPage" name="wizardPage_2">
+   <widget class="QLabel" name="label_35">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>378</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:700;&quot;&gt;FIXTURE PATCH WIZARD&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QTreeWidget" name="singlefixpatchtree">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>80</y>
+      <width>441</width>
+      <height>192</height>
+     </rect>
+    </property>
+    <attribute name="headerDefaultSectionSize">
+     <number>120</number>
+    </attribute>
+    <column>
+     <property name="text">
+      <string>Fixture</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Start Channel</string>
+     </property>
+    </column>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>25</y>
+      <width>441</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Below is a Tree View of the patched fixtures, You are welcome to &lt;br/&gt;edit the Alias to something else. This will be used to identify&lt;br/&gt;the fixture.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_36">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>280</y>
+      <width>371</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Press &lt;NEXT&gt; to continue with the configuration
+Press &lt;CANCEL&gt; to exit the configurator</string>
+    </property>
+   </widget>
+  </widget>
   <widget class="QWizardPage" name="wizardPage">
    <widget class="QLabel" name="label_31">
     <property name="geometry">

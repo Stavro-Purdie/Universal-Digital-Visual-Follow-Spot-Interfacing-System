@@ -227,8 +227,10 @@ def afpuirun():
 def patchfixrun():
     global fixturepatch
     fixturepatch = {}
+    fixturealias = {}
     fixpatch.show()
 
+    ## Driver code for tree
     def add_children(item, value):
         if isinstance(value, dict):
             for key, val in value.items():
@@ -241,8 +243,9 @@ def patchfixrun():
             child.setFlags(child.flags() | Qt.ItemIsEditable)
             item.addChild(child)
 
+    ## Initial Fixture Patch Tree by Make
     # Function to handle changes and save to a separate dictionary
-    def on_item_changed(item, column):
+    def on_startchan_changed(item, column):
         if column == 1:  # Only handle changes in the second column
             keys = []
             parent = item.parent()
@@ -255,8 +258,21 @@ def patchfixrun():
             keys.reverse()
             key_path = " -> ".join(keys) if keys else item.text(0)
             
-            # Save the edited value in the separate dictionary
-            fixturepatch[key_path] = item.text(column)
+            # Process the edited value: filter out commas and split by spaces
+            values = item.text(column).replace(',', ' ').split()
+
+            # Ensure the key path is correct
+            base_key = key_path if key_path else item.text(0)
+
+            # Remove existing entries for this key path
+            keys_to_remove = [key for key in fixturepatch if key.startswith(base_key)]
+            for key in keys_to_remove:
+                del fixturepatch[key]
+            
+            # Save each number as a separate entry in the dictionary
+            fixturepatch[base_key] = {}
+            for i, value in enumerate(values):
+                fixturepatch[base_key][i] = value
 
     # Populate the tree
     profile = []
@@ -270,7 +286,41 @@ def patchfixrun():
     fixturepatchtree.insertTopLevelItems(0, profile)
 
     # Connect the itemChanged signal to the on_item_changed function
-    fixturepatchtree.itemChanged.connect(on_item_changed)
+    fixturepatchtree.itemChanged.connect(on_startchan_changed)
+
+    ##Fixture Alias Assignment
+    # Function to handle changes and save to a separate dictionary
+    def on_alias_changed(item, column):
+        if column == 1:  # Only handle changes in the second column
+            keys = []
+            parent = item.parent()
+            
+            # Traverse up to the root to get the full path
+            while parent is not None:
+                keys.append(parent.text(0))
+                parent = parent.parent()
+            
+            keys.reverse()
+            key_path = " -> ".join(keys) if keys else item.text(0)
+            
+            # Save the edited value in the separate dictionary
+            fixturealias[key_path] = item.text(column)
+
+    # Populate the tree
+    fixalias = []
+    fixnum = 0
+    for key, values in fixturepatch.items():
+        fixnum += 1
+        item = QTreeWidgetItem([f'spot{fixnum}', ""])
+        item.setFlags(item.flags() | Qt.ItemIsEditable)
+        add_children(item, values)
+        profile.append(item)
+
+    singlefixpatchtree = fixpatch.singlefixpatchtree
+    singlefixpatchtree.insertTopLevelItems(0, fixalias)
+
+    ## On Tree Change
+    singlefixpatchtree.itemChanged.connect(on_alias_changed)
 
             
 ## UI IMPORT SECTION
