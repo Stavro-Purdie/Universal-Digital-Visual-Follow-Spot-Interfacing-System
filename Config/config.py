@@ -32,7 +32,7 @@ def savefixprof():
     if ptspeedchan > 0:
         ptspeedcontrol = True
     else:
-        ptspeedcontrol = Falsex
+        ptspeedcontrol = False
     redchan = afpui.redchan.value()
     if redchan > 0:
         redcontrol = True
@@ -625,7 +625,7 @@ def eocui():
     showfixturecount = eocdata.showfixcount
     showfixturecount.display(i)
 
-eocui()
+eocui
 
 sys.exit
 

@@ -5,6 +5,33 @@ from PyQt6.QtCore import QTimer, Qt
 from PyQt6 import uic
 import cv2
 import numpy as np
+import json
+
+## Import JSON Files
+## Load adapter values
+try:
+    with open('adapterconfig.json', 'r') as file:
+        adatvalues = json.load(file)
+    print('Adapter Config file found and loaded')
+except:
+    print("Adapter Config file not found, this is normal on new installs")
+
+## Load previous fixture profiles (if there are any)
+try:
+    with open('profiles.json', 'r') as file:         
+        fixtureprofiles = json.load(file)
+    print("Fixture profile database found and loaded")
+except:
+    print("No Fixture Profile Database found, This is normal on new installs")
+
+## Load previous patch (if exists)
+try:
+    with open('patchdata.json', 'r') as file:
+        fixturepatch = json.load(file)
+    print("Patch data found and loaded")
+except:
+    print("No Patch Database found, this is normal on new installs")
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
