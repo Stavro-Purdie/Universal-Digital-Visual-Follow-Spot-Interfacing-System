@@ -13,7 +13,7 @@ class VideoServer(threading.Thread):
         self.host = host
         self.port = port
         self.running = True
-        self.client_socket = None
+        self.client_sockets = []  # List to store multiple client sockets
 
     def run(self):
         # Set up the video capture
@@ -25,45 +25,60 @@ class VideoServer(threading.Thread):
         # Set up socket server
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server_socket.bind((self.host, self.port))
-        server_socket.listen(1)
+        server_socket.listen(5)  # Allow up to 5 simultaneous connections
         print(f"Server listening on {self.host}:{self.port}...")
 
         while self.running:
             try:
-                # Accept a connection
-                self.client_socket, _ = server_socket.accept()
+                # Accept a new connection
+                client_socket, _ = server_socket.accept()
                 print("Client connected.")
-
-                while self.running:
-                    ret, frame = cap.read()
-                    if not ret:
-                        print("Failed to capture video frame.")
-                        break
-
-                    # Serialize and send the frame
-                    data = pickle.dumps(frame)
-                    message_size = struct.pack("L", len(data))
-
-                    try:
-                        self.client_socket.sendall(message_size + data)
-                    except (BrokenPipeError, ConnectionResetError) as e:
-                        print(f"Client connection error: {e}")
-                        self.client_socket.close()
-                        self.client_socket = None
-                        break
-
+                
+                # Add the new client socket to the list
+                self.client_sockets.append(client_socket)
+                
+                # Start a new thread to handle the client
+                client_thread = threading.Thread(target=self.handle_client, args=(client_socket, cap))
+                client_thread.start()
+                
             except Exception as e:
                 print(f"Server error: {e}")
 
         cap.release()
-        if self.client_socket:
-            self.client_socket.close()
+        # Close all client connections
+        for sock in self.client_sockets:
+            sock.close()
         server_socket.close()
+
+    def handle_client(self, client_socket, cap):
+        """ Handle communication with a single client """
+        while self.running:
+            ret, frame = cap.read()
+            if not ret:
+                print("Failed to capture video frame.")
+                break
+
+            # Serialize and send the frame
+            data = pickle.dumps(frame)
+            message_size = struct.pack("L", len(data))
+
+            try:
+                client_socket.sendall(message_size + data)
+            except (BrokenPipeError, ConnectionResetError) as e:
+                print(f"Client connection error: {e}")
+                client_socket.close()
+                break
+
+        # Remove client socket from the list and close it
+        if client_socket in self.client_sockets:
+            self.client_sockets.remove(client_socket)
+            client_socket.close()
 
     def stop(self):
         self.running = False
-        if self.client_socket:
-            self.client_socket.close()
+        # Ensure to close all client sockets
+        for sock in self.client_sockets:
+            sock.close()
 
 if __name__ == "__main__":
     server = VideoServer('/dev/video0')  # Change this to your camera device
