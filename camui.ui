@@ -38,18 +38,6 @@
           </column>
          </widget>
         </item>
-        <item>
-         <widget class="QLabel" name="label1">
-          <property name="styleSheet">
-           <string>
-            color: white;
-           </string>
-          </property>
-          <property name="text">
-           <string>Follow Spot 1</string>
-          </property>
-         </widget>
-        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="spotControl2">
@@ -193,44 +181,7 @@
      </widget>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QLabel" name="videoStream1">
-        <property name="styleSheet">
-         <string>
-          background-color: black; color: white;
-         </string>
-        </property>
-        <property name="text">
-         <string>Video Stream 1</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="videoStream2">
-        <property name="styleSheet">
-         <string>
-          background-color: black; color: white;
-         </string>
-        </property>
-        <property name="text">
-         <string>Video Stream 2</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="videoStream3">
-        <property name="styleSheet">
-         <string>
-          background-color: black; color: white;
-         </string>
-        </property>
-        <property name="text">
-         <string>Video Stream 3</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <layout class="QHBoxLayout" name="horizontalLayout"/>
     </item>
    </layout>
   </widget>

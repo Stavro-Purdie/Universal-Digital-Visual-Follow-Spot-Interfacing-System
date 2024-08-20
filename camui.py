@@ -1,5 +1,5 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QTreeWidgetItem, QTreeWidget, QHBoxLayout, QWidget
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QTreeWidgetItem, QTreeWidget, QVBoxLayout, QHBoxLayout, QWidget, QSplitter
 from PyQt6.QtGui import QPixmap, QImage
 from PyQt6.QtCore import QTimer, Qt
 from PyQt6 import uic
@@ -8,8 +8,8 @@ import numpy as np
 import json
 import os
 
-## Import JSON Files
-## Load adapter values
+# Import JSON Files
+# Load adapter values
 os.chdir('Config/')
 try:
     print("Opening 'adapterconfig.json'....")
@@ -20,17 +20,17 @@ except:
     print("No Adapter Config file found, Program Quitting, Please run config.py")
     sys.exit(-1)
 
-## Load previous fixture profiles (if there are any)
+# Load previous fixture profiles (if there are any)
 try:
     print("Opening 'profiles.json'....")
-    with open('profiles.json', 'r') as file:         
+    with open('profiles.json', 'r') as file:
         fixtureprofiles = json.load(file)
     print("Fixture profile database found and loaded")
 except:
     print("No Fixture Profile Database found, Program Quitting, Please run config.py")
     sys.exit(-1)
 
-## Load previous patch (if exists)
+# Load previous patch (if exists)
 try:
     print("Opening 'patchdata.json'....")
     with open('patchdata.json', 'r') as file:
@@ -40,7 +40,7 @@ except:
     print("No Patch Database found, Program Quitting, Please run config.py")
     sys.exit(-1)
 
-## Import fixture alias
+# Import fixture alias
 try:
     print("Opening 'fixtureconfig.json'....")
     with open('fixtureconfig.json', 'r') as file:
@@ -50,7 +50,7 @@ except:
     print('No Fixture Alias database found, Program Quitting, Please run config.py')
     sys.exit(-1)
 
-## Import Camera patch
+# Import Camera patch
 try:
     print("Opening 'camerapatch.json'....")
     with open('camerapatch.json', 'r') as file:
@@ -58,9 +58,9 @@ try:
     print('Camera Patch dictionary found and loaded')
 except:
     print('No Camera Patch database found, Program Quitting, Please run config.py')
-os.chdir('../')     ## Return to main directory
+os.chdir('../')  # Return to main directory
 
-## Business side of the program
+# Business side of the program
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
@@ -73,17 +73,50 @@ class MainWindow(QMainWindow):
         # Dictionary to store OpenCV VideoCapture objects
         self.caps = {}
 
-        # Initialize VideoCapture for each stream
+        # Create a timer for each video stream to update the frame
+        self.timers = {}
+        self.labels = {}
+
+        # Create layout for the main window
+        self.main_layout = QVBoxLayout()  # Vertical layout for the main window
+        self.central_widget = QWidget()
+        self.central_widget.setLayout(self.main_layout)
+        self.setCentralWidget(self.central_widget)
+
+        # Create a splitter to manage space between tree view and video labels
+        self.splitter = QSplitter(Qt.Orientation.Vertical)
+
+        # Create a layout to hold labels at the bottom
+        self.bottom_layout = QHBoxLayout()
+        self.bottom_layout.addStretch()  # Add stretchable space to align labels to the bottom
+
+        # Create a widget for the tree view and add it to the splitter
+        self.tree_widget_container = QWidget()
+        self.tree_widget_layout = QVBoxLayout(self.tree_widget_container)
+        self.tree_widget_layout.addWidget(self.fixtureTreeWidget)
+        self.splitter.addWidget(self.tree_widget_container)
+
+        # Create a widget for the bottom labels layout and add it to the splitter
+        self.labels_container = QWidget()
+        self.labels_container.setLayout(self.bottom_layout)
+        self.splitter.addWidget(self.labels_container)
+
+        # Add the splitter to the main layout
+        self.main_layout.addWidget(self.splitter)
+
+        # Dynamically create labels and timers for each video stream
         for label_name, stream_source in self.video_streams.items():
             self.caps[label_name] = cv2.VideoCapture(stream_source)
             if not self.caps[label_name].isOpened():
                 print(f"Failed to open video stream: {stream_source}")
                 sys.exit(-1)
 
-        # Create a timer for each video stream to update the frame
-        self.timers = {}
-        for label_name in self.video_streams.keys():
-            label = self.findChild(QLabel, label_name)
+            # Create a QLabel for each video stream with a fixed initial size
+            label = QLabel()
+            label.setFixedSize(320, 240)  # Set initial size for the camera widget
+            self.labels[label_name] = label
+            self.bottom_layout.addWidget(label)  # Add label to the bottom layout
+            # Create and start the timer for updating the frame
             self.timers[label_name] = QTimer(self)
             self.timers[label_name].timeout.connect(lambda l=label, n=label_name: self.update_frame(l, n))
             self.timers[label_name].start(30)  # Update every 30ms
@@ -103,22 +136,6 @@ class MainWindow(QMainWindow):
         # Percentage control for the halo's thickness
         self.halo_percentage = 0.3  # 30% thickness by default
 
-        # Create labels for video streams dynamically
-        self.create_video_stream_labels()
-
-    def create_video_stream_labels(self):
-        layout = self.findChild(QHBoxLayout, 'horizontalLayout')  # Adjust this if needed
-
-        for spot_name, uri in self.video_streams.items():
-            # Create QLabel dynamically
-            label = QLabel(self)
-            label.setObjectName(spot_name)  # Set the object name for future reference
-            label.setStyleSheet("background-color: black; color: white;")
-            label.setText(f'{spot_name}: {uri}')
-            
-            # Add QLabel to the layout
-            layout.addWidget(label)
-
     def setup_tree_widget(self):
         fixtures = list(camerapatch.keys())
         for fixture in fixtures:
@@ -126,7 +143,15 @@ class MainWindow(QMainWindow):
             self.fixtureTreeWidget.addTopLevelItem(item)
 
     def update_frame(self, label, label_name):
-        cap = self.caps[label_name]
+        if label is None:
+            print(f"No QLabel found for '{label_name}'")
+            return
+
+        cap = self.caps.get(label_name)
+        if cap is None:
+            print(f"No VideoCapture found for '{label_name}'")
+            return
+
         ret, frame = cap.read()
         if ret:
             height, width, _ = frame.shape
@@ -191,20 +216,11 @@ class MainWindow(QMainWindow):
         self.previous_selected_fixture = selected_fixture
 
     def select_first_fixture(self):
-        # Select the first fixture in the tree widget by default
-        first_item = self.fixtureTreeWidget.topLevelItem(0)
-        if first_item:
-            self.fixtureTreeWidget.setCurrentItem(first_item)
-            self.resize_camera_widgets(first_item.text(0))
+        if self.fixtureTreeWidget.topLevelItemCount() > 0:
+            self.fixtureTreeWidget.topLevelItem(0).setSelected(True)
+            self.on_fixture_selected()
 
-    def closeEvent(self, event):
-        # Release all VideoCapture objects when the application is closed
-        for cap in self.caps.values():
-            cap.release()
-        event.accept()
-
-## Main Routine
-if __name__ == '__main__':
+if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
