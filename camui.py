@@ -1,49 +1,74 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QTreeWidgetItem, QTreeWidget
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QTreeWidgetItem, QTreeWidget, QHBoxLayout, QWidget
 from PyQt6.QtGui import QPixmap, QImage
 from PyQt6.QtCore import QTimer, Qt
 from PyQt6 import uic
 import cv2
 import numpy as np
 import json
+import os
 
 ## Import JSON Files
 ## Load adapter values
+os.chdir('Config/')
 try:
+    print("Opening 'adapterconfig.json'....")
     with open('adapterconfig.json', 'r') as file:
         adatvalues = json.load(file)
     print('Adapter Config file found and loaded')
 except:
-    print("Adapter Config file not found, this is normal on new installs")
+    print("No Adapter Config file found, Program Quitting, Please run config.py")
+    sys.exit(-1)
 
 ## Load previous fixture profiles (if there are any)
 try:
+    print("Opening 'profiles.json'....")
     with open('profiles.json', 'r') as file:         
         fixtureprofiles = json.load(file)
     print("Fixture profile database found and loaded")
 except:
-    print("No Fixture Profile Database found, This is normal on new installs")
+    print("No Fixture Profile Database found, Program Quitting, Please run config.py")
+    sys.exit(-1)
 
 ## Load previous patch (if exists)
 try:
+    print("Opening 'patchdata.json'....")
     with open('patchdata.json', 'r') as file:
         fixturepatch = json.load(file)
     print("Patch data found and loaded")
 except:
-    print("No Patch Database found, this is normal on new installs")
+    print("No Patch Database found, Program Quitting, Please run config.py")
+    sys.exit(-1)
 
+## Import fixture alias
+try:
+    print("Opening 'fixtureconfig.json'....")
+    with open('fixtureconfig.json', 'r') as file:
+        fixturealias = json.load(file)
+    print('Fixture Alias dictionary found and loaded')
+except:
+    print('No Fixture Alias database found, Program Quitting, Please run config.py')
+    sys.exit(-1)
 
+## Import Camera patch
+try:
+    print("Opening 'camerapatch.json'....")
+    with open('camerapatch.json', 'r') as file:
+        camerapatch = json.load(file)
+    print('Camera Patch dictionary found and loaded')
+except:
+    print('No Camera Patch database found, Program Quitting, Please run config.py')
+os.chdir('../')     ## Return to main directory
+
+## Business side of the program
 class MainWindow(QMainWindow):
-    def __init__(self):
-        super(MainWindow, self).__init__()
+    def __init__(self, parent=None):
+        super(MainWindow, self).__init__(parent)
         uic.loadUi('camui.ui', self)  # Load the UI file
 
-        # Initialize video streams (replace with actual stream URLs if needed, can also be X in /dev/videoX)
-        self.video_streams = {
-            "videoStream1": 0,  # Using default webcam for testing
-            "videoStream2": 1,  # Can be replaced with another video source
-            "videoStream3": 4   # Can be replaced with another video source
-        }
+        # Initialize video streams
+        self.video_streams = {spot: details["URI"] for spot, details in camerapatch.items()}
+        print(self.video_streams)
 
         # Dictionary to store OpenCV VideoCapture objects
         self.caps = {}
@@ -51,6 +76,9 @@ class MainWindow(QMainWindow):
         # Initialize VideoCapture for each stream
         for label_name, stream_source in self.video_streams.items():
             self.caps[label_name] = cv2.VideoCapture(stream_source)
+            if not self.caps[label_name].isOpened():
+                print(f"Failed to open video stream: {stream_source}")
+                sys.exit(-1)
 
         # Create a timer for each video stream to update the frame
         self.timers = {}
@@ -75,8 +103,24 @@ class MainWindow(QMainWindow):
         # Percentage control for the halo's thickness
         self.halo_percentage = 0.3  # 30% thickness by default
 
+        # Create labels for video streams dynamically
+        self.create_video_stream_labels()
+
+    def create_video_stream_labels(self):
+        layout = self.findChild(QHBoxLayout, 'horizontalLayout')  # Adjust this if needed
+
+        for spot_name, uri in self.video_streams.items():
+            # Create QLabel dynamically
+            label = QLabel(self)
+            label.setObjectName(spot_name)  # Set the object name for future reference
+            label.setStyleSheet("background-color: black; color: white;")
+            label.setText(f'{spot_name}: {uri}')
+            
+            # Add QLabel to the layout
+            layout.addWidget(label)
+
     def setup_tree_widget(self):
-        fixtures = ["videoStream1", "videoStream2", "videoStream3"]
+        fixtures = list(camerapatch.keys())
         for fixture in fixtures:
             item = QTreeWidgetItem([fixture])
             self.fixtureTreeWidget.addTopLevelItem(item)
@@ -135,11 +179,13 @@ class MainWindow(QMainWindow):
         # If there was a previous selection, revert its size back
         if self.previous_selected_fixture:
             prev_label = self.findChild(QLabel, self.previous_selected_fixture)
-            prev_label.setFixedSize(320, 240)  # Shrink the previously selected camera
+            if prev_label:
+                prev_label.setFixedSize(320, 240)  # Shrink the previously selected camera
 
         # Enlarge the newly selected camera
         selected_label = self.findChild(QLabel, selected_fixture)
-        selected_label.setFixedSize(640, 480)  # Enlarge the selected camera
+        if selected_label:
+            selected_label.setFixedSize(640, 480)  # Enlarge the selected camera
 
         # Update the previously selected fixture
         self.previous_selected_fixture = selected_fixture

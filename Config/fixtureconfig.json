@@ -1,0 +1,14 @@
+{
+    "Spot1": {
+        "Start Channel": "50"
+    },
+    "Spot2": {
+        "Start Channel": "60"
+    },
+    "Spot3": {
+        "Start Channel": "70"
+    },
+    "Spot4": {
+        "Start Channel": "80"
+    }
+}
