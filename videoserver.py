@@ -13,6 +13,7 @@ class VideoServer(threading.Thread):
         self.host = host
         self.port = port
         self.running = True
+        self.client_socket = None
 
     def run(self):
         # Set up the video capture
@@ -27,26 +28,42 @@ class VideoServer(threading.Thread):
         server_socket.listen(1)
         print(f"Server listening on {self.host}:{self.port}...")
 
-        # Accept a connection
-        client_socket, _ = server_socket.accept()
-        print("Client connected.")
-
         while self.running:
-            ret, frame = cap.read()
-            if not ret:
-                print("Failed to capture video frame.")
-                break
+            try:
+                # Accept a connection
+                self.client_socket, _ = server_socket.accept()
+                print("Client connected.")
 
-            # Serialize and send the frame
-            data = pickle.dumps(frame)
-            message_size = struct.pack("L", len(data))
-            client_socket.sendall(message_size + data)
+                while self.running:
+                    ret, frame = cap.read()
+                    if not ret:
+                        print("Failed to capture video frame.")
+                        break
+
+                    # Serialize and send the frame
+                    data = pickle.dumps(frame)
+                    message_size = struct.pack("L", len(data))
+
+                    try:
+                        self.client_socket.sendall(message_size + data)
+                    except (BrokenPipeError, ConnectionResetError) as e:
+                        print(f"Client connection error: {e}")
+                        self.client_socket.close()
+                        self.client_socket = None
+                        break
+
+            except Exception as e:
+                print(f"Server error: {e}")
 
         cap.release()
+        if self.client_socket:
+            self.client_socket.close()
         server_socket.close()
 
     def stop(self):
         self.running = False
+        if self.client_socket:
+            self.client_socket.close()
 
 if __name__ == "__main__":
     server = VideoServer('/dev/video0')  # Change this to your camera device
