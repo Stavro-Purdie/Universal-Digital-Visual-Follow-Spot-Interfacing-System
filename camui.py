@@ -1,5 +1,5 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QTreeWidgetItem, QTreeWidget, QVBoxLayout, QHBoxLayout, QWidget, QSplitter
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QTreeWidgetItem, QTreeWidget, QVBoxLayout, QHBoxLayout, QWidget, QSplitter, QDialog
 from PyQt6.QtGui import QPixmap, QImage
 from PyQt6.QtCore import QTimer, Qt
 from PyQt6 import uic
@@ -7,6 +7,7 @@ import cv2
 import numpy as np
 import json
 import os
+
 
 # Import JSON Files
 # Load adapter values
@@ -60,8 +61,78 @@ except:
     print('No Camera Patch database found, Program Quitting, Please run config.py')
 os.chdir('../')  # Return to main directory
 
-# Business side of the program
+
+# New class for the Camera Window
+class CameraWindow(QDialog):
+    def __init__(self, stream_source, parent=None):
+        super(CameraWindow, self).__init__(parent)
+        self.setWindowTitle("Camera Feed")
+        self.setGeometry(100, 100, 640, 480)  # Set initial window size
+
+        # Layout for the video feed
+        layout = QVBoxLayout()
+        self.label = QLabel()
+        layout.addWidget(self.label)
+        self.setLayout(layout)
+
+        # Initialize the video stream
+        self.cap = cv2.VideoCapture(stream_source)
+        if not self.cap.isOpened():
+            print(f"Failed to open video stream: {stream_source}")
+            self.close()
+            return
+
+        # Timer for updating the video feed
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update_frame)
+        self.timer.start(30)  # Update every 30ms
+
+    def update_frame(self):
+        ret, frame = self.cap.read()
+        if ret:
+            height, width, _ = frame.shape
+            center_x = width // 2
+            center_y = height // 2
+            radius = min(width, height) // 10  # Main circle radius
+
+            # Draw the main green circle
+            cv2.circle(frame, (center_x, center_y), radius, (0, 255, 0), 3)  # Green circle
+
+            # Calculate the inner circle radius
+            inner_radius = radius // 3
+
+            # Draw the crosshair lines outside the inner circle
+            cv2.line(frame, (center_x, center_y - radius), (center_x, center_y - inner_radius), (0, 255, 0), 2)
+            cv2.line(frame, (center_x, center_y + inner_radius), (center_x, center_y + radius), (0, 255, 0), 2)
+            cv2.line(frame, (center_x - radius, center_y), (center_x - inner_radius, center_y), (0, 255, 0), 2)
+            cv2.line(frame, (center_x + inner_radius, center_y), (center_x + radius, center_y), (0, 255, 0), 2)
+            cv2.circle(frame, (center_x, center_y), inner_radius, (0, 255, 0), 2)  # Inner green circle
+
+            # Draw the halo around the outer circle
+            halo_thickness = int(radius * 0.3)  # 30% thickness by default
+            overlay = frame.copy()
+            cv2.circle(overlay, (center_x, center_y), radius + halo_thickness // 2, (0, 255, 0), halo_thickness)
+            alpha = 0.3  # Transparency factor for the halo
+            cv2.addWeighted(overlay, alpha, frame, 1 - alpha, 0, frame)
+
+            # Convert the frame to QImage
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            h, w, ch = frame.shape
+            bytes_per_line = ch * w
+            qt_img = QImage(frame.data, w, h, bytes_per_line, QImage.Format.Format_RGB888)
+
+            # Scale the pixmap while maintaining the aspect ratio
+            scaled_pixmap = QPixmap.fromImage(qt_img).scaled(self.label.size(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+            self.label.setPixmap(scaled_pixmap)
+
+    def closeEvent(self, event):
+        self.cap.release()
+        super().closeEvent(event)
+
+
+# Main Window Class
 class MainWindow(QMainWindow):
+
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         uic.loadUi('camui.ui', self)  # Load the UI file
@@ -75,6 +146,8 @@ class MainWindow(QMainWindow):
 
         # Create a timer for each video stream to update the frame
         self.timers = {}
+
+        # Dictionary to store QLabel for each fixture
         self.labels = {}
 
         # Create layout for the main window
@@ -116,6 +189,7 @@ class MainWindow(QMainWindow):
             label.setFixedSize(320, 240)  # Set initial size for the camera widget
             self.labels[label_name] = label
             self.bottom_layout.addWidget(label)  # Add label to the bottom layout
+
             # Create and start the timer for updating the frame
             self.timers[label_name] = QTimer(self)
             self.timers[label_name].timeout.connect(lambda l=label, n=label_name: self.update_frame(l, n))
@@ -132,9 +206,6 @@ class MainWindow(QMainWindow):
 
         # Automatically select the first fixture on startup
         self.select_first_fixture()
-
-        # Percentage control for the halo's thickness
-        self.halo_percentage = 0.3  # 30% thickness by default
 
     def setup_tree_widget(self):
         fixtures = list(camerapatch.keys())
@@ -166,18 +237,14 @@ class MainWindow(QMainWindow):
             inner_radius = radius // 3
 
             # Draw the crosshair lines outside the inner circle
-            # Vertical line
             cv2.line(frame, (center_x, center_y - radius), (center_x, center_y - inner_radius), (0, 255, 0), 2)
             cv2.line(frame, (center_x, center_y + inner_radius), (center_x, center_y + radius), (0, 255, 0), 2)
-            # Horizontal line
             cv2.line(frame, (center_x - radius, center_y), (center_x - inner_radius, center_y), (0, 255, 0), 2)
             cv2.line(frame, (center_x + inner_radius, center_y), (center_x + radius, center_y), (0, 255, 0), 2)
-
-            # Draw the smaller inner circle
             cv2.circle(frame, (center_x, center_y), inner_radius, (0, 255, 0), 2)  # Inner green circle
 
             # Draw the halo around the outer circle
-            halo_thickness = int(radius * self.halo_percentage)  # Thickness based on percentage
+            halo_thickness = int(radius * 0.3)  # 30% thickness by default
             overlay = frame.copy()
             cv2.circle(overlay, (center_x, center_y), radius + halo_thickness // 2, (0, 255, 0), halo_thickness)
             alpha = 0.3  # Transparency factor for the halo
@@ -188,6 +255,7 @@ class MainWindow(QMainWindow):
             h, w, ch = frame.shape
             bytes_per_line = ch * w
             qt_img = QImage(frame.data, w, h, bytes_per_line, QImage.Format.Format_RGB888)
+
             # Scale the pixmap while maintaining the aspect ratio
             scaled_pixmap = QPixmap.fromImage(qt_img).scaled(label.size(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
             label.setPixmap(scaled_pixmap)
@@ -197,28 +265,20 @@ class MainWindow(QMainWindow):
         if selected_items:
             selected_fixture = selected_items[0].text(0)
 
-            # Resize the newly selected camera widget
-            self.resize_camera_widgets(selected_fixture)
+            # Open a new window for the selected camera
+            self.open_camera_window(selected_fixture)
 
-    def resize_camera_widgets(self, selected_fixture):
-        # If there was a previous selection, revert its size back
-        if self.previous_selected_fixture:
-            prev_label = self.findChild(QLabel, self.previous_selected_fixture)
-            if prev_label:
-                prev_label.setFixedSize(320, 240)  # Shrink the previously selected camera
-
-        # Enlarge the newly selected camera
-        selected_label = self.findChild(QLabel, selected_fixture)
-        if selected_label:
-            selected_label.setFixedSize(640, 480)  # Enlarge the selected camera
-
-        # Update the previously selected fixture
-        self.previous_selected_fixture = selected_fixture
+    def open_camera_window(self, selected_fixture):
+        stream_source = self.video_streams.get(selected_fixture)
+        if stream_source:
+            camera_window = CameraWindow(stream_source, self)
+            camera_window.exec()  # Show the camera window as a modal dialog
 
     def select_first_fixture(self):
         if self.fixtureTreeWidget.topLevelItemCount() > 0:
             self.fixtureTreeWidget.topLevelItem(0).setSelected(True)
             self.on_fixture_selected()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
