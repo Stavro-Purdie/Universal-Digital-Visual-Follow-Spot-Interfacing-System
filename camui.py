@@ -1,7 +1,7 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QTreeWidgetItem, QTreeWidget, QVBoxLayout, QHBoxLayout, QWidget, QSplitter, QDialog
 from PyQt6.QtGui import QPixmap, QImage
-from PyQt6.QtCore import QTimer, Qt
+from PyQt6.QtCore import QTimer, Qt, QThread, pyqtSignal
 from PyQt6 import uic
 import cv2
 import numpy as np
@@ -61,97 +61,71 @@ except:
     print('No Camera Patch database found, Program Quitting, Please run config.py')
 os.chdir('../')  # Return to main directory
 
+# Central Video Capture Thread
+class VideoCaptureThread(QThread):
+    update_frame_signal = pyqtSignal(np.ndarray, str)
 
-# New class for the Camera Window
-class CameraWindow(QDialog):
-    def __init__(self, stream_source, parent=None):
-        super(CameraWindow, self).__init__(parent)
-        self.setWindowTitle("Camera Feed")
-        self.setGeometry(100, 100, 640, 480)  # Set initial window size
-
-        # Layout for the video feed
-        layout = QVBoxLayout()
-        self.label = QLabel()
-        layout.addWidget(self.label)
-        self.setLayout(layout)
-
-        # Initialize the video stream
-        self.cap = cv2.VideoCapture(stream_source)
+    def __init__(self, uri, label_name, parent=None):
+        super().__init__(parent)
+        self.uri = uri
+        self.label_name = label_name
+        self.cap = cv2.VideoCapture(uri)
         if not self.cap.isOpened():
-            print(f"Failed to open video stream: {stream_source}")
-            self.close()
-            return
+            print(f"Failed to open video stream: {uri}")
+            self.cap.release()
 
-        # Timer for updating the video feed
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.update_frame)
-        self.timer.start(30)  # Update every 30ms
+    def run(self):
+        while self.cap.isOpened():
+            ret, frame = self.cap.read()
+            if ret:
+                self.process_frame(frame)
+            else:
+                break
 
-    def update_frame(self):
-        ret, frame = self.cap.read()
-        if ret:
-            height, width, _ = frame.shape
-            center_x = width // 2
-            center_y = height // 2
-            radius = min(width, height) // 10  # Main circle radius
+    def process_frame(self, frame):
+        height, width, _ = frame.shape
+        center_x = width // 2
+        center_y = height // 2
+        radius = min(width, height) // 10
+        inner_radius = radius // 3
 
-            # Draw the main green circle
-            cv2.circle(frame, (center_x, center_y), radius, (0, 255, 0), 3)  # Green circle
+        # Draw the main green circle
+        cv2.circle(frame, (center_x, center_y), radius, (0, 255, 0), 3)
 
-            # Calculate the inner circle radius
-            inner_radius = radius // 3
+        # Draw the crosshair lines outside the inner circle
+        cv2.line(frame, (center_x, center_y - radius), (center_x, center_y - inner_radius), (0, 255, 0), 2)
+        cv2.line(frame, (center_x, center_y + inner_radius), (center_x, center_y + radius), (0, 255, 0), 2)
+        cv2.line(frame, (center_x - radius, center_y), (center_x - inner_radius, center_y), (0, 255, 0), 2)
+        cv2.line(frame, (center_x + inner_radius, center_y), (center_x + radius, center_y), (0, 255, 0), 2)
+        cv2.circle(frame, (center_x, center_y), inner_radius, (0, 255, 0), 2)
 
-            # Draw the crosshair lines outside the inner circle
-            cv2.line(frame, (center_x, center_y - radius), (center_x, center_y - inner_radius), (0, 255, 0), 2)
-            cv2.line(frame, (center_x, center_y + inner_radius), (center_x, center_y + radius), (0, 255, 0), 2)
-            cv2.line(frame, (center_x - radius, center_y), (center_x - inner_radius, center_y), (0, 255, 0), 2)
-            cv2.line(frame, (center_x + inner_radius, center_y), (center_x + radius, center_y), (0, 255, 0), 2)
-            cv2.circle(frame, (center_x, center_y), inner_radius, (0, 255, 0), 2)  # Inner green circle
+        # Draw the halo around the outer circle
+        halo_thickness = int(radius * 0.3)
+        overlay = frame.copy()
+        cv2.circle(overlay, (center_x, center_y), radius + halo_thickness // 2, (0, 255, 0), halo_thickness)
+        alpha = 0.3
+        cv2.addWeighted(overlay, alpha, frame, 1 - alpha, 0, frame)
 
-            # Draw the halo around the outer circle
-            halo_thickness = int(radius * 0.3)  # 30% thickness by default
-            overlay = frame.copy()
-            cv2.circle(overlay, (center_x, center_y), radius + halo_thickness // 2, (0, 255, 0), halo_thickness)
-            alpha = 0.3  # Transparency factor for the halo
-            cv2.addWeighted(overlay, alpha, frame, 1 - alpha, 0, frame)
+        # Emit the frame for updating QLabel
+        self.update_frame_signal.emit(frame, self.label_name)
 
-            # Convert the frame to QImage
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            h, w, ch = frame.shape
-            bytes_per_line = ch * w
-            qt_img = QImage(frame.data, w, h, bytes_per_line, QImage.Format.Format_RGB888)
-
-            # Scale the pixmap while maintaining the aspect ratio
-            scaled_pixmap = QPixmap.fromImage(qt_img).scaled(self.label.size(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
-            self.label.setPixmap(scaled_pixmap)
-
-    def closeEvent(self, event):
+    def stop(self):
         self.cap.release()
-        super().closeEvent(event)
+        self.quit()
+        self.wait()
 
-
-# Main Window Class
 class MainWindow(QMainWindow):
-
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         uic.loadUi('camui.ui', self)  # Load the UI file
 
         # Initialize video streams
         self.video_streams = {spot: details["URI"] for spot, details in camerapatch.items()}
-        print(self.video_streams)
-
-        # Dictionary to store OpenCV VideoCapture objects
-        self.caps = {}
-
-        # Create a timer for each video stream to update the frame
-        self.timers = {}
-
-        # Dictionary to store QLabel for each fixture
+        self.video_threads = {}
         self.labels = {}
 
         # Create layout for the main window
-        self.main_layout = QVBoxLayout()  # Vertical layout for the main window
+        self.main_layout = QVBoxLayout()
         self.central_widget = QWidget()
         self.central_widget.setLayout(self.main_layout)
         self.setCentralWidget(self.central_widget)
@@ -161,7 +135,7 @@ class MainWindow(QMainWindow):
 
         # Create a layout to hold labels at the bottom
         self.bottom_layout = QHBoxLayout()
-        self.bottom_layout.addStretch()  # Add stretchable space to align labels to the bottom
+        self.bottom_layout.addStretch()
 
         # Create a widget for the tree view and add it to the splitter
         self.tree_widget_container = QWidget()
@@ -177,23 +151,19 @@ class MainWindow(QMainWindow):
         # Add the splitter to the main layout
         self.main_layout.addWidget(self.splitter)
 
-        # Dynamically create labels and timers for each video stream
+        # Create and start video capture threads for each video stream
         for label_name, stream_source in self.video_streams.items():
-            self.caps[label_name] = cv2.VideoCapture(stream_source)
-            if not self.caps[label_name].isOpened():
-                print(f"Failed to open video stream: {stream_source}")
-                sys.exit(-1)
-
-            # Create a QLabel for each video stream with a fixed initial size
+            # Create a QLabel for each video stream
             label = QLabel()
-            label.setFixedSize(320, 240)  # Set initial size for the camera widget
+            label.setFixedSize(320, 240)
             self.labels[label_name] = label
-            self.bottom_layout.addWidget(label)  # Add label to the bottom layout
+            self.bottom_layout.addWidget(label)
 
-            # Create and start the timer for updating the frame
-            self.timers[label_name] = QTimer(self)
-            self.timers[label_name].timeout.connect(lambda l=label, n=label_name: self.update_frame(l, n))
-            self.timers[label_name].start(30)  # Update every 30ms
+            # Create and start the video capture thread
+            thread = VideoCaptureThread(stream_source, label_name)
+            thread.update_frame_signal.connect(self.update_frame)
+            thread.start()
+            self.video_threads[label_name] = thread
 
         # Setup the tree widget for selecting fixtures
         self.setup_tree_widget()
@@ -204,8 +174,8 @@ class MainWindow(QMainWindow):
         # Connect tree widget selection change to resizing logic
         self.fixtureTreeWidget.itemSelectionChanged.connect(self.on_fixture_selected)
 
-        # Automatically select the first fixture on startup
-        self.select_first_fixture()
+        # Ensure the main window is shown before opening any camera windows
+        QTimer.singleShot(0, self.select_first_fixture)
 
     def setup_tree_widget(self):
         fixtures = list(camerapatch.keys())
@@ -213,52 +183,21 @@ class MainWindow(QMainWindow):
             item = QTreeWidgetItem([fixture])
             self.fixtureTreeWidget.addTopLevelItem(item)
 
-    def update_frame(self, label, label_name):
-        if label is None:
+    def update_frame(self, frame, label_name):
+        if label_name not in self.labels:
             print(f"No QLabel found for '{label_name}'")
             return
 
-        cap = self.caps.get(label_name)
-        if cap is None:
-            print(f"No VideoCapture found for '{label_name}'")
-            return
+        label = self.labels[label_name]
+        # Convert the frame to QImage
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        h, w, ch = frame.shape
+        bytes_per_line = ch * w
+        qt_img = QImage(frame.data, w, h, bytes_per_line, QImage.Format.Format_RGB888)
 
-        ret, frame = cap.read()
-        if ret:
-            height, width, _ = frame.shape
-            center_x = width // 2
-            center_y = height // 2
-            radius = min(width, height) // 10  # Main circle radius
-
-            # Draw the main green circle
-            cv2.circle(frame, (center_x, center_y), radius, (0, 255, 0), 3)  # Green circle
-
-            # Calculate the inner circle radius
-            inner_radius = radius // 3
-
-            # Draw the crosshair lines outside the inner circle
-            cv2.line(frame, (center_x, center_y - radius), (center_x, center_y - inner_radius), (0, 255, 0), 2)
-            cv2.line(frame, (center_x, center_y + inner_radius), (center_x, center_y + radius), (0, 255, 0), 2)
-            cv2.line(frame, (center_x - radius, center_y), (center_x - inner_radius, center_y), (0, 255, 0), 2)
-            cv2.line(frame, (center_x + inner_radius, center_y), (center_x + radius, center_y), (0, 255, 0), 2)
-            cv2.circle(frame, (center_x, center_y), inner_radius, (0, 255, 0), 2)  # Inner green circle
-
-            # Draw the halo around the outer circle
-            halo_thickness = int(radius * 0.3)  # 30% thickness by default
-            overlay = frame.copy()
-            cv2.circle(overlay, (center_x, center_y), radius + halo_thickness // 2, (0, 255, 0), halo_thickness)
-            alpha = 0.3  # Transparency factor for the halo
-            cv2.addWeighted(overlay, alpha, frame, 1 - alpha, 0, frame)
-
-            # Convert the frame to QImage
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            h, w, ch = frame.shape
-            bytes_per_line = ch * w
-            qt_img = QImage(frame.data, w, h, bytes_per_line, QImage.Format.Format_RGB888)
-
-            # Scale the pixmap while maintaining the aspect ratio
-            scaled_pixmap = QPixmap.fromImage(qt_img).scaled(label.size(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
-            label.setPixmap(scaled_pixmap)
+        # Scale the pixmap while maintaining the aspect ratio
+        scaled_pixmap = QPixmap.fromImage(qt_img).scaled(label.size(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+        label.setPixmap(scaled_pixmap)
 
     def on_fixture_selected(self):
         selected_items = self.fixtureTreeWidget.selectedItems()
@@ -279,6 +218,43 @@ class MainWindow(QMainWindow):
             self.fixtureTreeWidget.topLevelItem(0).setSelected(True)
             self.on_fixture_selected()
 
+    def closeEvent(self, event):
+        # Stop all video threads before closing
+        for thread in self.video_threads.values():
+            thread.stop()
+        super().closeEvent(event)
+
+# New class for the Camera Window
+class CameraWindow(QDialog):
+    def __init__(self, stream_source, parent=None):
+        super(CameraWindow, self).__init__(parent)
+        self.setWindowTitle("Camera Feed")
+        self.setGeometry(100, 100, 640, 480)  # Set initial window size
+
+        self.video_thread = VideoCaptureThread(stream_source, "camera")
+        self.video_thread.update_frame_signal.connect(self.update_frame)
+        self.video_thread.start()
+
+        self.label = QLabel(self)
+        self.label.setFixedSize(640, 480)
+        layout = QVBoxLayout()
+        layout.addWidget(self.label)
+        self.setLayout(layout)
+
+    def update_frame(self, frame, _):
+        # Convert the frame to QImage
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        h, w, ch = frame.shape
+        bytes_per_line = ch * w
+        qt_img = QImage(frame.data, w, h, bytes_per_line, QImage.Format.Format_RGB888)
+
+        # Scale the pixmap while maintaining the aspect ratio
+        scaled_pixmap = QPixmap.fromImage(qt_img).scaled(self.label.size(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
+        self.label.setPixmap(scaled_pixmap)
+
+    def closeEvent(self, event):
+        self.video_thread.stop()
+        super().closeEvent(event)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
