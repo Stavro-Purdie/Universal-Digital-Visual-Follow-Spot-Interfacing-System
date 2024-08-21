@@ -4,7 +4,6 @@ import sys
 import cv2
 import socket
 import struct
-import pickle
 import numpy as np
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout, QWidget
 from PyQt6.QtGui import QImage, QPixmap
@@ -20,26 +19,31 @@ class VideoCaptureClient(QObject):
         self.client_socket.connect((host, port))
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.receive_frame)
-        self.timer.start(30)
+        self.timer.start(5)
 
     def receive_frame(self):
-        # Receive the frame size
-        message_size = self.client_socket.recv(struct.calcsize("L"))
-        if not message_size:
-            return
-        message_size = struct.unpack("L", message_size)[0]
+        try:
+            # Receive the frame size
+            message_size = self.client_socket.recv(struct.calcsize("L"))
+            if not message_size:
+                return
+            message_size = struct.unpack("L", message_size)[0]
 
-        # Receive the frame data
-        data = b""
-        while len(data) < message_size:
-            packet = self.client_socket.recv(message_size - len(data))
-            if not packet:
-                break
-            data += packet
+            # Receive the frame data
+            data = b""
+            while len(data) < message_size:
+                packet = self.client_socket.recv(message_size - len(data))
+                if not packet:
+                    break
+                data += packet
 
-        # Deserialize and emit the frame
-        frame = pickle.loads(data)
-        self.update_frame_signal.emit(frame)
+            # Deserialize and emit the frame
+            np_arr = np.frombuffer(data, np.uint8)
+            frame = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+            if frame is not None:
+                self.update_frame_signal.emit(frame)
+        except Exception as e:
+            print(f"Error receiving frame: {e}")
 
     def stop(self):
         self.running = False

@@ -3,9 +3,8 @@
 import cv2
 import socket
 import struct
-import pickle
 import threading
-from queue import Queue
+from queue import Queue, Empty
 
 class VideoServer(threading.Thread):
     def __init__(self, stream_source, host='0.0.0.0', port=8000):
@@ -16,6 +15,8 @@ class VideoServer(threading.Thread):
         self.running = True  # Flag to control the server loop
         self.client_sockets = []  # List to keep track of connected clients
         self.video_queue = Queue(maxsize=10)  # Queue to manage video frames
+        self.lock = threading.Lock()  # Lock to manage access to client sockets
+        self.frame_lock = threading.Lock()  # Lock to manage access to video frame
 
     def run(self):
         # Initialize video capture
@@ -41,7 +42,8 @@ class VideoServer(threading.Thread):
                 print("Client connected.")
                 
                 # Add the new client socket to the list
-                self.client_sockets.append(client_socket)
+                with self.lock:
+                    self.client_sockets.append(client_socket)
                 
                 # Start a new thread to handle communication with the client
                 client_thread = threading.Thread(target=self.handle_client, args=(client_socket,))
@@ -53,58 +55,70 @@ class VideoServer(threading.Thread):
         # Clean up: release video capture and close all client sockets
         cap.release()
         producer_thread.join()  # Ensure the producer thread has finished
-        for sock in self.client_sockets:
-            sock.close()
+        with self.lock:
+            for sock in self.client_sockets:
+                sock.close()
         server_socket.close()
 
     def produce_frames(self, cap):
-        """ Produce video frames and put them in the queue """
+        ##Produce video frames and put them in the queue
         while self.running:
             ret, frame = cap.read()  # Read a frame from the video source
             if not ret:
                 print("Failed to capture video frame.")
                 break
 
-            # Serialize the frame using pickle
-            data = pickle.dumps(frame)
-            while self.video_queue.full():
-                self.video_queue.get()  # Discard oldest frame if queue is full
-            self.video_queue.put(data)  # Put the serialized frame into the queue
-            
+            with self.frame_lock:
+                # Serialize the frame using JPEG encoding
+                encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
+                result, encoded_frame = cv2.imencode('.jpg', frame, encode_param)
+                if not result:
+                    print("Failed to encode frame.")
+                    continue
+                
+                # Serialize the frame
+                data = encoded_frame.tobytes()
+                while self.video_queue.full():
+                    self.video_queue.get()  # Discard oldest frame if queue is full
+                self.video_queue.put(data)  # Put the serialized frame into the queue
+
         # Signal end of stream by putting None in the queue
         self.video_queue.put(None)
 
     def handle_client(self, client_socket):
-        """ Handle communication with a single client """
+        ##Handle communication with a single client 
         while self.running:
-            # Get frame data from the queue
-            data = self.video_queue.get()
-            if data is None:
-                break  # End of stream signal
-            
-            # Send the frame size and data to the client
-            message_size = struct.pack("L", len(data))
             try:
+                # Get frame data from the queue
+                data = self.video_queue.get(timeout=1)  # Timeout to prevent blocking
+                if data is None:
+                    break  # End of stream signal
+
+                # Send the frame size and data to the client
+                message_size = struct.pack("L", len(data))
                 client_socket.sendall(message_size + data)
-            except (BrokenPipeError, ConnectionResetError) as e:
+            except (BrokenPipeError, ConnectionResetError, Empty) as e:
                 print(f"Client connection error: {e}")
                 client_socket.close()
                 break
 
         # Remove the client socket from the list and close it
-        if client_socket in self.client_sockets:
-            self.client_sockets.remove(client_socket)
-            client_socket.close()
+        with self.lock:
+            if client_socket in self.client_sockets:
+                self.client_sockets.remove(client_socket)
+        client_socket.close()
 
     def stop(self):
-        """ Stop the server and close all connections """
+        ##Stop the server and close all connections """
         self.running = False
         # Stop the producer thread by closing the queue
         self.video_queue.put(None)
-        for sock in self.client_sockets:
-            sock.close()
+        with self.lock:
+            for sock in self.client_sockets:
+                sock.close()
 
 ## Main Routine
 if __name__ == "__main__":
     server = VideoServer('/dev/video0')  # Change this to your camera device
     server.start()
+
