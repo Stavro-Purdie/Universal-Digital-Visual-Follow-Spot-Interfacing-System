@@ -1,13 +1,14 @@
-import sys
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QTreeWidgetItem, QTreeWidget, QVBoxLayout, QHBoxLayout, QWidget, QSplitter, QDialog
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout, QWidget, QSplitter, QHBoxLayout
 from PyQt6.QtGui import QPixmap, QImage
-from PyQt6.QtCore import QTimer, Qt, QThread, pyqtSignal
-from PyQt6 import uic
+from PyQt6.QtCore import pyqtSignal, Qt, QTimer, QObject
+import sys
+import os
+import json
 import cv2
 import numpy as np
-import json
-import os
-
+import struct
+import socket
+from urllib.parse import urlparse
 
 # Import JSON Files
 # Load adapter values
@@ -62,126 +63,86 @@ except:
 os.chdir('../')  # Return to main directory
 
 # Central Video Capture Thread
-class VideoCaptureThread(QThread):
+class VideoCaptureClient(QObject):
     update_frame_signal = pyqtSignal(np.ndarray, str)
 
     def __init__(self, uri, label_name, parent=None):
         super().__init__(parent)
         self.uri = uri
         self.label_name = label_name
-        self.cap = cv2.VideoCapture(uri)
-        if not self.cap.isOpened():
-            print(f"Failed to open video stream: {uri}")
-            self.cap.release()
+        self._parse_uri()
+        print(f"Connecting to {self.host}:{self.port}")
+        self.running = True
+        self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        if self.host is None or self.port is None:
+            raise ValueError("Host or port is None. Check URI parsing.")
+        self.client_socket.connect((self.host, self.port))
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.receive_frame)
+        self.timer.start(30)
 
-    def run(self):
-        while self.cap.isOpened():
-            ret, frame = self.cap.read()
-            if ret:
-                self.process_frame(frame)
-            else:
-                break
+    def _parse_uri(self):
+        parsed_url = urlparse(self.uri)
+        self.host = parsed_url.hostname
+        self.port = parsed_url.port or 8000  # Default port if not specified
+        print(f"Parsed URI: Host={self.host}, Port={self.port}")
 
-    def process_frame(self, frame):
-        height, width, _ = frame.shape
-        center_x = width // 2
-        center_y = height // 2
-        radius = min(width, height) // 10
-        inner_radius = radius // 3
-
-        # Draw the main green circle
-        cv2.circle(frame, (center_x, center_y), radius, (0, 255, 0), 3)
-
-        # Draw the crosshair lines outside the inner circle
-        cv2.line(frame, (center_x, center_y - radius), (center_x, center_y - inner_radius), (0, 255, 0), 2)
-        cv2.line(frame, (center_x, center_y + inner_radius), (center_x, center_y + radius), (0, 255, 0), 2)
-        cv2.line(frame, (center_x - radius, center_y), (center_x - inner_radius, center_y), (0, 255, 0), 2)
-        cv2.line(frame, (center_x + inner_radius, center_y), (center_x + radius, center_y), (0, 255, 0), 2)
-        cv2.circle(frame, (center_x, center_y), inner_radius, (0, 255, 0), 2)
-
-        # Draw the halo around the outer circle
-        halo_thickness = int(radius * 0.3)
-        overlay = frame.copy()
-        cv2.circle(overlay, (center_x, center_y), radius + halo_thickness // 2, (0, 255, 0), halo_thickness)
-        alpha = 0.3
-        cv2.addWeighted(overlay, alpha, frame, 1 - alpha, 0, frame)
-
-        # Emit the frame for updating QLabel
-        self.update_frame_signal.emit(frame, self.label_name)
+    def receive_frame(self):
+        try:
+            message_size = self.client_socket.recv(struct.calcsize("L"))
+            if not message_size:
+                return
+            message_size = struct.unpack("L", message_size)[0]
+            data = b""
+            while len(data) < message_size:
+                packet = self.client_socket.recv(message_size - len(data))
+                if not packet:
+                    break
+                data += packet
+            np_arr = np.frombuffer(data, np.uint8)
+            frame = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+            if frame is not None:
+                self.update_frame_signal.emit(frame, self.label_name)
+        except Exception as e:
+            print(f"Error receiving frame: {e}")
 
     def stop(self):
-        self.cap.release()
-        self.quit()
-        self.wait()
+        self.running = False
+        self.client_socket.close()
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
-        uic.loadUi('camui.ui', self)  # Load the UI file
+        self.setWindowTitle("Video Client")
 
-        # Initialize video streams
-        self.video_streams = {spot: details["URI"] for spot, details in camerapatch.items()}
-        self.video_threads = {}
+        self.video_clients = {}
         self.labels = {}
 
-        # Create layout for the main window
         self.main_layout = QVBoxLayout()
         self.central_widget = QWidget()
         self.central_widget.setLayout(self.main_layout)
         self.setCentralWidget(self.central_widget)
 
-        # Create a splitter to manage space between tree view and video labels
         self.splitter = QSplitter(Qt.Orientation.Vertical)
-
-        # Create a layout to hold labels at the bottom
         self.bottom_layout = QHBoxLayout()
         self.bottom_layout.addStretch()
 
-        # Create a widget for the tree view and add it to the splitter
-        self.tree_widget_container = QWidget()
-        self.tree_widget_layout = QVBoxLayout(self.tree_widget_container)
-        self.tree_widget_layout.addWidget(self.fixtureTreeWidget)
-        self.splitter.addWidget(self.tree_widget_container)
-
-        # Create a widget for the bottom labels layout and add it to the splitter
         self.labels_container = QWidget()
         self.labels_container.setLayout(self.bottom_layout)
         self.splitter.addWidget(self.labels_container)
-
-        # Add the splitter to the main layout
         self.main_layout.addWidget(self.splitter)
 
-        # Create and start video capture threads for each video stream
-        for label_name, stream_source in self.video_streams.items():
-            # Create a QLabel for each video stream
+        # Create video client for each video stream
+        for label_name, camera_info in camerapatch.items():
+            uri = camera_info["URI"]
             label = QLabel()
             label.setFixedSize(320, 240)
             self.labels[label_name] = label
             self.bottom_layout.addWidget(label)
 
-            # Create and start the video capture thread
-            thread = VideoCaptureThread(stream_source, label_name)
-            thread.update_frame_signal.connect(self.update_frame)
-            thread.start()
-            self.video_threads[label_name] = thread
-
-        # Setup the tree widget for selecting fixtures
-        self.setup_tree_widget()
-
-        # Track the previously selected fixture
-        self.previous_selected_fixture = None
-
-        # Connect tree widget selection change to resizing logic
-        self.fixtureTreeWidget.itemSelectionChanged.connect(self.on_fixture_selected)
-
-        # Ensure the main window is shown before opening any camera windows
-        QTimer.singleShot(0, self.select_first_fixture)
-
-    def setup_tree_widget(self):
-        fixtures = list(camerapatch.keys())
-        for fixture in fixtures:
-            item = QTreeWidgetItem([fixture])
-            self.fixtureTreeWidget.addTopLevelItem(item)
+            client = VideoCaptureClient(uri=uri, label_name=label_name)
+            client.update_frame_signal.connect(self.update_frame)
+            self.video_clients[label_name] = client
 
     def update_frame(self, frame, label_name):
         if label_name not in self.labels:
@@ -189,71 +150,16 @@ class MainWindow(QMainWindow):
             return
 
         label = self.labels[label_name]
-        # Convert the frame to QImage
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         h, w, ch = frame.shape
         bytes_per_line = ch * w
         qt_img = QImage(frame.data, w, h, bytes_per_line, QImage.Format.Format_RGB888)
-
-        # Scale the pixmap while maintaining the aspect ratio
         scaled_pixmap = QPixmap.fromImage(qt_img).scaled(label.size(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
         label.setPixmap(scaled_pixmap)
 
-    def on_fixture_selected(self):
-        selected_items = self.fixtureTreeWidget.selectedItems()
-        if selected_items:
-            selected_fixture = selected_items[0].text(0)
-
-            # Open a new window for the selected camera
-            self.open_camera_window(selected_fixture)
-
-    def open_camera_window(self, selected_fixture):
-        stream_source = self.video_streams.get(selected_fixture)
-        if stream_source:
-            camera_window = CameraWindow(stream_source, self)
-            camera_window.exec()  # Show the camera window as a modal dialog
-
-    def select_first_fixture(self):
-        if self.fixtureTreeWidget.topLevelItemCount() > 0:
-            self.fixtureTreeWidget.topLevelItem(0).setSelected(True)
-            self.on_fixture_selected()
-
     def closeEvent(self, event):
-        # Stop all video threads before closing
-        for thread in self.video_threads.values():
-            thread.stop()
-        super().closeEvent(event)
-
-# New class for the Camera Window
-class CameraWindow(QDialog):
-    def __init__(self, stream_source, parent=None):
-        super(CameraWindow, self).__init__(parent)
-        self.setWindowTitle("Camera Feed")
-        self.setGeometry(100, 100, 640, 480)  # Set initial window size
-
-        self.video_thread = VideoCaptureThread(stream_source, "camera")
-        self.video_thread.update_frame_signal.connect(self.update_frame)
-        self.video_thread.start()
-
-        self.label = QLabel(self)
-        self.label.setFixedSize(640, 480)
-        layout = QVBoxLayout()
-        layout.addWidget(self.label)
-        self.setLayout(layout)
-
-    def update_frame(self, frame, _):
-        # Convert the frame to QImage
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        h, w, ch = frame.shape
-        bytes_per_line = ch * w
-        qt_img = QImage(frame.data, w, h, bytes_per_line, QImage.Format.Format_RGB888)
-
-        # Scale the pixmap while maintaining the aspect ratio
-        scaled_pixmap = QPixmap.fromImage(qt_img).scaled(self.label.size(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
-        self.label.setPixmap(scaled_pixmap)
-
-    def closeEvent(self, event):
-        self.video_thread.stop()
+        for client in self.video_clients.values():
+            client.stop()
         super().closeEvent(event)
 
 if __name__ == "__main__":
