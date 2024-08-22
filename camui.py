@@ -1,5 +1,5 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QTreeWidgetItem, QTreeWidget, QVBoxLayout, QHBoxLayout, QWidget, QSplitter
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QTreeWidgetItem, QTreeWidget, QVBoxLayout, QHBoxLayout, QWidget, QSplitter, QDialog
 from PyQt6.QtGui import QPixmap, QImage, QMouseEvent, QPainter, QColor
 from PyQt6.QtCore import QTimer, Qt, QThread, pyqtSignal, QPoint
 import cv2
@@ -59,10 +59,10 @@ class DraggableLabel(QLabel):
         center_x, center_y = self.center.x(), self.center.y()
 
         # Draw larger circle
-        cv2.circle(frame, (center_x, center_y), 35, (0, 255, 0), 2)
+        cv2.circle(frame, (center_x, center_y), 40, (0, 255, 0), 2)
         
         # Draw smaller circle
-        cv2.circle(frame, (center_x, center_y), 7, (0, 255, 0), 2)
+        cv2.circle(frame, (center_x, center_y), 15, (0, 255, 0), 2)
         
         # Draw crosshair lines excluding the smaller circle area
         cv2.line(frame, (center_x - 40, center_y), (center_x - 15, center_y), (0, 255, 0), 2)
@@ -107,16 +107,44 @@ def update_frame(label, frame):
     scaled_pixmap = QPixmap.fromImage(qt_img).scaled(label.size(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
     label.setPixmap(scaled_pixmap)
 
-def on_fixture_selected(tree_widget, video_streams):
+def on_fixture_selected(tree_widget, video_streams, open_windows):
     selected_items = tree_widget.selectedItems()
     if selected_items:
         selected_fixture = selected_items[0].text(0)
         print(f"Selected fixture: {selected_fixture}")
+        
+        # Check if a window is already open for the selected fixture
+        if selected_fixture in open_windows:
+            open_windows[selected_fixture].activateWindow()
+            return
+
+        # Create a new window for the selected camera
+        new_window = QDialog()
+        new_window.setWindowTitle(selected_fixture)
+        new_window.setFixedSize(640, 480)  # Set a larger size for the window
+
+        layout = QVBoxLayout()
+        label = DraggableLabel()
+        label.setFixedSize(640, 480)
+        layout.addWidget(label)
+        new_window.setLayout(layout)
+
+        # Start the video thread for the new window
+        thread = VideoCaptureThread(video_streams[selected_fixture], label)
+        thread.update_frame_signal.connect(lambda frame, l=label: update_frame(l, frame))
+        thread.start()
+
+        # Store the new window and thread
+        open_windows[selected_fixture] = new_window
+        new_window.finished.connect(lambda: thread.stop())  # Stop the thread when the window is closed
+        new_window.finished.connect(lambda: open_windows.pop(selected_fixture, None))  # Remove from open_windows when closed
+
+        new_window.show()
 
 def select_first_fixture(tree_widget):
     if tree_widget.topLevelItemCount() > 0:
         tree_widget.topLevelItem(0).setSelected(True)
-        on_fixture_selected(tree_widget, {})
+        on_fixture_selected(tree_widget, {}, {})
 
 def main():
     app = QApplication(sys.argv)
@@ -127,8 +155,8 @@ def main():
         spot: f"http://{details['URI']}" if not details["URI"].startswith(("http://", "https://", "rtsp://")) else details["URI"]
         for spot, details in camerapatch.items()
     }
-    labels = {}
-    threads = {}
+
+    open_windows = {}  # Track open windows for each camera
 
     # Create layout for the main window
     main_layout = QVBoxLayout()
@@ -136,41 +164,15 @@ def main():
     central_widget.setLayout(main_layout)
     window.setCentralWidget(central_widget)
 
-    # Create a splitter to manage space between tree view and video labels
-    splitter = QSplitter(Qt.Orientation.Vertical)
-
-    # Create a layout to hold labels at the bottom
-    bottom_layout = QHBoxLayout()
-    bottom_layout.addStretch()
-
     # Tree widget setup
     tree_widget = QTreeWidget()
     for fixture in video_streams.keys():
         item = QTreeWidgetItem([fixture])
         tree_widget.addTopLevelItem(item)
-    tree_widget.itemSelectionChanged.connect(lambda: on_fixture_selected(tree_widget, video_streams))
+    tree_widget.itemSelectionChanged.connect(lambda: on_fixture_selected(tree_widget, video_streams, open_windows))
 
-    # Add tree widget and labels to the splitter
-    splitter.addWidget(tree_widget)
-    labels_container = QWidget()
-    labels_container.setLayout(bottom_layout)
-    splitter.addWidget(labels_container)
-
-    # Add the splitter to the main layout
-    main_layout.addWidget(splitter)
-
-    # Create and start video capture threads for each video stream
-    for label_name, stream_source in video_streams.items():
-        label = DraggableLabel()
-        label.setFixedSize(320, 240)
-        labels[label_name] = label
-        bottom_layout.addWidget(label)
-        
-        # Create and start the video capture thread
-        thread = VideoCaptureThread(stream_source, label)
-        thread.update_frame_signal.connect(lambda frame, l=label: update_frame(l, frame))
-        thread.start()
-        threads[label_name] = thread
+    # Add tree widget to the main layout
+    main_layout.addWidget(tree_widget)
 
     window.show()
     QTimer.singleShot(0, lambda: select_first_fixture(tree_widget))
