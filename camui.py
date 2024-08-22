@@ -1,7 +1,7 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QTreeWidgetItem, QTreeWidget, QVBoxLayout, QHBoxLayout, QWidget, QSplitter
-from PyQt6.QtGui import QPixmap, QImage
-from PyQt6.QtCore import QTimer, Qt, QThread, pyqtSignal
+from PyQt6.QtGui import QPixmap, QImage, QMouseEvent
+from PyQt6.QtCore import QTimer, Qt, QThread, pyqtSignal, QPoint
 import cv2
 import numpy as np
 import json
@@ -54,23 +54,48 @@ class VideoCaptureThread(QThread):
         self.quit()
         self.wait()
 
-# Function to draw the green aiming system on the frame
-def draw_aiming_system(frame):
-    height, width, _ = frame.shape
-    center_x, center_y = width // 2, height // 2
-    
-    # Draw central circle
-    cv2.circle(frame, (center_x, center_y), 20, (0, 255, 0), 2)
-    
-    # Draw crosshair lines
-    cv2.line(frame, (center_x - 30, center_y), (center_x + 30, center_y), (0, 255, 0), 2)
-    cv2.line(frame, (center_x, center_y - 30), (center_x, center_y + 30), (0, 255, 0), 2)
-    
-    return frame
+# QLabel subclass for handling dragging
+class DraggableLabel(QLabel):
+    def __init__(self):
+        super().__init__()
+        self.dragging = False
+        self.offset = QPoint(0, 0)
+        self.center = QPoint(self.width() // 2, self.height() // 2)
+
+    def mousePressEvent(self, event: QMouseEvent):
+        if event.button() == Qt.MouseButton.LeftButton:
+            self.dragging = True
+            self.offset = event.pos() - self.center
+
+    def mouseMoveEvent(self, event: QMouseEvent):
+        if self.dragging:
+            self.center = event.pos() - self.offset
+            self.update()
+
+    def mouseReleaseEvent(self, event: QMouseEvent):
+        if event.button() == Qt.MouseButton.LeftButton:
+            self.dragging = False
+
+    def draw_aiming_system(self, frame):
+        center_x, center_y = self.center.x(), self.center.y()
+
+        # Draw larger circle
+        cv2.circle(frame, (center_x, center_y), 30, (0, 255, 0), 2)
+        
+        # Draw smaller circle
+        cv2.circle(frame, (center_x, center_y), 7, (0, 255, 0), 2)
+        
+        # Draw crosshair lines excluding the smaller circle area
+        cv2.line(frame, (center_x - 40, center_y), (center_x - 15, center_y), (0, 255, 0), 2)
+        cv2.line(frame, (center_x + 15, center_y), (center_x + 40, center_y), (0, 255, 0), 2)
+        cv2.line(frame, (center_x, center_y - 40), (center_x, center_y - 15), (0, 255, 0), 2)
+        cv2.line(frame, (center_x, center_y + 15), (center_x, center_y + 40), (0, 255, 0), 2)
+
+        return frame
 
 def update_frame(label, frame):
     # Apply the aiming system
-    frame = draw_aiming_system(frame)
+    frame = label.draw_aiming_system(frame)
     
     # Convert frame to RGB
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -134,7 +159,7 @@ def main():
 
     # Create and start video capture threads for each video stream
     for label_name, stream_source in video_streams.items():
-        label = QLabel()
+        label = DraggableLabel()
         label.setFixedSize(320, 240)
         labels[label_name] = label
         bottom_layout.addWidget(label)
