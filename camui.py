@@ -1,5 +1,8 @@
+## Intellectual Property of Stavros Purdie, 2024
+## ## This program is designed to be run on the main controller to run the main program
+
 import sys
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QTreeWidgetItem, QTreeWidget, QVBoxLayout, QHBoxLayout, QWidget, QDialog
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QTreeWidgetItem, QTreeWidget, QVBoxLayout, QHBoxLayout, QWidget, QSplitter, QDialog, QPushButton
 from PyQt6.QtGui import QPixmap, QImage, QMouseEvent, QPainter, QColor
 from PyQt6.QtCore import QTimer, Qt, QThread, pyqtSignal, QPoint
 import cv2
@@ -74,22 +77,21 @@ class VideoCaptureThread(QThread):
         self.uri = uri
         self.label = label
         self.cap = cv2.VideoCapture(uri)
-        self.running = True
         if not self.cap.isOpened():
             print(f"Failed to open video stream: {uri}")
             self.cap.release()
 
     def run(self):
-        while self.cap.isOpened() and self.running:
+        while self.cap.isOpened():
             ret, frame = self.cap.read()
             if ret:
-                frame = self.label.draw_aiming_system(frame)
+                if isinstance(self.label, DraggableLabel):
+                    frame = self.label.draw_aiming_system(frame)
                 self.update_frame_signal.emit(frame)
             else:
                 break
 
     def stop(self):
-        self.running = False
         self.cap.release()
         self.quit()
         self.wait()
@@ -107,7 +109,7 @@ def on_fixture_selected(tree_widget, video_streams, open_windows, small_views, m
     if selected_items:
         selected_fixture = selected_items[0].text(0)
         print(f"Selected fixture: {selected_fixture}")
-
+        
         if selected_fixture in open_windows:
             open_windows[selected_fixture].activateWindow()
             return
@@ -117,15 +119,9 @@ def on_fixture_selected(tree_widget, video_streams, open_windows, small_views, m
         new_window.setFixedSize(640, 480)
 
         layout = QVBoxLayout()
-        label = DraggableLabel()  # Use DraggableLabel here
+        label = DraggableLabel()
         label.setFixedSize(640, 480)
         layout.addWidget(label)
-
-        # Create a layout for small views
-        small_views_layout = QHBoxLayout()
-        for view_label in small_views.values():
-            small_views_layout.addWidget(view_label)
-        layout.addLayout(small_views_layout)
 
         new_window.setLayout(layout)
 
@@ -138,44 +134,28 @@ def on_fixture_selected(tree_widget, video_streams, open_windows, small_views, m
         new_window.finished.connect(lambda: open_windows.pop(selected_fixture, None))
 
         new_window.show()
-        multiview_window.close()  # Close the multiview window if a fixture is selected
 
-def create_multiview_window(video_streams):
-    multiview_window = QDialog()
-    multiview_window.setWindowTitle("Multiview")
-    multiview_window.setFixedSize(800, 600)
-
-    layout = QVBoxLayout()
-    grid_layout = QHBoxLayout()
-
-    for fixture, uri in video_streams.items():
-        label = DraggableLabel()  # Use DraggableLabel here
-        label.setFixedSize(160, 120)
-        grid_layout.addWidget(label)
-        thread = VideoCaptureThread(uri, label)
-        thread.update_frame_signal.connect(lambda frame, l=label: update_frame(l, frame))
-        thread.start()
-
-    layout.addLayout(grid_layout)
-    multiview_window.setLayout(layout)
-    multiview_window.show()
-    return multiview_window
+        # Add small views to the multiview window
+        multiview_layout = multiview_window.layout()
+        for view_label in small_views.values():
+            multiview_layout.addWidget(view_label)
 
 def select_first_fixture(tree_widget):
     if tree_widget.topLevelItemCount() > 0:
         tree_widget.topLevelItem(0).setSelected(True)
-        on_fixture_selected(tree_widget, {}, {}, {})
+        on_fixture_selected(tree_widget, {}, {})
 
 def main():
     app = QApplication(sys.argv)
     window = QMainWindow()
 
+    ## Take URI, if URI has no prefix, add one, If it does, Leave it
     video_streams = {
         spot: f"http://{details['URI']}" if not details["URI"].startswith(("http://", "https://", "rtsp://")) else details["URI"]
         for spot, details in camerapatch.items()
     }
 
-    open_windows = {}
+    open_windows = {} 
 
     main_layout = QVBoxLayout()
     central_widget = QWidget()
@@ -190,20 +170,25 @@ def main():
 
     main_layout.addWidget(tree_widget)
 
+    # Create a separate window for multiview
+    multiview_window = QDialog()
+    multiview_window.setWindowTitle("Multiview")
+    multiview_window.setFixedSize(800, 600)
+    multiview_layout = QVBoxLayout()
+    multiview_window.setLayout(multiview_layout)
+
     # Create small views for all cameras
     small_views = {}
     for fixture, uri in video_streams.items():
-        small_label = DraggableLabel()  # Use DraggableLabel here
+        small_label = QLabel()
         small_label.setFixedSize(160, 120)
         small_views[fixture] = small_label
         thread = VideoCaptureThread(uri, small_label)
         thread.update_frame_signal.connect(lambda frame, l=small_label: update_frame(l, frame))
         thread.start()
 
+    multiview_window.show()
     window.show()
-
-    # Create multiview window
-    multiview_window = create_multiview_window(video_streams)
 
     QTimer.singleShot(0, lambda: select_first_fixture(tree_widget))
 
