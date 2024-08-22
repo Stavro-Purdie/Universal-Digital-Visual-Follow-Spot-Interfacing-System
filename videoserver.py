@@ -116,5 +116,5 @@ class VideoServer(threading.Thread):
                 sock.close()
 
 if __name__ == "__main__":
-    server = VideoServer('/dev/video4')  # Initialize server with camera device
+    server = VideoServer('/dev/video0')  # Initialize server with camera device
     server.start()

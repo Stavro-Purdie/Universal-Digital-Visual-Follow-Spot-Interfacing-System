@@ -1,5 +1,5 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QTreeWidgetItem, QTreeWidget, QVBoxLayout, QHBoxLayout, QWidget, QSplitter, QDialog
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QTreeWidgetItem, QTreeWidget, QVBoxLayout, QHBoxLayout, QWidget, QDialog
 from PyQt6.QtGui import QPixmap, QImage, QMouseEvent, QPainter, QColor
 from PyQt6.QtCore import QTimer, Qt, QThread, pyqtSignal, QPoint
 import cv2
@@ -74,12 +74,13 @@ class VideoCaptureThread(QThread):
         self.uri = uri
         self.label = label
         self.cap = cv2.VideoCapture(uri)
+        self.running = True
         if not self.cap.isOpened():
             print(f"Failed to open video stream: {uri}")
             self.cap.release()
 
     def run(self):
-        while self.cap.isOpened():
+        while self.cap.isOpened() and self.running:
             ret, frame = self.cap.read()
             if ret:
                 frame = self.label.draw_aiming_system(frame)
@@ -88,6 +89,7 @@ class VideoCaptureThread(QThread):
                 break
 
     def stop(self):
+        self.running = False
         self.cap.release()
         self.quit()
         self.wait()
@@ -100,12 +102,12 @@ def update_frame(label, frame):
     scaled_pixmap = QPixmap.fromImage(qt_img).scaled(label.size(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
     label.setPixmap(scaled_pixmap)
 
-def on_fixture_selected(tree_widget, video_streams, open_windows, small_views):
+def on_fixture_selected(tree_widget, video_streams, open_windows, small_views, multiview_window):
     selected_items = tree_widget.selectedItems()
     if selected_items:
         selected_fixture = selected_items[0].text(0)
         print(f"Selected fixture: {selected_fixture}")
-        
+
         if selected_fixture in open_windows:
             open_windows[selected_fixture].activateWindow()
             return
@@ -115,7 +117,7 @@ def on_fixture_selected(tree_widget, video_streams, open_windows, small_views):
         new_window.setFixedSize(640, 480)
 
         layout = QVBoxLayout()
-        label = DraggableLabel()
+        label = DraggableLabel()  # Use DraggableLabel here
         label.setFixedSize(640, 480)
         layout.addWidget(label)
 
@@ -136,11 +138,33 @@ def on_fixture_selected(tree_widget, video_streams, open_windows, small_views):
         new_window.finished.connect(lambda: open_windows.pop(selected_fixture, None))
 
         new_window.show()
+        multiview_window.close()  # Close the multiview window if a fixture is selected
+
+def create_multiview_window(video_streams):
+    multiview_window = QDialog()
+    multiview_window.setWindowTitle("Multiview")
+    multiview_window.setFixedSize(800, 600)
+
+    layout = QVBoxLayout()
+    grid_layout = QHBoxLayout()
+
+    for fixture, uri in video_streams.items():
+        label = DraggableLabel()  # Use DraggableLabel here
+        label.setFixedSize(160, 120)
+        grid_layout.addWidget(label)
+        thread = VideoCaptureThread(uri, label)
+        thread.update_frame_signal.connect(lambda frame, l=label: update_frame(l, frame))
+        thread.start()
+
+    layout.addLayout(grid_layout)
+    multiview_window.setLayout(layout)
+    multiview_window.show()
+    return multiview_window
 
 def select_first_fixture(tree_widget):
     if tree_widget.topLevelItemCount() > 0:
         tree_widget.topLevelItem(0).setSelected(True)
-        on_fixture_selected(tree_widget, {}, {})
+        on_fixture_selected(tree_widget, {}, {}, {})
 
 def main():
     app = QApplication(sys.argv)
@@ -151,7 +175,7 @@ def main():
         for spot, details in camerapatch.items()
     }
 
-    open_windows = {} 
+    open_windows = {}
 
     main_layout = QVBoxLayout()
     central_widget = QWidget()
@@ -162,14 +186,14 @@ def main():
     for fixture in video_streams.keys():
         item = QTreeWidgetItem([fixture])
         tree_widget.addTopLevelItem(item)
-    tree_widget.itemSelectionChanged.connect(lambda: on_fixture_selected(tree_widget, video_streams, open_windows, small_views))
+    tree_widget.itemSelectionChanged.connect(lambda: on_fixture_selected(tree_widget, video_streams, open_windows, small_views, multiview_window))
 
     main_layout.addWidget(tree_widget)
 
     # Create small views for all cameras
     small_views = {}
     for fixture, uri in video_streams.items():
-        small_label = QLabel()
+        small_label = DraggableLabel()  # Use DraggableLabel here
         small_label.setFixedSize(160, 120)
         small_views[fixture] = small_label
         thread = VideoCaptureThread(uri, small_label)
@@ -177,6 +201,10 @@ def main():
         thread.start()
 
     window.show()
+
+    # Create multiview window
+    multiview_window = create_multiview_window(video_streams)
+
     QTimer.singleShot(0, lambda: select_first_fixture(tree_widget))
 
     sys.exit(app.exec())
