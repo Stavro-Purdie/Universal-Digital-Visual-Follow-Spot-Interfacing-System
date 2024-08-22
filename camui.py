@@ -1,6 +1,6 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QTreeWidgetItem, QTreeWidget, QVBoxLayout, QHBoxLayout, QWidget, QSplitter
-from PyQt6.QtGui import QPixmap, QImage, QMouseEvent
+from PyQt6.QtGui import QPixmap, QImage, QMouseEvent, QPainter, QColor
 from PyQt6.QtCore import QTimer, Qt, QThread, pyqtSignal, QPoint
 import cv2
 import numpy as np
@@ -29,38 +29,12 @@ def load_json_files():
 
 adatvalues, fixtureprofiles, fixturepatch, fixturealias, camerapatch = load_json_files()
 
-# Video capture thread class
-class VideoCaptureThread(QThread):
-    update_frame_signal = pyqtSignal(np.ndarray)
-
-    def __init__(self, uri):
-        super().__init__()
-        self.uri = uri
-        self.cap = cv2.VideoCapture(uri)
-        if not self.cap.isOpened():
-            print(f"Failed to open video stream: {uri}")
-            self.cap.release()
-
-    def run(self):
-        while self.cap.isOpened():
-            ret, frame = self.cap.read()
-            if ret:
-                self.update_frame_signal.emit(frame)
-            else:
-                break
-
-    def stop(self):
-        self.cap.release()
-        self.quit()
-        self.wait()
-
-# QLabel subclass for handling dragging
 class DraggableLabel(QLabel):
     def __init__(self):
         super().__init__()
         self.dragging = False
         self.offset = QPoint(0, 0)
-        self.center = QPoint(self.width() // 2, self.height() // 2)
+        self.center = None
 
     def mousePressEvent(self, event: QMouseEvent):
         if event.button() == Qt.MouseButton.LeftButton:
@@ -77,10 +51,15 @@ class DraggableLabel(QLabel):
             self.dragging = False
 
     def draw_aiming_system(self, frame):
+        # Recalculate the center based on the current frame dimensions
+        h, w = frame.shape[:2]
+        if self.center is None:
+            self.center = QPoint(w // 2, h // 2)
+
         center_x, center_y = self.center.x(), self.center.y()
 
         # Draw larger circle
-        cv2.circle(frame, (center_x, center_y), 30, (0, 255, 0), 2)
+        cv2.circle(frame, (center_x, center_y), 35, (0, 255, 0), 2)
         
         # Draw smaller circle
         cv2.circle(frame, (center_x, center_y), 7, (0, 255, 0), 2)
@@ -93,11 +72,34 @@ class DraggableLabel(QLabel):
 
         return frame
 
+# Video capture thread class
+class VideoCaptureThread(QThread):
+    update_frame_signal = pyqtSignal(np.ndarray)
+
+    def __init__(self, uri, label):
+        super().__init__()
+        self.uri = uri
+        self.label = label
+        self.cap = cv2.VideoCapture(uri)
+        if not self.cap.isOpened():
+            print(f"Failed to open video stream: {uri}")
+            self.cap.release()
+
+    def run(self):
+        while self.cap.isOpened():
+            ret, frame = self.cap.read()
+            if ret:
+                frame = self.label.draw_aiming_system(frame)
+                self.update_frame_signal.emit(frame)
+            else:
+                break
+
+    def stop(self):
+        self.cap.release()
+        self.quit()
+        self.wait()
+
 def update_frame(label, frame):
-    # Apply the aiming system
-    frame = label.draw_aiming_system(frame)
-    
-    # Convert frame to RGB
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     h, w, ch = frame.shape
     bytes_per_line = ch * w
@@ -165,7 +167,7 @@ def main():
         bottom_layout.addWidget(label)
         
         # Create and start the video capture thread
-        thread = VideoCaptureThread(stream_source)
+        thread = VideoCaptureThread(stream_source, label)
         thread.update_frame_signal.connect(lambda frame, l=label: update_frame(l, frame))
         thread.start()
         threads[label_name] = thread
