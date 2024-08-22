@@ -1,5 +1,5 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QTreeWidgetItem, QTreeWidget, QVBoxLayout, QHBoxLayout, QWidget, QSplitter, QDialog
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QTreeWidgetItem, QTreeWidget, QVBoxLayout, QHBoxLayout, QWidget, QSplitter
 from PyQt6.QtGui import QPixmap, QImage
 from PyQt6.QtCore import QTimer, Qt, QThread, pyqtSignal
 import cv2
@@ -29,7 +29,6 @@ def load_json_files():
 
 adatvalues, fixtureprofiles, fixturepatch, fixturealias, camerapatch = load_json_files()
 
-
 # Video capture thread class
 class VideoCaptureThread(QThread):
     update_frame_signal = pyqtSignal(np.ndarray)
@@ -55,7 +54,25 @@ class VideoCaptureThread(QThread):
         self.quit()
         self.wait()
 
+# Function to draw the green aiming system on the frame
+def draw_aiming_system(frame):
+    height, width, _ = frame.shape
+    center_x, center_y = width // 2, height // 2
+    
+    # Draw central circle
+    cv2.circle(frame, (center_x, center_y), 20, (0, 255, 0), 2)
+    
+    # Draw crosshair lines
+    cv2.line(frame, (center_x - 30, center_y), (center_x + 30, center_y), (0, 255, 0), 2)
+    cv2.line(frame, (center_x, center_y - 30), (center_x, center_y + 30), (0, 255, 0), 2)
+    
+    return frame
+
 def update_frame(label, frame):
+    # Apply the aiming system
+    frame = draw_aiming_system(frame)
+    
+    # Convert frame to RGB
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     h, w, ch = frame.shape
     bytes_per_line = ch * w
@@ -132,8 +149,6 @@ def main():
     QTimer.singleShot(0, lambda: select_first_fixture(tree_widget))
 
     sys.exit(app.exec())
-
-# Load JSON and other variables here (from your initial code)
 
 if __name__ == "__main__":
     main()
