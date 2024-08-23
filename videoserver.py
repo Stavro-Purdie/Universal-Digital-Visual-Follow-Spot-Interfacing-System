@@ -7,7 +7,7 @@ import threading
 from queue import Queue, Empty
 
 class VideoServer(threading.Thread):
-    def __init__(self, stream_source, host='0.0.0.0', port=8000):
+    def __init__(self, stream_source, host='0.0.0.0', port=8005):
         super().__init__()
         self.stream_source = stream_source  # Source of the video stream (e.g., camera device)
         self.host = host  # Host IP address for the server
@@ -116,5 +116,5 @@ class VideoServer(threading.Thread):
                 sock.close()
 
 if __name__ == "__main__":
-    server = VideoServer('/dev/video0')  # Initialize server with camera device
+    server = VideoServer('/dev/video4')  # Initialize server with camera device
     server.start()
