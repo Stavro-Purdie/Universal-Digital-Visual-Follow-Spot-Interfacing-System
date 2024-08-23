@@ -80,9 +80,10 @@ class VideoCaptureThread(QThread):
         if not self.cap.isOpened():
             print(f"Failed to open video stream: {uri}")
             self.cap.release()
+        self.running = True
 
     def run(self):
-        while self.cap.isOpened():
+        while self.cap.isOpened() and self.running:
             ret, frame = self.cap.read()
             if ret:
                 frame = self.label.draw_aiming_system(frame)
@@ -91,6 +92,7 @@ class VideoCaptureThread(QThread):
                 break
 
     def stop(self):
+        self.running = False
         self.cap.release()
         self.quit()
         self.wait()
@@ -108,19 +110,16 @@ def sync_position(position, labels):
         label.center = position
         label.update()
 
-def on_fixture_selected(tree_widget, video_streams, main_label, main_thread):
+def on_fixture_selected(tree_widget, video_threads, main_label):
     selected_items = tree_widget.selectedItems()
     if selected_items:
         selected_fixture = selected_items[0].text(0)
         print(f"Selected fixture: {selected_fixture}")
 
-        if main_thread is not None:
-            main_thread.stop()
-
-        main_thread = VideoCaptureThread(video_streams[selected_fixture], main_label)
-        main_thread.update_frame_signal.connect(lambda frame, l=main_label: update_frame(l, frame))
-        main_label.position_changed.connect(lambda pos, s=selected_fixture: sync_position(pos, [label for label in small_views.values() if label.stream_id == s]))
-        main_thread.start()
+        # Update the main camera stream with the selected fixture
+        if selected_fixture in video_threads:
+            video_threads[selected_fixture].update_frame_signal.connect(lambda frame, l=main_label: update_frame(l, frame))
+            main_label.position_changed.connect(lambda pos, s=selected_fixture: sync_position(pos, [label for label in small_views.values() if label.stream_id == s]))
 
 def select_first_fixture(tree_widget):
     if tree_widget.topLevelItemCount() > 0:
@@ -130,13 +129,10 @@ def main():
     app = QApplication(sys.argv)
     window = QMainWindow()
 
-    ## Take URI, if URI has no prefix, add one, If it does, Leave it
     video_streams = {
         spot: f"http://{details['URI']}" if not details["URI"].startswith(("http://", "https://", "rtsp://")) else details["URI"]
         for spot, details in camerapatch.items()
     }
-
-    main_thread = None
 
     main_layout = QVBoxLayout()
     central_widget = QWidget()
@@ -147,7 +143,7 @@ def main():
     for fixture in video_streams.keys():
         item = QTreeWidgetItem([fixture])
         tree_widget.addTopLevelItem(item)
-    tree_widget.itemSelectionChanged.connect(lambda: on_fixture_selected(tree_widget, video_streams, main_label, main_thread))
+    tree_widget.itemSelectionChanged.connect(lambda: on_fixture_selected(tree_widget, video_threads, main_label))
 
     main_layout.addWidget(tree_widget)
 
@@ -162,9 +158,10 @@ def main():
     multiview_layout = QVBoxLayout()
     multiview_window.setLayout(multiview_layout)
 
-    # Create small views for all cameras
+    # Create small views and video threads for all cameras
     global small_views
     small_views = {}
+    video_threads = {}
     for fixture, uri in video_streams.items():
         small_label = DraggableLabel()
         small_label.setFixedSize(160, 120)
@@ -173,12 +170,14 @@ def main():
         thread = VideoCaptureThread(uri, small_label)
         thread.update_frame_signal.connect(lambda frame, l=small_label: update_frame(l, frame))
         thread.start()
+        video_threads[fixture] = thread
         multiview_layout.addWidget(small_label)
 
     multiview_window.show()
     window.show()
     QTimer.singleShot(0, lambda: select_first_fixture(tree_widget))
 
+    app.aboutToQuit.connect(lambda: [thread.stop() for thread in video_threads.values()])
     sys.exit(app.exec())
 
 if __name__ == "__main__":
