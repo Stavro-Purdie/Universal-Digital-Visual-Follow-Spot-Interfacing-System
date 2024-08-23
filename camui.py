@@ -1,6 +1,6 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QTreeWidgetItem, QTreeWidget, QVBoxLayout, QHBoxLayout, QWidget, QSplitter, QDialog
-from PyQt6.QtGui import QPixmap, QImage, QMouseEvent, QPainter, QColor
+from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QTreeWidgetItem, QTreeWidget, QVBoxLayout, QDialog, QWidget
+from PyQt6.QtGui import QPixmap, QImage, QMouseEvent
 from PyQt6.QtCore import QTimer, Qt, QThread, pyqtSignal, QPoint
 import cv2
 import numpy as np
@@ -116,10 +116,25 @@ def on_fixture_selected(tree_widget, video_threads, main_label):
         selected_fixture = selected_items[0].text(0)
         print(f"Selected fixture: {selected_fixture}")
 
-        # Update the main camera stream with the selected fixture
+        # Disconnect the previous signal
+        for thread in video_threads.values():
+            try:
+                thread.update_frame_signal.disconnect()
+            except TypeError:
+                pass  # If the signal was never connected, just ignore the error
+
+        # Connect the new fixture's signal to update the main label
         if selected_fixture in video_threads:
-            video_threads[selected_fixture].update_frame_signal.connect(lambda frame, l=main_label: update_frame(l, frame))
-            main_label.position_changed.connect(lambda pos, s=selected_fixture: sync_position(pos, [label for label in small_views.values() if label.stream_id == s]))
+            video_threads[selected_fixture].update_frame_signal.connect(
+                lambda frame, l=main_label: update_frame(l, frame)
+            )
+            main_label.position_changed.connect(
+                lambda pos, s=selected_fixture: sync_position(pos, [label for label in small_views.values() if label.stream_id == s])
+            )
+
+        # If the selected fixture's thread is not running, start it again
+        if not video_threads[selected_fixture].isRunning():
+            video_threads[selected_fixture].start()
 
 def select_first_fixture(tree_widget):
     if tree_widget.topLevelItemCount() > 0:
