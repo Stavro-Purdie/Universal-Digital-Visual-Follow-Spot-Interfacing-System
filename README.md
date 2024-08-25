@@ -1,8 +1,12 @@
 # Universal-Digital-Visual-Follow-Spot-Interfacing-System
-This project aims to create a visually appealing way to control moving spotlights as followspots with multiple webcams, raspberry pis and RS485 based DMX adapters (DMXking, ENTTEC)
-
-The project is currently in a Pre-Alpha phase, this project is always changing so as of Aug 17 the code in main IS NOT FUNCTIONAL
-The Keyboard function works, with patching and fixture profiles HOWEVER they are about to be superseded.
+This project aims to create a visually appealing way to control moving spotlights as followspots with multiple webcams, raspberry pis, RS485 based DMX adapters (DMXking, ENTTEC) and a main processing server (With a NVIDIA GPU)
+The project will do this through:
+ --> User Interaction >> Either using full manual or ML assisted tracking (Select the person you want to track)
+ --> IR Tracking >> Through the use of IR tags
+ --> Real time machine learning >> Using photos of the performer aswell as real time tracking
+ 
+The project is currently in a Pre-Alpha phase, the code is always changing sometimes for the worst.
+The Keyboard function works, with patching and fixture profiles HOWEVER they are about to be superseded (Check out GUI Branch).
 
 THIS PROGRAM IS DESIGNED TO ONLY BE RAN ON LINUX
 
@@ -22,4 +26,4 @@ Then connect your adapter to the computer, run `config.py`:
 Now the system is fully setup. To run return to the main directory:
     Linux: `cd ..`
 
-THIS BIT HAS BEEN LEFT INTENTIONALLY BLANK AS THE MAIN PROGRAM IS STILL NOT COMPLETED
+If you want to trial the GUI, you will need to clone the MAIN-GUI Branch, It works with cameras etc, however it cannot control/output any DMX
