@@ -22,4 +22,8 @@ Then connect your adapter to the computer, run `config.py`:
 Now the system is fully setup. To run return to the main directory:
     Linux: `cd ..`
 
+What it currently looks like (not including multiview):
+![screenshot_from_2024-08-28_09-22-18_720](https://github.com/user-attachments/assets/d3f1ead2-5ff7-426d-99c9-2427b85f1857)
+
+
 THIS BIT HAS BEEN LEFT INTENTIONALLY BLANK AS THE MAIN PROGRAM IS STILL NOT COMPLETED
