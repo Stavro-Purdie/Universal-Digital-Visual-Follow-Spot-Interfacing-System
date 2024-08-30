@@ -5,6 +5,8 @@ from PyQt6.QtCore import QTimer, Qt, QThread, pyqtSignal, QPoint
 from DMXEnttecPro import Controller
 from colorama import init, Fore, Style, Back
 import cv2
+import keyboard
+import time
 import numpy as np
 import json
 import os
@@ -36,18 +38,17 @@ adatvalues, fixtureprofiles, fixturepatch, fixturealias, camerapatch = load_json
 
 ## Add data from JSON files to assignable vars
 ## Adapter Settings
-adatchancount = adatvalues['dmx_channel_count']
+adatchancount = int(adatvalues['dmx_channel_count'])
 adatserialport = adatvalues['adapter_serial_port']
-useradatspeed = adatvalues['user_adapter_speed']
-adatmaxspeed = adatvalues['max_dmx_adapter_speed']
+useradatspeed = int(adatvalues['user_adapter_speed'])
+adatmaxspeed = int(adatvalues['max_dmx_adapter_speed'])
 
 ## Init adapter
-
 dmx = Controller(adatserialport, auto_submit=True, dmx_size=adatchancount) 
 if useradatspeed == False:
     dmx.set_dmx_parameters(output_rate=adatmaxspeed)
 else:
-    dmx.set_dmx_parameters(output_rate=adatmaxspeed)
+    dmx.set_dmx_parameters(output_rate=useradatspeed)
 dmx.clear_channels
 
 ## Fixture profiles
@@ -60,31 +61,30 @@ print('DMX patch values loaded')
 
 channels_used = []          ## Init channels_used list
 ## This initially shows how many channels are in use
-for profilename, attribute1 in profiles.items():
-    for profile, attribute2 in patchdata.items():
-        for fixturename, attribute3 in patchdata[profilename].items():
-            channels_used.append(patchdata[profilename][fixturename]['channels_used'])
+for profilename, attribute1 in fixtureprofiles.items():
+    for profile, attribute2 in fixturepatch.items():
+        for fixturename, attribute3 in fixturepatch[profilename].items():
+            channels_used.append(fixturepatch[profilename][fixturename]['channels_used'])
 print(f'{Back.BLUE + Style.BRIGHT}<<< You currently have {dmxchanmax - sum(channels_used)} Channels Available of {dmxchanmax} >>>')
 
 ## This prints out the fixture profiles and how many channels they each take up
 print(f'\n {Fore.BLUE + Style.BRIGHT}Fixture Profiles in Library:')
-for profile, attributes in profiles.items():
-    profilechancount = int(profiles[profile]['channel_count'])
+for profile, attributes in fixtureprofiles.items():
+    profilechancount = int(fixtureprofiles[profile]['channel_count'])
     print(f'{Style.BRIGHT}      [--] {profile} | {Back.BLUE}<<< Takes up {profilechancount} DMX Channels per fixture >>>')       ## This loop prints to the user the fixtures in the library and how many channels they each take up
 print('')
 
 ## This prints out what fixture is patched where aswell as what fixture is what
 print(f'\n {Fore.BLUE + Style.BRIGHT}Breakdown of Patched Fixtures:')
-for profilename, attribute1 in profiles.items():
-    print(f'{Style.BRIGHT}      [--] {profilename} has {len(patchdata[profilename])} fixtures patched')
-    for profile, attribute2 in patchdata.items():
-        fixturename = list(patchdata[profilename].keys())
+for profilename, attribute1 in fixtureprofiles.items():
+    print(f'{Style.BRIGHT}      [--] {profilename} has {len(fixturepatch[profilename])} fixtures patched')
+    for profile, attribute2 in fixturepatch.items():
+        fixturename = list(fixturepatch[profilename].keys())
     startingchannel = {}
     for fixname in fixturename:
-        startingchannel[fixname] = patchdata[profilename][fixname]['starting_channel']
+        startingchannel[fixname] = fixturepatch[profilename][fixname]['starting_channel']
         print(f'{Style.BRIGHT}        [->]', str(fixname).strip("['']"), f'Starts on channel {startingchannel[fixname]}')
 
-time.sleep(5)
 
 
 class DraggableLabel(QLabel):
