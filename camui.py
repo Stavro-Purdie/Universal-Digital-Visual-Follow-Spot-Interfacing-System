@@ -2,6 +2,7 @@ import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QTreeWidgetItem, QTreeWidget, QVBoxLayout, QDialog, QWidget
 from PyQt6.QtGui import QPixmap, QImage, QMouseEvent
 from PyQt6.QtCore import QTimer, Qt, QThread, pyqtSignal, QPoint
+from DMXEnttecPro import Controller
 import cv2
 import numpy as np
 import json
@@ -28,6 +29,37 @@ def load_json_files():
     return adatvalues, fixtureprofiles, fixturepatch, fixturealias, camerapatch
 
 adatvalues, fixtureprofiles, fixturepatch, fixturealias, camerapatch = load_json_files()
+
+## Add data from JSON files to assignable vars
+## Adapter Settings
+adatchancount = adatvalues['dmx_channel_count']
+adatserialport = adatvalues['adapter_serial_port']
+useradatspeed = adatvalues['user_adapter_speed']
+adatmaxspeed = adatvalues['max_dmx_adapter_speed']
+
+## Init adapter
+try:
+    dmx = Controller(adatserialport, auto_submit=True, dmx_size=adatchancount) 
+    if useradatspeed == False:
+        dmx.set_dmx_parameters(output_rate=adatmaxspeed)
+    else:
+        dmx.set_dmx_parameters(output_rate=adatmaxspeed)
+    dmx.clear_channels
+except:
+    print(f'{Fore.RED + Style.BRIGHT}    [XX] Serial Port {serialport} is unreachable. The DMX Subsystem is unable to start.\n')
+    time.sleep(2)
+    print(f'{Style.BRIGHT}To diagnose this issue please try these steps:')
+    print(f'    [--] Make sure the DMX adapter is {Style.BRIGHT}plugged in and recieving power')
+    print(f'    [--] Run the {Style.BRIGHT}adaptersetup.py{Style.RESET_ALL} program and ensure the correct {Style.BRIGHT}COM/TTY port{Style.RESET_ALL} is selected aswell as the corect {Style.BRIGHT}sample rate')
+    print(f'    [--] Ensure the adapter is based on the {Style.BRIGHT}RS485 protocol{Style.RESET_ALL} OR is based around an {Style.BRIGHT}ENTTEC/DMXKing Adapter')
+    print(f'    [--] If the progrm is still not working, feel free to {Style.BRIGHT}create an issue in the github with a copy of the exception\n')
+    time.sleep(5)
+    print(f'{Fore.RED}The program will now exit as an unrecoverable exception has occured. {Style.BRIGHT}ALL DATA HAS BEEN SAVED')
+    quit()
+print(f'{Fore.GREEN + Style.BRIGHT}DMX Subsystem Started Successfully')
+time.sleep(5)
+## Fixture profiles
+
 
 class DraggableLabel(QLabel):
     position_changed = pyqtSignal(QPoint)
