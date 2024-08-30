@@ -43,13 +43,26 @@ adatserialport = adatvalues['adapter_serial_port']
 useradatspeed = int(adatvalues['user_adapter_speed'])
 adatmaxspeed = int(adatvalues['max_dmx_adapter_speed'])
 
+print(adatchancount)
+print(adatmaxspeed)
+print(useradatspeed)
+print(adatserialport)
+
+if useradatspeed < 40:
+    useradatspeed = 40
+if adatmaxspeed < 40:
+    maxadatspeed = 40
+
 ## Init adapter
-dmx = Controller(adatserialport, auto_submit=True, dmx_size=adatchancount) 
-if useradatspeed == False:
-    dmx.set_dmx_parameters(output_rate=adatmaxspeed)
-else:
-    dmx.set_dmx_parameters(output_rate=useradatspeed)
-dmx.clear_channels
+#dmx = Controller(adatserialport, auto_submit=True, dmx_size=adatchancount) 
+#try:
+#    print(f'Trying to init with user speed of {useradatspeed}Hz')
+#    dmx.set_dmx_parameters(output_rate=useradatspeed)
+#except:
+#    print(f'Trying to init with auto speed of {adatmaxspeed}Hz')
+#    dmx.set_dmx_parameters(output_rate=adatmaxspeed)
+
+#dmx.clear_channels
 
 ## Fixture profiles
 print('Loaded Profiles:')
@@ -64,8 +77,8 @@ channels_used = []          ## Init channels_used list
 for profilename, attribute1 in fixtureprofiles.items():
     for profile, attribute2 in fixturepatch.items():
         for fixturename, attribute3 in fixturepatch[profilename].items():
-            channels_used.append(fixturepatch[profilename][fixturename]['channels_used'])
-print(f'{Back.BLUE + Style.BRIGHT}<<< You currently have {dmxchanmax - sum(channels_used)} Channels Available of {dmxchanmax} >>>')
+            channels_used.append(fixturepatch[profilename][fixturename]['channel_count'])
+print(f'{Back.BLUE + Style.BRIGHT}<<< You currently have {adatchancount - sum(channels_used)} Channels Available of {adatchancount} >>>')
 
 ## This prints out the fixture profiles and how many channels they each take up
 print(f'\n {Fore.BLUE + Style.BRIGHT}Fixture Profiles in Library:')
