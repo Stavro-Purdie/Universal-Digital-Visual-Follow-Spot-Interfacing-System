@@ -3,10 +3,14 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QLabel, QTreeWidgetItem, 
 from PyQt6.QtGui import QPixmap, QImage, QMouseEvent
 from PyQt6.QtCore import QTimer, Qt, QThread, pyqtSignal, QPoint
 from DMXEnttecPro import Controller
+from colorama import init, Fore, Style, Back
 import cv2
 import numpy as np
 import json
 import os
+
+init(autoreset=True)
+
 
 # Load JSON Files
 def load_json_files():
@@ -38,27 +42,49 @@ useradatspeed = adatvalues['user_adapter_speed']
 adatmaxspeed = adatvalues['max_dmx_adapter_speed']
 
 ## Init adapter
-try:
-    dmx = Controller(adatserialport, auto_submit=True, dmx_size=adatchancount) 
-    if useradatspeed == False:
-        dmx.set_dmx_parameters(output_rate=adatmaxspeed)
-    else:
-        dmx.set_dmx_parameters(output_rate=adatmaxspeed)
-    dmx.clear_channels
-except:
-    print(f'{Fore.RED + Style.BRIGHT}    [XX] Serial Port {serialport} is unreachable. The DMX Subsystem is unable to start.\n')
-    time.sleep(2)
-    print(f'{Style.BRIGHT}To diagnose this issue please try these steps:')
-    print(f'    [--] Make sure the DMX adapter is {Style.BRIGHT}plugged in and recieving power')
-    print(f'    [--] Run the {Style.BRIGHT}adaptersetup.py{Style.RESET_ALL} program and ensure the correct {Style.BRIGHT}COM/TTY port{Style.RESET_ALL} is selected aswell as the corect {Style.BRIGHT}sample rate')
-    print(f'    [--] Ensure the adapter is based on the {Style.BRIGHT}RS485 protocol{Style.RESET_ALL} OR is based around an {Style.BRIGHT}ENTTEC/DMXKing Adapter')
-    print(f'    [--] If the progrm is still not working, feel free to {Style.BRIGHT}create an issue in the github with a copy of the exception\n')
-    time.sleep(5)
-    print(f'{Fore.RED}The program will now exit as an unrecoverable exception has occured. {Style.BRIGHT}ALL DATA HAS BEEN SAVED')
-    quit()
-print(f'{Fore.GREEN + Style.BRIGHT}DMX Subsystem Started Successfully')
-time.sleep(5)
+
+dmx = Controller(adatserialport, auto_submit=True, dmx_size=adatchancount) 
+if useradatspeed == False:
+    dmx.set_dmx_parameters(output_rate=adatmaxspeed)
+else:
+    dmx.set_dmx_parameters(output_rate=adatmaxspeed)
+dmx.clear_channels
+
 ## Fixture profiles
+print('Loaded Profiles:')
+for profile, attribute in fixtureprofiles.items():                         #Print Profile Names in the JSON File
+    print(f'{Style.BRIGHT}    [--] {profile}')
+print()
+
+print('DMX patch values loaded')
+
+channels_used = []          ## Init channels_used list
+## This initially shows how many channels are in use
+for profilename, attribute1 in profiles.items():
+    for profile, attribute2 in patchdata.items():
+        for fixturename, attribute3 in patchdata[profilename].items():
+            channels_used.append(patchdata[profilename][fixturename]['channels_used'])
+print(f'{Back.BLUE + Style.BRIGHT}<<< You currently have {dmxchanmax - sum(channels_used)} Channels Available of {dmxchanmax} >>>')
+
+## This prints out the fixture profiles and how many channels they each take up
+print(f'\n {Fore.BLUE + Style.BRIGHT}Fixture Profiles in Library:')
+for profile, attributes in profiles.items():
+    profilechancount = int(profiles[profile]['channel_count'])
+    print(f'{Style.BRIGHT}      [--] {profile} | {Back.BLUE}<<< Takes up {profilechancount} DMX Channels per fixture >>>')       ## This loop prints to the user the fixtures in the library and how many channels they each take up
+print('')
+
+## This prints out what fixture is patched where aswell as what fixture is what
+print(f'\n {Fore.BLUE + Style.BRIGHT}Breakdown of Patched Fixtures:')
+for profilename, attribute1 in profiles.items():
+    print(f'{Style.BRIGHT}      [--] {profilename} has {len(patchdata[profilename])} fixtures patched')
+    for profile, attribute2 in patchdata.items():
+        fixturename = list(patchdata[profilename].keys())
+    startingchannel = {}
+    for fixname in fixturename:
+        startingchannel[fixname] = patchdata[profilename][fixname]['starting_channel']
+        print(f'{Style.BRIGHT}        [->]', str(fixname).strip("['']"), f'Starts on channel {startingchannel[fixname]}')
+
+time.sleep(5)
 
 
 class DraggableLabel(QLabel):
