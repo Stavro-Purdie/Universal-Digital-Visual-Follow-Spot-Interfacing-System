@@ -54,15 +54,19 @@ if adatmaxspeed < 40:
     maxadatspeed = 40
 
 ## Init adapter
-#dmx = Controller(adatserialport, auto_submit=True, dmx_size=adatchancount) 
-#try:
-#    print(f'Trying to init with user speed of {useradatspeed}Hz')
-#    dmx.set_dmx_parameters(output_rate=useradatspeed)
-#except:
-#    print(f'Trying to init with auto speed of {adatmaxspeed}Hz')
-#    dmx.set_dmx_parameters(output_rate=adatmaxspeed)
+dmx = Controller(adatserialport, auto_submit=True, dmx_size=adatchancount) 
+try:
+    print(f'Trying to init with user speed of {useradatspeed}Hz')
+    dmx.set_dmx_parameters(output_rate=useradatspeed)
+    dmx.clear_channels
+except:
+    try:
+        print(f'Trying to init with auto speed of {adatmaxspeed}Hz')
+        dmx.set_dmx_parameters(output_rate=adatmaxspeed)
+        dmx.clear_channels
+    except:
+        print(f'Adapter Error, Control System will run in OFFLINE MODE. Please navigate to tools menu to restart DMX Subsystem when adapter is ready.')
 
-#dmx.clear_channels
 
 ## Fixture profiles
 print('Loaded Profiles:')
@@ -99,31 +103,36 @@ for profilename, attribute1 in fixtureprofiles.items():
         print(f'{Style.BRIGHT}        [->]', str(fixname).strip("['']"), f'Starts on channel {startingchannel[fixname]}')
 
 
-
+## Class for all Draggable Items
 class DraggableLabel(QLabel):
     position_changed = pyqtSignal(QPoint)
     
+    ## Init
     def __init__(self):
         super().__init__()
         self.dragging = False
         self.offset = QPoint(0, 0)
         self.center = None
-
+    
+    ## Mouse Press Event
     def mousePressEvent(self, event: QMouseEvent):
         if event.button() == Qt.MouseButton.LeftButton:
             self.dragging = True
             self.offset = event.pos() - self.center
 
+    ## Mouse Move Event
     def mouseMoveEvent(self, event: QMouseEvent):
         if self.dragging:
             self.center = event.pos() - self.offset
             self.position_changed.emit(self.center)
             self.update()
 
+    ## Mouse Released Event
     def mouseReleaseEvent(self, event: QMouseEvent):
         if event.button() == Qt.MouseButton.LeftButton:
             self.dragging = False
 
+    ## Aiming Reticle Function
     def draw_aiming_system(self, frame):
         h, w = frame.shape[:2]
         if self.center is None:
@@ -131,6 +140,7 @@ class DraggableLabel(QLabel):
 
         center_x, center_y = self.center.x(), self.center.y()
 
+        ## Aiming Reticle Dimensions, Change as required
         cv2.circle(frame, (center_x, center_y), 40, (0, 255, 0), 2)
         cv2.circle(frame, (center_x, center_y), 15, (0, 255, 0), 2)
         cv2.line(frame, (center_x - 40, center_y), (center_x - 15, center_y), (0, 255, 0), 2)
@@ -140,9 +150,11 @@ class DraggableLabel(QLabel):
 
         return frame
 
+## Video Capture Class
 class VideoCaptureThread(QThread):
     update_frame_signal = pyqtSignal(np.ndarray)
 
+    ## Init
     def __init__(self, uri, label):
         super().__init__()
         self.uri = uri
@@ -153,6 +165,7 @@ class VideoCaptureThread(QThread):
             self.cap.release()
         self.running = True
 
+    ## Run Func
     def run(self):
         while self.cap.isOpened() and self.running:
             ret, frame = self.cap.read()
@@ -162,12 +175,14 @@ class VideoCaptureThread(QThread):
             else:
                 break
 
+    ## Stop Func
     def stop(self):
         self.running = False
         self.cap.release()
         self.quit()
         self.wait()
 
+## Frame Update (Keepalive)
 def update_frame(label, frame):
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     h, w, ch = frame.shape
@@ -176,11 +191,13 @@ def update_frame(label, frame):
     scaled_pixmap = QPixmap.fromImage(qt_img).scaled(label.size(), Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation)
     label.setPixmap(scaled_pixmap)
 
+## Position Sync for Moveable Labels (Reticle)
 def sync_position(position, labels):
     for label in labels:
         label.center = position
         label.update()
 
+## Fixture Selection Func
 def on_fixture_selected(tree_widget, video_threads, main_label):
     selected_items = tree_widget.selectedItems()
     if selected_items:
@@ -207,24 +224,29 @@ def on_fixture_selected(tree_widget, video_threads, main_label):
         if not video_threads[selected_fixture].isRunning():
             video_threads[selected_fixture].start()
 
+## Select First Fixture in Tree Func
 def select_first_fixture(tree_widget):
     if tree_widget.topLevelItemCount() > 0:
         tree_widget.topLevelItem(0).setSelected(True)
 
+## Main Routine
 def main():
     app = QApplication(sys.argv)
     window = QMainWindow()
 
+    # Initialize video streams dictionary with all useable streams in camerapatch.json
     video_streams = {
         spot: f"http://{details['URI']}" if not details["URI"].startswith(("http://", "https://", "rtsp://")) else details["URI"]
         for spot, details in camerapatch.items()
     }
 
+    # Boring QT6 init stuff I don't understand but know I need
     main_layout = QVBoxLayout()
     central_widget = QWidget()
     central_widget.setLayout(main_layout)
     window.setCentralWidget(central_widget)
 
+    # Populate tree_widget with cameras and fixture names
     tree_widget = QTreeWidget()
     for fixture in video_streams.keys():
         item = QTreeWidgetItem([fixture])
@@ -233,18 +255,18 @@ def main():
 
     main_layout.addWidget(tree_widget)
 
-    # Main camera view
+    # Main camera Window Base
     main_label = DraggableLabel()
     main_label.setFixedSize(640, 480)
     main_layout.addWidget(main_label)
 
-    # Multi-view window
+    # Multi-view Window Base
     multiview_window = QDialog()
     multiview_window.setWindowTitle("Multi-view")
     multiview_layout = QVBoxLayout()
     multiview_window.setLayout(multiview_layout)
 
-    # Create small views and video threads for all cameras
+    # Populate Multi-View Window Base with Feeds
     global small_views
     small_views = {}
     video_threads = {}
@@ -263,8 +285,10 @@ def main():
     window.show()
     QTimer.singleShot(0, lambda: select_first_fixture(tree_widget))
 
+    # Gracefully slam dunk the program on exit
     app.aboutToQuit.connect(lambda: [thread.stop() for thread in video_threads.values()])
     sys.exit(app.exec())
 
+# Only run if name == main
 if __name__ == "__main__":
     main()
